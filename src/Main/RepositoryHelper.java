@@ -1,4 +1,4 @@
-package Main;
+package src.Main;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,7 +9,8 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import Github.Repository;
+import src.Github.Repository;
+
 
 public class RepositoryHelper {
 

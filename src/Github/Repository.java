@@ -1,4 +1,4 @@
-package Github;
+package src.Github;
 
 
 public class Repository {

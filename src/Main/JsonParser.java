@@ -1,9 +1,8 @@
-package Main;
+package src.Main;
 
 import javax.json.JsonObject;
 
-import Github.User;
-
+import src.Github.User;
 
 
 public class JsonParser {
