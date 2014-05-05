@@ -1,4 +1,4 @@
-package src.Main;
+package Main;
 
 public class Util {
 	

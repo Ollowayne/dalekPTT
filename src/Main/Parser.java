@@ -1,9 +1,9 @@
-package src.Main;
+package Main;
 
 import javax.json.JsonObject;
 
-import src.Github.Repository;
-import src.Github.User;
+import Github.Repository;
+import Github.User;
 
 
 
