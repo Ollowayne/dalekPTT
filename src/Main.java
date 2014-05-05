@@ -3,8 +3,7 @@
 public class Main {
 
 	public static void main(String[] args) {
-		RepositoryHelper.getRepositories("Ollowayne");	
-		// Test commit
+		System.out.println(RepositoryHelper.getRepositories("Ollowayne").get(0).getOwner().getAvatarUrl());	
 	}
 
-} 
+}

@@ -1,12 +1,13 @@
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.json.stream.JsonParser;
-import javax.json.stream.JsonParser.Event;
+
+import Github.Repository;
 
 public class RepositoryHelper {
 
@@ -14,19 +15,23 @@ public class RepositoryHelper {
 	
 	public static final String REPOSITORIES_STRING = "%s/users/%s/repos";
 		
-	public static void /*Array of repos*/ getRepositories(String name) {
+	public static LinkedList<Repository> getRepositories(String name) {
 		Request r = new Request(String.format(REPOSITORIES_STRING, GITHUB_API_URL, name));
 		
 		try {
 			JsonReader reader = Json.createReader(r.send());
-			
-			JsonArray j = reader.readArray();
-			System.out.println("array: " + j);
+			JsonArray jsonRepositories = reader.readArray();
 			reader.close();
 			
+			System.out.println("array: " + jsonRepositories);
+			
+			LinkedList<Repository> repositories = new LinkedList<Repository>();
+			for(int i = 0; i < jsonRepositories.size(); ++i)
+				repositories.add(Parser.parseRepository(jsonRepositories.getJsonObject(i)));
 
+			return repositories;
 		} catch (IOException e) {
-			// return smth..
+			return new LinkedList<Repository>();
 		}
 	}
 	

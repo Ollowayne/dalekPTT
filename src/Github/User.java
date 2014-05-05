@@ -7,7 +7,7 @@ public class User {
 	private int m_id;
 	
 	private String m_avatarUrl;
-	private String m_gravatarUrl;
+	private String m_gravatarId;
 	private String m_Url;
 	private String m_htmlUrl;
 	private String m_followersUrl;
@@ -49,11 +49,11 @@ public class User {
 	    m_avatarUrl = avatarUrl;
 	}
 	
-	public String getGravatarUrl() {
-	    return m_gravatarUrl;
+	public String getGravatarId() {
+	    return m_gravatarId;
 	}
-	public void setGravatarUrl(String gravatarUrl) {
-	    m_gravatarUrl = gravatarUrl;
+	public void setGravatarId(String gravatarId) {
+	    m_gravatarId = gravatarId;
 	}
 	
 	public String getUrl() {
