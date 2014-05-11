@@ -3,147 +3,147 @@ package Github;
 
 public class User {
 	
-	private String m_login;
-	private int m_id;
-	
-	private String m_avatarUrl;
-	private String m_gravatarId;
-	private String m_Url;
-	private String m_htmlUrl;
-	private String m_followersUrl;
-	private String m_followingUrl;
-	private String m_gistsUrl;
-	private String m_starredUrl;
-	private String m_subscriptionsUrl;
-	private String m_organizationsUrl;
-	private String m_reposUrl;
-	private String m_eventsUrl;
-	private String m_receivedEventsUrl;
-	
-	private String m_userType;
-	private boolean m_admin;
+	private String login;
+	private int id;
+
+	private String avatarUrl;
+	private String gravatarId;
+	private String url;
+	private String htmlUrl;
+	private String followersUrl;
+	private String followingUrl;
+	private String gistsUrl;
+	private String starredUrl;
+	private String subscriptionsUrl;
+	private String organizationsUrl;
+	private String reposUrl;
+	private String eventsUrl;
+	private String receivedEventsUrl;
+
+	private String userType;
+	private boolean admin;
 	
 	public User() {
-		m_id = -1;
-		m_login = "Unknown";
+		this.id = -1;
+		this.login = "Unknown";
 	}
 
 	public int getId() {
-		return m_id;
+		return this.id;
 	}
 	public void setId(int id) {
-		m_id = id;
+		this.id = id;
 	}
 	
 	public String getLogin() {
-		return m_login;
+		return this.login;
 	}
 	public void setLogin(String login) {
-		m_login = login;
+		this.login = login;
 	}
 
 	public String getAvatarUrl() {
-	    return m_avatarUrl;
+	    return this.avatarUrl;
 	}
 	public void setAvatarUrl(String avatarUrl) {
-	    m_avatarUrl = avatarUrl;
+	    this.avatarUrl = avatarUrl;
 	}
 	
 	public String getGravatarId() {
-	    return m_gravatarId;
+	    return this.gravatarId;
 	}
 	public void setGravatarId(String gravatarId) {
-	    m_gravatarId = gravatarId;
+	    this.gravatarId = gravatarId;
 	}
 	
 	public String getUrl() {
-	    return m_Url;
+	    return this.url;
 	}
-	public void setUrl(String Url) {
-	    m_Url = Url;
+	public void setUrl(String url) {
+	    this.url = url;
 	}
 	
 	public String getHtmlUrl() {
-	    return m_htmlUrl;
+	    return this.htmlUrl;
 	}
 	public void setHtmlUrl(String htmlUrl) {
-	    m_htmlUrl = htmlUrl;
+	    this.htmlUrl = htmlUrl;
 	}
 	
 	public String getFollowersUrl() {
-	    return m_followersUrl;
+	    return this.followersUrl;
 	}
 	public void setFollowersUrl(String followersUrl) {
-	    m_followersUrl = followersUrl;
+	    this.followersUrl = followersUrl;
 	}
 	
 	public String getFollowingUrl() {
-	    return m_followingUrl;
+	    return this.followingUrl;
 	}
 	public void setFollowingUrl(String followingUrl) {
-	    m_followingUrl = followingUrl;
+	    this.followingUrl = followingUrl;
 	}
 	
 	public String getGistsUrl() {
-	    return m_gistsUrl;
+	    return this.gistsUrl;
 	}
 	public void setGistsUrl(String gistsUrl) {
-	    m_gistsUrl = gistsUrl;
+	    this.gistsUrl = gistsUrl;
 	}
 	
 	public String getStarredUrl() {
-	    return m_starredUrl;
+	    return this.starredUrl;
 	}
 	public void setStarredUrl(String starredUrl) {
-	    m_starredUrl = starredUrl;
+	    this.starredUrl = starredUrl;
 	}
 	
 	public String getSubscriptionsUrl() {
-	    return m_subscriptionsUrl;
+	    return this.subscriptionsUrl;
 	}
 	public void setSubscriptionsUrl(String subscriptionsUrl) {
-	    m_subscriptionsUrl = subscriptionsUrl;
+	    this.subscriptionsUrl = subscriptionsUrl;
 	}
 	
 	public String getOrganizationsUrl() {
-	    return m_organizationsUrl;
+	    return this.organizationsUrl;
 	}
 	public void setOrganizationsUrl(String organizationsUrl) {
-	    m_organizationsUrl = organizationsUrl;
+	    this.organizationsUrl = organizationsUrl;
 	}
 	
 	public String getReposUrl() {
-	    return m_reposUrl;
+	    return this.reposUrl;
 	}
 	public void setReposUrl(String reposUrl) {
-	    m_reposUrl = reposUrl;
+	    this.reposUrl = reposUrl;
 	}
 	
 	public String getEventsUrl() {
-	    return m_eventsUrl;
+	    return this.eventsUrl;
 	}
 	public void setEventsUrl(String eventsUrl) {
-	    m_eventsUrl = eventsUrl;
+	    this.eventsUrl = eventsUrl;
 	}
 	
 	public String getReceivedEventsUrl() {
-	    return m_receivedEventsUrl;
+	    return this.receivedEventsUrl;
 	}
 	public void setReceivedEventsUrl(String receivedEventsUrl) {
-	    m_receivedEventsUrl = receivedEventsUrl;
+	    this.receivedEventsUrl = receivedEventsUrl;
 	}
 	
 	public String getUserType() {
-		return m_userType;
+		return this.userType;
 	}
 	public void setUserType(String userType) {
-		m_userType = userType;
+		this.userType = userType;
 	}
 
 	public boolean isAdmin() {
-		return m_admin;
+		return this.admin;
 	}
 	public void setAdmin(boolean admin) {
-		m_admin = admin;
+		this.admin = admin;
 	}
 }

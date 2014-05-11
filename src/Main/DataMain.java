@@ -1,9 +1,17 @@
 package Main;
 
+import java.util.LinkedList;
+
+import Github.Repository;
+
 public class DataMain {
 
 	public static void main(String[] args) {
-		System.out.println(RepositoryHelper.getRepositories("TheSumm").get(0).getOwner().getAvatarUrl());	
+		LinkedList<Repository> repos = RepositoryHelper.getRepositories("TheSumm");
+		if(repos.size() > 0)
+			System.out.println(repos.get(0).getOwner().getAvatarUrl());
+		else
+			System.out.println("No repositories loaded..");
 	}
 
 }
