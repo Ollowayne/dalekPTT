@@ -48,6 +48,14 @@ public class Client {
 		return getWatchedUserIndex(name) != -1;
 	}
 	
+	public boolean hasWatchedUsers() {
+		return watchedUsers.size() > 0;
+	}
+	
+	public User getLatestUser() {
+		return watchedUsers.get(watchedUsers.size() - 1);
+	}
+	
 	public int addWatchedUser(String name) {
 		User user = UserHelper.getUser(name);
 		if(user.getId() != -1) {

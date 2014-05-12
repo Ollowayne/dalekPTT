@@ -200,8 +200,12 @@ public class App extends Application {
     	if(userName.length() == 0)
     		return;
     	
-    	int returnCode = Client.getInstance().addWatchedUser(userName);
+    	Client c = Client.getInstance();
+    	int returnCode = c.addWatchedUser(userName);
 	    if(returnCode == Client.USER_ADDED) {
+	    	if(c.hasWatchedUsers())
+	    		userName = c.getLatestUser().getLogin();
+
 		    displayMessage("You are now observing " + userName + ".");
 		    
 		    final UserPane newPane = new UserPane(userName, this);
