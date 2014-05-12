@@ -1,149 +1,153 @@
 package Github;
 
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
-public class User {
+import Main.ISO8601;
+
+public class User extends SimpleUser {
 	
-	private String login;
-	private int id;
-
-	private String avatarUrl;
-	private String gravatarId;
-	private String url;
-	private String htmlUrl;
-	private String followersUrl;
-	private String followingUrl;
-	private String gistsUrl;
-	private String starredUrl;
-	private String subscriptionsUrl;
-	private String organizationsUrl;
-	private String reposUrl;
-	private String eventsUrl;
-	private String receivedEventsUrl;
-
-	private String userType;
-	private boolean admin;
+	private String name;
+	private String company;
+	private String blog;
+	private String location;
+	private String email;
+	private boolean hireable;
+	private String bio;
+	private int publicRepos;
+	private int publicGists;
+	private int followers;
+	private int following;
+	private long createdAt;
+	private long updatedAt;
 	
 	public User() {
-		this.id = -1;
-		this.login = "Unknown";
+		name = company = blog = location = email = bio = "";
+		publicRepos = publicGists = followers = following = 0;
+		createdAt = updatedAt = 0;
+	}
+	
+	public JsonObject toJsonObject() {
+		JsonObjectBuilder builder = super.createObjectBuilder();
+		
+		builder.add("name", name);
+		builder.add("company", company);
+		builder.add("blog", blog);
+		builder.add("location", location);
+		builder.add("email", email);
+		builder.add("hireable", hireable);
+		builder.add("bio", bio);
+		builder.add("public_repos", publicRepos);
+		builder.add("public_gists", publicGists);
+		builder.add("followers", followers);
+		builder.add("following", following);
+		builder.add("created_at", ISO8601.fromUnix(createdAt));
+		builder.add("updated_at", ISO8601.fromUnix(updatedAt));
+		
+		return builder.build();
 	}
 
-	public int getId() {
-		return this.id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public String getLogin() {
-		return this.login;
-	}
-	public void setLogin(String login) {
-		this.login = login;
+	public String getName() {
+		return name;
 	}
 
-	public String getAvatarUrl() {
-	    return this.avatarUrl;
-	}
-	public void setAvatarUrl(String avatarUrl) {
-	    this.avatarUrl = avatarUrl;
-	}
-	
-	public String getGravatarId() {
-	    return this.gravatarId;
-	}
-	public void setGravatarId(String gravatarId) {
-	    this.gravatarId = gravatarId;
-	}
-	
-	public String getUrl() {
-	    return this.url;
-	}
-	public void setUrl(String url) {
-	    this.url = url;
-	}
-	
-	public String getHtmlUrl() {
-	    return this.htmlUrl;
-	}
-	public void setHtmlUrl(String htmlUrl) {
-	    this.htmlUrl = htmlUrl;
-	}
-	
-	public String getFollowersUrl() {
-	    return this.followersUrl;
-	}
-	public void setFollowersUrl(String followersUrl) {
-	    this.followersUrl = followersUrl;
-	}
-	
-	public String getFollowingUrl() {
-	    return this.followingUrl;
-	}
-	public void setFollowingUrl(String followingUrl) {
-	    this.followingUrl = followingUrl;
-	}
-	
-	public String getGistsUrl() {
-	    return this.gistsUrl;
-	}
-	public void setGistsUrl(String gistsUrl) {
-	    this.gistsUrl = gistsUrl;
-	}
-	
-	public String getStarredUrl() {
-	    return this.starredUrl;
-	}
-	public void setStarredUrl(String starredUrl) {
-	    this.starredUrl = starredUrl;
-	}
-	
-	public String getSubscriptionsUrl() {
-	    return this.subscriptionsUrl;
-	}
-	public void setSubscriptionsUrl(String subscriptionsUrl) {
-	    this.subscriptionsUrl = subscriptionsUrl;
-	}
-	
-	public String getOrganizationsUrl() {
-	    return this.organizationsUrl;
-	}
-	public void setOrganizationsUrl(String organizationsUrl) {
-	    this.organizationsUrl = organizationsUrl;
-	}
-	
-	public String getReposUrl() {
-	    return this.reposUrl;
-	}
-	public void setReposUrl(String reposUrl) {
-	    this.reposUrl = reposUrl;
-	}
-	
-	public String getEventsUrl() {
-	    return this.eventsUrl;
-	}
-	public void setEventsUrl(String eventsUrl) {
-	    this.eventsUrl = eventsUrl;
-	}
-	
-	public String getReceivedEventsUrl() {
-	    return this.receivedEventsUrl;
-	}
-	public void setReceivedEventsUrl(String receivedEventsUrl) {
-	    this.receivedEventsUrl = receivedEventsUrl;
-	}
-	
-	public String getUserType() {
-		return this.userType;
-	}
-	public void setUserType(String userType) {
-		this.userType = userType;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public boolean isAdmin() {
-		return this.admin;
+	public String getCompany() {
+		return company;
 	}
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public String getBlog() {
+		return blog;
+	}
+
+	public void setBlog(String blog) {
+		this.blog = blog;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public boolean isHireable() {
+		return hireable;
+	}
+
+	public void setHireable(boolean hireable) {
+		this.hireable = hireable;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+
+	public int getPublicRepos() {
+		return publicRepos;
+	}
+
+	public void setPublicRepos(int publicRepos) {
+		this.publicRepos = publicRepos;
+	}
+
+	public int getPublicGists() {
+		return publicGists;
+	}
+
+	public void setPublicGists(int publicGists) {
+		this.publicGists = publicGists;
+	}
+
+	public int getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(int followers) {
+		this.followers = followers;
+	}
+
+	public int getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(int following) {
+		this.following = following;
+	}
+
+	public long getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(long createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public long getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(long updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 }

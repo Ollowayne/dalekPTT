@@ -1,5 +1,8 @@
 package Main;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class ISO8601 {
@@ -20,7 +23,7 @@ public class ISO8601 {
 	public static long toUnix(String isoDate) {
 		GregorianCalendar g = new GregorianCalendar(
 					Integer.parseInt(isoDate.substring(INDEX_YEAR_FIRST, INDEX_YEAR_LAST)), 
-					Integer.parseInt(isoDate.substring(INDEX_MONTH_FIRST, INDEX_MONTH_LAST)),
+					Integer.parseInt(isoDate.substring(INDEX_MONTH_FIRST, INDEX_MONTH_LAST)) - 1,
 					Integer.parseInt(isoDate.substring(INDEX_DAY_FIRST, INDEX_DAY_LAST)),
 					Integer.parseInt(isoDate.substring(INDEX_HOUR_FIRST, INDEX_HOUR_LAST)),
 					Integer.parseInt(isoDate.substring(INDEX_MINUTE_FIRST, INDEX_MINUTE_LAST)),
@@ -28,5 +31,12 @@ public class ISO8601 {
 				);
 		
 		return g.getTimeInMillis() / 1000L;
+	}
+	
+	public static String fromUnix(long unix) {		
+		Date date = new Date(unix * 1000L);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		return dateFormat.format(date);
 	}
 }

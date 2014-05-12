@@ -1,12 +1,13 @@
 package Main;
 
+import java.util.LinkedList;
+
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 
 import Github.Repository;
 import Github.User;
-
-
 
 public class Parser {
 
@@ -36,8 +37,48 @@ public class Parser {
 		
 		user.setUserType(obj.getString("type"));
 		user.setAdmin(obj.getBoolean("site_admin"));
-
+		
+		if(obj.containsKey("name")) {
+			user.setName(obj.getString("name"));
+		}
+		if(obj.containsKey("company")) {
+			user.setCompany(jsonValueToString(obj.get("company")));
+		}
+		if(obj.containsKey("blog")) {
+			user.setBlog(jsonValueToString(obj.get("blog")));
+		}
+		if(obj.containsKey("location")) {
+			user.setLocation(jsonValueToString(obj.get("location")));
+		}
+		if(obj.containsKey("email")) {
+			user.setEmail(jsonValueToString(obj.get("email")));
+		}
+		if(obj.containsKey("hireable")) {
+			user.setHireable(obj.getBoolean("hireable"));
+		}
+		if(obj.containsKey("bio")) {
+			user.setBio(jsonValueToString(obj.get("bio")));
+		}
+		
+		if(obj.containsKey("public_repos")) {
+			user.setPublicRepos(obj.getInt("public_repos"));
+			user.setPublicGists(obj.getInt("public_gists"));
+			user.setFollowers(obj.getInt("followers"));
+			user.setFollowing(obj.getInt("following"));
+			user.setCreatedAt(ISO8601.toUnix(obj.getString("created_at")));
+			user.setUpdatedAt(ISO8601.toUnix(obj.getString("updated_at")));
+		}
+		
+		
 		return user;
+	}
+	
+	public static LinkedList<User> parseUsers(JsonArray array) {
+		LinkedList<User> users = new LinkedList<User>();
+		for(int i = 0; i < array.size(); ++i)
+			users.add(parseUser(array.getJsonObject(i)));
+		
+		return users;			
 	}
 	
 	public static Repository parseRepository(JsonObject obj) {
@@ -115,5 +156,22 @@ public class Parser {
 		repository.setPushedAt(ISO8601.toUnix(obj.getString("pushed_at")));
 
 		return repository;
+	}
+	
+	public static LinkedList<Repository> parseRepositories(JsonArray array) {
+		LinkedList<Repository> repos = new LinkedList<Repository>();
+		for(int i = 0; i < array.size(); ++i)
+			repos.add(Parser.parseRepository(array.getJsonObject(i)));
+		
+		return repos;
+	}
+	
+	public static LinkedList<String> parseStringArray(JsonArray array) {
+		LinkedList<String> list = new LinkedList<String>();
+		
+		for(int i = 0; i < array.size(); ++i)
+			list.add(array.getString(i));
+		
+		return list;
 	}
 }

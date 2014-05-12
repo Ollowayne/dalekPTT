@@ -1,7 +1,9 @@
 package Github;
 
+import javax.json.JsonObject;
 
-public class Repository {
+
+public class Repository implements JsonConvertable {
 
 	private int id;
 	private String name;
@@ -79,6 +81,11 @@ public class Repository {
 		id = -1;
 		name = fullName = "";
 		owner = new User();
+	}
+	
+	@Override
+	public JsonObject toJsonObject() {
+		return null;
 	}
 
 	public User getOwner() {
