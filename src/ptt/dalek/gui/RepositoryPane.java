@@ -53,14 +53,14 @@ public class RepositoryPane extends Pane {
 				if (!isOpen) {
 				    final Timeline open = new Timeline();
 				    final KeyValue kv = new KeyValue(me.minHeightProperty(), 5*HEIGHT);
-				    final KeyFrame kf = new KeyFrame(Duration.millis(300), kv);
+				    final KeyFrame kf = new KeyFrame(Duration.millis(200), kv);
 				    open.getKeyFrames().add(kf);
 				    open.setOnFinished(new EventHandler<ActionEvent>() {
 					    
 				           @Override
 				           public void handle(ActionEvent event) {
 				        	   
-				        	   l_repo.setText("v " +repoName);
+				        	   l_repo.setText("open: " +repoName);
 				           }
 
 				        });
@@ -70,14 +70,14 @@ public class RepositoryPane extends Pane {
 				else {
 				    final Timeline close = new Timeline();
 				    final KeyValue kv = new KeyValue(me.minHeightProperty(), HEIGHT);
-				    final KeyFrame kf = new KeyFrame(Duration.millis(200), kv);
+				    final KeyFrame kf = new KeyFrame(Duration.millis(150), kv);
 				    close.getKeyFrames().add(kf);
 				    close.setOnFinished(new EventHandler<ActionEvent>() {
 					    
 				           @Override
 				           public void handle(ActionEvent event) {
 								
-								l_repo.setText("> " +repoName);
+								l_repo.setText("closed: " +repoName);
 				           }
 
 				        });
@@ -90,7 +90,7 @@ public class RepositoryPane extends Pane {
 		
 		//set Data of repository panes
 	public void setData() {
-		l_repo.setText("> " +repoName);
+		l_repo.setText("closed: " +repoName);
 		l_info.setText("");
 	
 	}

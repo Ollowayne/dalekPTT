@@ -4,6 +4,29 @@
     -fx-padding: 0;
 }
 
+.scroll-pane .increment-button {
+    -fx-background-color: #afafaf;
+}
+
+.scroll-pane .decrement-button {
+    -fx-background-color: #afafaf;
+}
+
+.scroll-pane .scroll-bar:horizontal .track ,.scroll-pane .scroll-bar:vertical .track{
+     -fx-background-color: #afafaf;
+     -fx-background-radius: 0em;
+}
+
+.scroll-pane .scroll-bar:horizontal .thumb, .scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #999999;
+    -fx-background-insets: 0, 0, 0;
+    -fx-background-radius: 0em;
+}
+
+.scroll-pane .increment-button ,.mylistview .decrement-button {
+    -fx-background-color:transparent;
+}
+
 .scroll-pane:focused {
     -fx-background-insets: 0;
 }
@@ -18,7 +41,10 @@
 
 #repositoryPane {
 	-fx-background-color: #ffffff;
-	-fx-border-color:#dedede ;
+}
+
+#repositoryPane:hover {
+	-fx-background-color: #ffffff;
 }
 
 #button_addUser {

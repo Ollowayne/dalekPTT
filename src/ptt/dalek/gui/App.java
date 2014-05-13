@@ -118,7 +118,7 @@ public class App extends Application {
 	   
 	    topbar = new HBox();
 	    topbar.setAlignment(Pos.CENTER_LEFT);
-	    topbar.setPadding(new Insets(USERSP_PADDING_TOP * 3, 0, 0, USERSP_PADDING_LEFT));
+	    topbar.setPadding(new Insets(USERSP_PADDING_LEFT, 0, USERSP_PADDING_LEFT, USERSP_PADDING_LEFT));
 	    topbar.setId("topbar");
 	    componentLayout.setTop(topbar);
 	  
