@@ -2,7 +2,6 @@ package ptt.dalek.github;
 
 import javax.json.JsonObject;
 
-
 public class Repository implements JsonConvertable {
 
 	private int id;
@@ -82,7 +81,7 @@ public class Repository implements JsonConvertable {
 		name = fullName = "";
 		owner = new User();
 	}
-	
+
 	@Override
 	public JsonObject toJsonObject() {
 		return null;
@@ -91,6 +90,7 @@ public class Repository implements JsonConvertable {
 	public User getOwner() {
 		return owner;
 	}
+
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}

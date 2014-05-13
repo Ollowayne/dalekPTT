@@ -4,9 +4,8 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
-
 public class SimpleUser implements JsonConvertable {
-	
+
 	protected String login;
 	protected int id;
 
@@ -26,12 +25,12 @@ public class SimpleUser implements JsonConvertable {
 
 	protected String userType;
 	protected boolean admin;
-	
+
 	public SimpleUser() {
 		this.id = -1;
 		this.login = "_unknown";
 	}
-	
+
 	protected JsonObjectBuilder createObjectBuilder() {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 
@@ -52,123 +51,139 @@ public class SimpleUser implements JsonConvertable {
 		builder.add("received_events_url", receivedEventsUrl);
 		builder.add("type", userType);
 		builder.add("site_admin", admin);
-		
+
 		return builder;
 	}
-	
+
 	public JsonObject toJsonObject() {
-		
+
 		return createObjectBuilder().build();
 	}
 
 	public int getId() {
 		return this.id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getLogin() {
 		return this.login;
 	}
+
 	public void setLogin(String login) {
 		this.login = login;
 	}
 
 	public String getAvatarUrl() {
-	    return this.avatarUrl;
+		return this.avatarUrl;
 	}
+
 	public void setAvatarUrl(String avatarUrl) {
-	    this.avatarUrl = avatarUrl;
+		this.avatarUrl = avatarUrl;
 	}
-	
+
 	public String getGravatarId() {
-	    return this.gravatarId;
+		return this.gravatarId;
 	}
+
 	public void setGravatarId(String gravatarId) {
-	    this.gravatarId = gravatarId;
+		this.gravatarId = gravatarId;
 	}
-	
+
 	public String getUrl() {
-	    return this.url;
+		return this.url;
 	}
+
 	public void setUrl(String url) {
-	    this.url = url;
+		this.url = url;
 	}
-	
+
 	public String getHtmlUrl() {
-	    return this.htmlUrl;
+		return this.htmlUrl;
 	}
+
 	public void setHtmlUrl(String htmlUrl) {
-	    this.htmlUrl = htmlUrl;
+		this.htmlUrl = htmlUrl;
 	}
-	
+
 	public String getFollowersUrl() {
-	    return this.followersUrl;
+		return this.followersUrl;
 	}
+
 	public void setFollowersUrl(String followersUrl) {
-	    this.followersUrl = followersUrl;
+		this.followersUrl = followersUrl;
 	}
-	
+
 	public String getFollowingUrl() {
-	    return this.followingUrl;
+		return this.followingUrl;
 	}
+
 	public void setFollowingUrl(String followingUrl) {
-	    this.followingUrl = followingUrl;
+		this.followingUrl = followingUrl;
 	}
-	
+
 	public String getGistsUrl() {
-	    return this.gistsUrl;
+		return this.gistsUrl;
 	}
+
 	public void setGistsUrl(String gistsUrl) {
-	    this.gistsUrl = gistsUrl;
+		this.gistsUrl = gistsUrl;
 	}
-	
+
 	public String getStarredUrl() {
-	    return this.starredUrl;
+		return this.starredUrl;
 	}
+
 	public void setStarredUrl(String starredUrl) {
-	    this.starredUrl = starredUrl;
+		this.starredUrl = starredUrl;
 	}
-	
+
 	public String getSubscriptionsUrl() {
-	    return this.subscriptionsUrl;
+		return this.subscriptionsUrl;
 	}
+
 	public void setSubscriptionsUrl(String subscriptionsUrl) {
-	    this.subscriptionsUrl = subscriptionsUrl;
+		this.subscriptionsUrl = subscriptionsUrl;
 	}
-	
+
 	public String getOrganizationsUrl() {
-	    return this.organizationsUrl;
+		return this.organizationsUrl;
 	}
+
 	public void setOrganizationsUrl(String organizationsUrl) {
-	    this.organizationsUrl = organizationsUrl;
+		this.organizationsUrl = organizationsUrl;
 	}
-	
+
 	public String getReposUrl() {
-	    return this.reposUrl;
+		return this.reposUrl;
 	}
+
 	public void setReposUrl(String reposUrl) {
-	    this.reposUrl = reposUrl;
+		this.reposUrl = reposUrl;
 	}
-	
+
 	public String getEventsUrl() {
-	    return this.eventsUrl;
+		return this.eventsUrl;
 	}
+
 	public void setEventsUrl(String eventsUrl) {
-	    this.eventsUrl = eventsUrl;
+		this.eventsUrl = eventsUrl;
 	}
-	
+
 	public String getReceivedEventsUrl() {
-	    return this.receivedEventsUrl;
+		return this.receivedEventsUrl;
 	}
+
 	public void setReceivedEventsUrl(String receivedEventsUrl) {
-	    this.receivedEventsUrl = receivedEventsUrl;
+		this.receivedEventsUrl = receivedEventsUrl;
 	}
-	
+
 	public String getUserType() {
 		return this.userType;
 	}
+
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
@@ -176,6 +191,7 @@ public class SimpleUser implements JsonConvertable {
 	public boolean isAdmin() {
 		return this.admin;
 	}
+
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}

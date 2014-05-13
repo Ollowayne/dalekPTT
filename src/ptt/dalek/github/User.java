@@ -6,7 +6,7 @@ import javax.json.JsonObjectBuilder;
 import ptt.dalek.main.ISO8601;
 
 public class User extends SimpleUser {
-	
+
 	private String name;
 	private String company;
 	private String blog;
@@ -20,16 +20,16 @@ public class User extends SimpleUser {
 	private int following;
 	private long createdAt;
 	private long updatedAt;
-	
+
 	public User() {
 		name = company = blog = location = email = bio = "";
 		publicRepos = publicGists = followers = following = 0;
 		createdAt = updatedAt = 0;
 	}
-	
+
 	public JsonObject toJsonObject() {
 		JsonObjectBuilder builder = super.createObjectBuilder();
-		
+
 		builder.add("name", name);
 		builder.add("company", company);
 		builder.add("blog", blog);
@@ -43,7 +43,7 @@ public class User extends SimpleUser {
 		builder.add("following", following);
 		builder.add("created_at", ISO8601.fromUnix(createdAt));
 		builder.add("updated_at", ISO8601.fromUnix(updatedAt));
-		
+
 		return builder.build();
 	}
 

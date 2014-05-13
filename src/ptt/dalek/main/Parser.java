@@ -17,10 +17,10 @@ public class Parser {
 
 	public static User parseUser(JsonObject obj) {
 		User user = new User();
-		
+
 		user.setLogin(obj.getString("login"));
 		user.setId(obj.getInt("id"));
-		
+
 		user.setAvatarUrl(obj.getString("avatar_url"));
 		user.setGravatarId(jsonValueToString(obj.get("gravatar_id")));
 		user.setUrl(obj.getString("url"));
@@ -34,33 +34,33 @@ public class Parser {
 		user.setReposUrl(obj.getString("repos_url"));
 		user.setEventsUrl(obj.getString("events_url"));
 		user.setReceivedEventsUrl(obj.getString("received_events_url"));
-		
+
 		user.setUserType(obj.getString("type"));
 		user.setAdmin(obj.getBoolean("site_admin"));
-		
-		if(obj.containsKey("name")) {
+
+		if (obj.containsKey("name")) {
 			user.setName(obj.getString("name"));
 		}
-		if(obj.containsKey("company")) {
+		if (obj.containsKey("company")) {
 			user.setCompany(jsonValueToString(obj.get("company")));
 		}
-		if(obj.containsKey("blog")) {
+		if (obj.containsKey("blog")) {
 			user.setBlog(jsonValueToString(obj.get("blog")));
 		}
-		if(obj.containsKey("location")) {
+		if (obj.containsKey("location")) {
 			user.setLocation(jsonValueToString(obj.get("location")));
 		}
-		if(obj.containsKey("email")) {
+		if (obj.containsKey("email")) {
 			user.setEmail(jsonValueToString(obj.get("email")));
 		}
-		if(obj.containsKey("hireable")) {
+		if (obj.containsKey("hireable")) {
 			user.setHireable(obj.getBoolean("hireable"));
 		}
-		if(obj.containsKey("bio")) {
+		if (obj.containsKey("bio")) {
 			user.setBio(jsonValueToString(obj.get("bio")));
 		}
-		
-		if(obj.containsKey("public_repos")) {
+
+		if (obj.containsKey("public_repos")) {
 			user.setPublicRepos(obj.getInt("public_repos"));
 			user.setPublicGists(obj.getInt("public_gists"));
 			user.setFollowers(obj.getInt("followers"));
@@ -68,28 +68,27 @@ public class Parser {
 			user.setCreatedAt(ISO8601.toUnix(obj.getString("created_at")));
 			user.setUpdatedAt(ISO8601.toUnix(obj.getString("updated_at")));
 		}
-		
-		
+
 		return user;
 	}
-	
+
 	public static LinkedList<User> parseUsers(JsonArray array) {
 		LinkedList<User> users = new LinkedList<User>();
-		for(int i = 0; i < array.size(); ++i)
+		for (int i = 0; i < array.size(); ++i)
 			users.add(parseUser(array.getJsonObject(i)));
-		
-		return users;			
+
+		return users;
 	}
-	
+
 	public static Repository parseRepository(JsonObject obj) {
 		Repository repository = new Repository();
-		
+
 		repository.setId(obj.getInt("id"));
 		repository.setName(obj.getString("name"));
 		repository.setFullName(obj.getString("full_name"));
 
 		repository.setOwner(parseUser(obj.getJsonObject("owner")));
-		
+
 		repository.setDescription(obj.getString("description"));
 		repository.setPrivate(obj.getBoolean("private"));
 		repository.setFork(obj.getBoolean("fork"));
@@ -157,21 +156,21 @@ public class Parser {
 
 		return repository;
 	}
-	
+
 	public static LinkedList<Repository> parseRepositories(JsonArray array) {
 		LinkedList<Repository> repos = new LinkedList<Repository>();
-		for(int i = 0; i < array.size(); ++i)
+		for (int i = 0; i < array.size(); ++i)
 			repos.add(Parser.parseRepository(array.getJsonObject(i)));
-		
+
 		return repos;
 	}
-	
+
 	public static LinkedList<String> parseStringArray(JsonArray array) {
 		LinkedList<String> list = new LinkedList<String>();
-		
-		for(int i = 0; i < array.size(); ++i)
+
+		for (int i = 0; i < array.size(); ++i)
 			list.add(array.getString(i));
-		
+
 		return list;
 	}
 }
