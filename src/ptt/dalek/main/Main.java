@@ -1,12 +1,11 @@
-package Main;
+package ptt.dalek.main;
 
+import ptt.dalek.gui.App;
 import javafx.application.Application;
-import Interface.App;
 
 public class Main {
 
 	public static void main(String[] args) {
 		Application.launch(App.class, args);
 	}
-
 }

@@ -1,12 +1,11 @@
-package Main;
+package ptt.dalek.main;
 
 import java.util.List;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import Github.User;
-import Helpers.UserHelper;
+import ptt.dalek.github.User;
+import ptt.dalek.helpers.UserHelper;
 
 public class Client {
 	private static Client instance;
@@ -33,7 +32,7 @@ public class Client {
 	public List<User> getWatchedUsers() {
 		return Collections.unmodifiableList(watchedUsers);
 	}
-	
+
 	public int getWatchedUserIndex(String name) {
 		String lowerName = name.toLowerCase();
 		for(int i = 0; i < watchedUsers.size(); ++i) {

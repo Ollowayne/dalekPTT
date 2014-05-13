@@ -1,8 +1,7 @@
-package Main;
+package ptt.dalek.main;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +11,8 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonReader;
-import javax.json.stream.JsonParsingException;
 
-import Github.User;
+import ptt.dalek.github.User;
 
 public class Settings {
 	

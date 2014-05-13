@@ -1,6 +1,6 @@
-package Interface;
+package ptt.dalek.gui;
 
-import Main.Client;
+import ptt.dalek.main.Client;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -21,6 +21,8 @@ public class UserPane extends Pane {
 		// width = 4*x
 	public static final double WIDTH = 200;
 	public static final double HEIGHT = 60;
+	public static final double CONTENTS_HGAB = 2;
+	public static final double CONTENTS_VGAB = 2;
 	
 	private String userName;
 	private App main;
@@ -30,7 +32,7 @@ public class UserPane extends Pane {
 	private Label l_name;
 	private Label l_data;
 	private Button b_remove;
-//	private ImageView i_user;
+	private ImageView i_user;
 	private GridPane contents;
 	
 	public UserPane(String userName, App main ) {
@@ -40,16 +42,6 @@ public class UserPane extends Pane {
 		this.setId("user_pane");
 		setup();
 		setData();
-
-		// example, remove later
-//        userListSP.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-//
-//            @Override
-//            public void handle(MouseEvent event) {
-//                System.out.println(">> Mouse Clicked");
-//                event.consume();
-//            }
-//        });
 	}
 	
 	public void setup() {		
@@ -110,7 +102,9 @@ public class UserPane extends Pane {
 	   
 		final Timeline timeline = new Timeline();
 		final KeyValue kv = new KeyValue(me.layoutXProperty(), -UserPane.WIDTH);
-		final KeyFrame kf = new KeyFrame(Duration.millis(200), kv);
+		final KeyValue kv2 = new KeyValue(me.opacityProperty(), 0);
+		
+		final KeyFrame kf = new KeyFrame(Duration.millis(300), kv, kv2);
 		timeline.getKeyFrames().add(kf);
 	    timeline.setOnFinished(new EventHandler<ActionEvent>() {
 	    
@@ -118,7 +112,7 @@ public class UserPane extends Pane {
 	           public void handle(ActionEvent event) {
 	        	   parentbox.getChildren().remove(me);
 	        	   main.unloadContent();
-	        	   main.displayMessage("You are not observing " + userName + " any longer.");
+	        	   main.message.displayMessage("You are not observing " + userName + " any longer.");
 	           }
 
 	        });

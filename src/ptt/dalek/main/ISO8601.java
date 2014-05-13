@@ -1,4 +1,4 @@
-package Main;
+package ptt.dalek.main;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

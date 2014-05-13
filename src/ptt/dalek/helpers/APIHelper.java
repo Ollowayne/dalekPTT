@@ -1,4 +1,4 @@
-package Helpers;
+package ptt.dalek.helpers;
 
 public class APIHelper {
 

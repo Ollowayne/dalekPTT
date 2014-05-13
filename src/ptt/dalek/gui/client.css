@@ -1,24 +1,3 @@
-.menu-item .label {
-    -fx-text-fill: white;
-}
-
-.menu-item:focused {
-     -fx-background-color: darkgray;
-}
-
-.menu-item:focused .label {
-    -fx-text-fill: blue;
-}
-
-.context-menu {
-    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
-    -fx-background-color: black;
-    -fx-background-insets: 0, 1, 2;
-    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
-    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em; /* 8 1 8 1 */
-    /*-fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
-}
-
 .scroll-pane {
 	-fx-background-color: #efefef;
     -fx-background-insets: 0;
@@ -51,11 +30,11 @@
 }
 
 #button_addUser:pressed {
-    -fx-background-color: #dedede;
+    -fx-background-color: #ffffff;
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
 
-    -fx-text-fill: #efefef;
+    -fx-text-fill: #333333;
     -fx-font: bold 13pt "Arial Narrow";
 }
 
@@ -69,7 +48,7 @@
 
 
 #remove_userpane_button {
-	 -fx-background-color: #ffffff;
+	 -fx-background-color: transparent;
 
     -fx-background-insets: 0,0,0,0;
     -fx-text-fill: #333333;
@@ -81,12 +60,10 @@
 
 #remove_userpane_button:hover {
     -fx-text-fill: #F71E2C;
-    -fx-background-color: #ffffff;
 }
 
 #remove_userpane_button:pressed {
     -fx-text-fill: #8F0B14;
-    -fx-background-color: #ffffff;
 }
 
 #addResponse {

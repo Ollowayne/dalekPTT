@@ -1,4 +1,4 @@
-package Main;
+package ptt.dalek.main;
 
 public class Util {
 	

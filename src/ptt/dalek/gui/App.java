@@ -1,9 +1,7 @@
-package Interface;
+package ptt.dalek.gui;
 
-import java.util.LinkedList;
-
-import Github.User;
-import Main.Client;
+import ptt.dalek.github.User;
+import ptt.dalek.main.Client;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -51,11 +49,10 @@ public class App extends Application {
     
     private Label addResponse;
     
+    public Messenger message;
+    
     double initialX;
 	double initialY;
-	
-	private Timeline t_messageFade;
-	private Timeline t_message;
         
     @Override
     public void init() {
@@ -115,6 +112,8 @@ public class App extends Application {
 	    topbar.getChildren().add(addResponse);
 	    
 	    Client.getInstance().loadWatchedUsers();
+	    
+	    message = new Messenger(addResponse, 2000, 500);
     }
     
 	@Override
@@ -128,8 +127,7 @@ public class App extends Application {
         scene.getStylesheets().add(App.class.getResource("client.css").toExternalForm());
         stage.show();
         
-        displayMessage("Welcom to GitObserve v1.0", 3000, 500);        
-
+        message.displayMessage("Welcom to GitObserve v1.0", 3000, 500);        
 
         updateUserList();
     }
@@ -141,39 +139,6 @@ public class App extends Application {
     public void loadContent(String user) {
     	unloadContent();
     	test.setText(user);
-    }
-
-    public void displayMessage(String message, int durationShow, int durationFade) {
-	    addResponse.setText("   " + message);
-
-	    t_messageFade = new Timeline(
-			    new KeyFrame(
-				    Duration.millis(durationFade),
-				    new EventHandler<ActionEvent>() {
-				    @Override public void handle(ActionEvent actionEvent) {
-				    	addResponse.setText("");
-				    	addResponse.setOpacity(1);
-				    }
-			    }
-				, new KeyValue(addResponse.opacityProperty(), 0)));
-	    
-	    t_message = new Timeline(
-		    new KeyFrame(
-			    Duration.millis(durationShow),
-			    new EventHandler<ActionEvent>() {
-			    @Override public void handle(ActionEvent actionEvent) {
-			    	addResponse.setOpacity(1);
-			    	t_messageFade.play();
-			    }
-		    }
-	    ));
-	    
-	    t_messageFade.stop();
-	    t_message.play();
-    }
-    
-    public void displayMessage(String message) {
-	    displayMessage(message, 1500, 500);
     }
     
     // clears and (re)sets the content of vbox_userList, using *.getUsers()
@@ -206,7 +171,7 @@ public class App extends Application {
 	    	if(c.hasWatchedUsers())
 	    		userName = c.getLatestUser().getLogin();
 
-		    displayMessage("You are now observing " + userName + ".");
+	    	message.displayMessage("You are now observing " + userName + ".");
 		    
 		    final UserPane newPane = new UserPane(userName, this);
 		    newPane.setOpacity(0);
@@ -234,9 +199,9 @@ public class App extends Application {
 		    
 			vbox_userlist.getChildren().add(newPane);
 	    } else if(returnCode == Client.USER_ALREADY_WATCHED) {
-	    	displayMessage("You are already watching " + userName + ".");
+	    	message.displayMessage("You are already watching " + userName + ".");
 	    } else if(returnCode == Client.USER_INVALID) {
-	    	displayMessage("User " + userName + " does not exist.");
+	    	message.displayMessage("User " + userName + " does not exist.");
 	    }
 
 	    tf_addUser.clear();	    

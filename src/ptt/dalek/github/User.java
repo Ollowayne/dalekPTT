@@ -1,9 +1,9 @@
-package Github;
+package ptt.dalek.github;
 
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
-import Main.ISO8601;
+import ptt.dalek.main.ISO8601;
 
 public class User extends SimpleUser {
 	

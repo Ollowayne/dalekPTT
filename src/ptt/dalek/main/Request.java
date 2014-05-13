@@ -1,4 +1,4 @@
-package Main;
+package ptt.dalek.main;
 
 import java.io.IOException;
 import java.io.InputStream;

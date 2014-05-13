@@ -1,4 +1,4 @@
-package Helpers;
+package ptt.dalek.helpers;
 
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -7,9 +7,9 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonReader;
 
-import Github.Repository;
-import Main.Parser;
-import Main.Request;
+import ptt.dalek.github.Repository;
+import ptt.dalek.main.Parser;
+import ptt.dalek.main.Request;
 
 
 public class RepositoryHelper extends APIHelper {
@@ -28,6 +28,4 @@ public class RepositoryHelper extends APIHelper {
 
 		return new LinkedList<Repository>();
 	}
-	
-	
 }

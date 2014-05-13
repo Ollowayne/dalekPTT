@@ -1,4 +1,4 @@
-package Main;
+package ptt.dalek.main;
 
 import java.util.LinkedList;
 
@@ -6,8 +6,8 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 
-import Github.Repository;
-import Github.User;
+import ptt.dalek.github.Repository;
+import ptt.dalek.github.User;
 
 public class Parser {
 
@@ -22,7 +22,7 @@ public class Parser {
 		user.setId(obj.getInt("id"));
 		
 		user.setAvatarUrl(obj.getString("avatar_url"));
-		user.setGravatarId(obj.getString("gravatar_id"));
+		user.setGravatarId(jsonValueToString(obj.get("gravatar_id")));
 		user.setUrl(obj.getString("url"));
 		user.setHtmlUrl(obj.getString("html_url"));
 		user.setFollowersUrl(obj.getString("followers_url"));

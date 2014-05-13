@@ -1,17 +1,14 @@
-package Helpers;
+package ptt.dalek.helpers;
 
 import java.io.InputStream;
-import java.util.LinkedList;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import Github.Repository;
-import Github.User;
-import Main.Parser;
-import Main.Request;
+import ptt.dalek.github.User;
+import ptt.dalek.main.Parser;
+import ptt.dalek.main.Request;
 
 
 public class UserHelper extends APIHelper {

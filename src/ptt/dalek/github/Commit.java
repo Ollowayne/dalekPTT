@@ -1,4 +1,4 @@
-package Github;
+package ptt.dalek.github;
 
 import javax.json.JsonObject;
 
