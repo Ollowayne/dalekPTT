@@ -1,5 +1,5 @@
 .scroll-pane {
-	-fx-background-color: #efefef;
+	-fx-background-color: #999999;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
@@ -12,12 +12,21 @@
     -fx-background-insets: 0;
 }
 
+#topbar {
+	-fx-background-color: #afafaf;
+}
+
+#repositoryPane {
+	-fx-background-color: #ffffff;
+	-fx-border-color:#dedede ;
+}
+
 #button_addUser {
-    -fx-background-color: #efefef;
+    -fx-background-color: #999999;
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
-    -fx-text-fill: #333333;
-    -fx-font: bold 13pt "Arial Narrow";
+    -fx-text-fill: #ffffff;
+    -fx-font: bold 14pt "Arial Narrow";
 }
 
 #button_addUser:hover {
@@ -25,8 +34,7 @@
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
 
-    -fx-text-fill: #333333;
-    -fx-font: bold 13pt "Arial Narrow";
+    -fx-text-fill: #999999;
 }
 
 #button_addUser:pressed {
@@ -34,8 +42,7 @@
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
 
-    -fx-text-fill: #333333;
-    -fx-font: bold 13pt "Arial Narrow";
+    -fx-text-fill: #999999;
 }
 
 #user_pane {
@@ -67,8 +74,8 @@
 }
 
 #addResponse {
-	-fx-text-fill: #888888;
-	-fx-font: italic 11pt "Arial Narrow";
+	-fx-text-fill: #ffffff;
+	-fx-font: bold 11pt "Arial Narrow";
 }
 
 #top_box {
@@ -85,4 +92,5 @@
 
 #tf_addUser {
 	-fx-background-color: #ffffff;
+	-fx-background-radius: 0,0,0,0;
 }

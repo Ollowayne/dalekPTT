@@ -9,7 +9,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -32,7 +31,7 @@ public class UserPane extends Pane {
 	private Label l_name;
 	private Label l_data;
 	private Button b_remove;
-	private ImageView i_user;
+	//private ImageView i_user;
 	private GridPane contents;
 	
 	public UserPane(String userName, App main ) {

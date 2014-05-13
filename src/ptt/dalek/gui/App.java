@@ -30,9 +30,9 @@ public class App extends Application {
     private static final int DEFAULT_WIDTH = 600;
     private static final int DEFAULT_HEIGHT = 400;
     
-    public static final int USERSP_PADDING_RIGHT = 4;
-    public static final int USERSP_PADDING_LEFT = 4;
-    public static final int USERSP_PADDING_TOP = 4;
+    public static final int USERSP_PADDING_RIGHT = 6;
+    public static final int USERSP_PADDING_LEFT = 6;
+    public static final int USERSP_PADDING_TOP = 6;
     public static final int USERSP_PADDING_BOTTOM = 42;
     public static final int USERSP_SPACING = USERSP_PADDING_TOP;
     
@@ -45,7 +45,8 @@ public class App extends Application {
     private Button addUser;
     private HBox topbar;
     
-    private Label test;
+    private VBox repos;
+    private ScrollPane repoScroll;
     
     private Label addResponse;
     
@@ -58,9 +59,20 @@ public class App extends Application {
     public void init() {
         componentLayout = new BorderPane();	
         
-        test = new Label();
-        componentLayout.setCenter(test);
-
+        // REPO PANE TEST BEGIN
+//      test = new Label();
+//      componentLayout.setCenter(test);
+        
+        repoScroll = new ScrollPane();
+        repos = new VBox(USERSP_SPACING);
+        repoScroll.setContent(repos);
+        repoScroll.setFitToWidth(true);
+        
+        repos.setPadding(new Insets(USERSP_PADDING_TOP, USERSP_PADDING_RIGHT, USERSP_PADDING_BOTTOM, 0));
+        componentLayout.setCenter(repoScroll);
+              
+        // REPO TEST END
+        
     	// scroll pane which contains the VBox
 	    userListSP = new ScrollPane();
 	    userListSP.setMinWidth(UserPane.WIDTH + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);
@@ -77,8 +89,10 @@ public class App extends Application {
 	    // text field to add users
 	    tf_addUser = new TextField();
 	    tf_addUser.setPromptText(ADD_PROMPT_TEXT);
-	    tf_addUser.setPrefWidth(168 + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);
-	    tf_addUser.setMinWidth(168 + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);  
+	    tf_addUser.setPrefWidth(UserPane.WIDTH * (0.75) + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);
+	    tf_addUser.setMinWidth(UserPane.WIDTH * (0.75) + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);  
+	    tf_addUser.setPrefHeight(20);
+	    tf_addUser.setMinHeight(20); 
 	    tf_addUser.setId("tf_addUser");
 	    
 	    tf_addUser.setOnAction(new EventHandler<ActionEvent>() {
@@ -91,8 +105,10 @@ public class App extends Application {
 	    // button to add users
 	    addUser = new Button("+");
 	    addUser.setId("button_addUser");
-	    addUser.setPrefWidth(32);
-	    addUser.setMinWidth(32);
+	    addUser.setPrefWidth(UserPane.WIDTH - tf_addUser.getPrefWidth());
+	    addUser.setMinWidth(UserPane.WIDTH - tf_addUser.getMinWidth());
+	    addUser.setPrefHeight(tf_addUser.getPrefHeight());
+	    addUser.setMinHeight(tf_addUser.getMinHeight());
 	    addUser.setOnAction(new EventHandler<ActionEvent>() {
 	       @Override
 	       public void handle(ActionEvent event) {
@@ -102,6 +118,8 @@ public class App extends Application {
 	   
 	    topbar = new HBox();
 	    topbar.setAlignment(Pos.CENTER_LEFT);
+	    topbar.setPadding(new Insets(USERSP_PADDING_TOP * 3, 0, 0, USERSP_PADDING_LEFT));
+	    topbar.setId("topbar");
 	    componentLayout.setTop(topbar);
 	  
 	    topbar.getChildren().add(tf_addUser);
@@ -133,12 +151,18 @@ public class App extends Application {
     }
     
     public void unloadContent() {
-    	test.setText("No User Selected");
+    	//test.setText("No User Selected");
+    	repos.getChildren().clear();
     }
     
     public void loadContent(String user) {
     	unloadContent();
-    	test.setText(user);
+    	//test.setText(user);
+    	RepositoryPane rp1 = new RepositoryPane("Hans");
+    	RepositoryPane rp2 = new RepositoryPane("Jürgen");
+    	RepositoryPane rp3 = new RepositoryPane("Peter");
+    	
+    	repos.getChildren().addAll(rp1, rp2, rp3);
     }
     
     // clears and (re)sets the content of vbox_userList, using *.getUsers()
