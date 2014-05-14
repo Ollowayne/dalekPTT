@@ -1,24 +1,24 @@
 .scroll-pane {
-	-fx-background-color: #dedede;
+	-fx-background-color: #f0f0f0;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
 
 .scroll-pane .increment-button {
-    -fx-background-color: #dedede;
+    -fx-background-color: #f0f0f0;
 }
 
 .scroll-pane .decrement-button {
-    -fx-background-color: #dedede;
+    -fx-background-color: #f0f0f0;
 }
 
 .scroll-pane .scroll-bar:horizontal .track ,.scroll-pane .scroll-bar:vertical .track{
-     -fx-background-color: #dedede;
+     -fx-background-color: #f0f0f0;
      -fx-background-radius: 0em;
 }
 
 .scroll-pane .scroll-bar:horizontal .thumb, .scroll-pane .scroll-bar:vertical .thumb {
-    -fx-background-color: #999999;
+    -fx-background-color: #d5d5d5;
     -fx-background-insets: 0, 0, 0;
     -fx-background-radius: 0em;
 }
@@ -32,7 +32,10 @@
 }
 
 #topbar {
-	-fx-background-color: #afafaf;
+	-fx-background-color: #ffffff;
+	-fx-border-width: 0 0 2 0;
+	-fx-border-color: #9c339a;
+	-fx-border-style: solid;
 }
 
 #repositoryPane {
@@ -44,10 +47,7 @@
 }
 
 #button_addUser {
-	-fx-border-width: 1;
-	-fx-border-color: #747474;
-	-fx-border-style: solid;
-    -fx-background-color: #999999;
+    -fx-background-color: #9c339a;
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
     -fx-text-fill: #ffffff;
@@ -55,19 +55,19 @@
 }
 
 #button_addUser:hover {
-    -fx-background-color: #dedede;
+    -fx-background-color: #e880e7;
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
 
-    -fx-text-fill: #999999;
+    -fx-text-fill: #ffffff;
 }
 
 #button_addUser:pressed {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #ffb3fe;
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
 
-    -fx-text-fill: #999999;
+    -fx-text-fill: #ffffff;
 }
 
 #user_pane {
@@ -92,20 +92,20 @@
     -fx-text-fill: #333333;
     -fx-background-radius: 0,0,0,0;
     -fx-background-insets: 0,0,0,0;	
-    -fx-text-fill: #333333;
+    -fx-text-fill: #9c339a;
     -fx-font: bold 10pt "Arial Narrow";
 }
 
 #remove_userpane_button:hover {
-    -fx-text-fill: #9c339a;
-}
-
-#remove_userpane_button:pressed {
     -fx-text-fill: #e880e7;
 }
 
+#remove_userpane_button:pressed {
+    -fx-text-fill: #ffb3fe;
+}
+
 #addResponse {
-	-fx-text-fill: #ffffff;
+	-fx-text-fill: #9c339a;
 	-fx-font: bold 11pt "Arial Narrow";
 }
 
@@ -123,8 +123,10 @@
 
 #tf_addUser {
 	-fx-border-width: 1 0 1 1;
-	-fx-border-color: #747474;
+	-fx-border-color: #9c339a;
 	-fx-border-style: solid;
 	-fx-background-color: #ffffff;
 	-fx-background-radius: 0,0,0,0;
+	-fx-text-fill: #9c339a;
+	-fx-prompt-text-fill: #E6B1E5;
 }
