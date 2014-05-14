@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class Request {
@@ -34,6 +36,8 @@ public class Request {
 
 	public InputStream send() {
 		String parameters = "";
+		params.put("access_token", "bdf25b8b25bdc54e4eda6edbfa22c61c1f6560b8");
+
 		for (Map.Entry<String, String> entry : params.entrySet()) {
 			parameters += entry.getKey() + "=" + entry.getValue() + "&";
 		}
@@ -41,24 +45,24 @@ public class Request {
 		if (parameters.length() > 0)
 			parameters.substring(0, parameters.length() - 1);
 
-		System.out.println(url + "?" + parameters);
 		try {
 			URL url = new URL(this.url + "?" + parameters);
 
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.addRequestProperty("User-Agent", "GitAPI-TEST-Java");
+			con.addRequestProperty("User-Agent", "GitObservTest");
 			con.addRequestProperty("Accept", "application/vnd.github.v3+json");
 			con.setRequestMethod("GET");
 
 			int responseCode = con.getResponseCode();
 			String responseMessage = con.getResponseMessage();
+			
+
+			System.out.println("Reponse::send - Response Code: " + responseCode + ", Response Message: "
+					+ responseMessage);
+
 			if (responseCode == HttpURLConnection.HTTP_OK
 					&& responseMessage.equals("OK"))
 				return con.getInputStream();
-			else
-				// TODO
-				System.out.println("Reponse::send - Response Message: "
-						+ responseMessage);
 
 		} catch (UnknownHostException e) {
 			// TODO

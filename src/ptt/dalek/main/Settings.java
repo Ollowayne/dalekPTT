@@ -16,7 +16,20 @@ import ptt.dalek.github.User;
 
 public class Settings {
 	
+	private static final String[] FOLDERS = new String[] {"data", "img"};
 	private static final String WATCHED_USERS_FILE = "data/watched_users.json";
+
+	
+	public static boolean initializeFolders() {
+		boolean result = true;
+		for(String folder : FOLDERS) {
+			File dir = new File(folder);
+			if(!dir.exists())
+				result &= dir.mkdir();
+		}
+		
+		return result;
+	}
 	
 	public static boolean saveUserList(LinkedList<User> users) {
 		JsonArrayBuilder builder = Json.createArrayBuilder();

@@ -48,11 +48,14 @@
 }
 
 #button_addUser {
+	-fx-border-width: 1;
+	-fx-border-color: #747474;
+	-fx-border-style: solid;
     -fx-background-color: #999999;
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
     -fx-text-fill: #ffffff;
-    -fx-font: 14pt "Arial Narrow";
+    -fx-font: 14pt "Arial";
 }
 
 #button_addUser:hover {
@@ -72,11 +75,17 @@
 }
 
 #user_pane {
-	-fx-background-color: #ffffff;
+	-fx-border-width: 2 0 2 0;
+	-fx-border-style: solid;
+	-fx-border-color: #9c339a;
+	-fx-background-color: #eeeeee;
 }
 
 #user_pane:hover {
-	-fx-background-color: #dedede;
+	-fx-border-width: 2 0 2 0;
+	-fx-border-style: solid;
+	-fx-border-color: #d143cf;
+	-fx-background-color: #ffffff;
 }
 
 
@@ -117,6 +126,9 @@
 }
 
 #tf_addUser {
+	-fx-border-width: 1 0 1 1;
+	-fx-border-color: #747474;
+	-fx-border-style: solid;
 	-fx-background-color: #ffffff;
 	-fx-background-radius: 0,0,0,0;
 }

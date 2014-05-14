@@ -26,7 +26,9 @@ public class App extends Application {
     
 	private static final String NAME = "GitObserv";
 	private static final String VERSION = "v0.1";
+    private static final String ADD_PROMPT_TEXT = "observe new user...";
 	
+    
     private static final int DEFAULT_WIDTH = 600;
     private static final int DEFAULT_HEIGHT = 400;
     
@@ -36,7 +38,6 @@ public class App extends Application {
     public static final int USERSP_PADDING_BOTTOM = 42;
     public static final int USERSP_SPACING = USERSP_PADDING_TOP;
     
-    private static final String ADD_PROMPT_TEXT = "observe new user...";
 
     private BorderPane componentLayout;
     private ScrollPane userListSP;
@@ -51,9 +52,7 @@ public class App extends Application {
     private Label addResponse;
     
     public Messenger message;
-    
-    double initialX;
-	double initialY;
+   
         
     @Override
     public void init() {
@@ -132,6 +131,7 @@ public class App extends Application {
 	    componentLayout.setTop(topbar);
 	    
 	    // loads saved users from file
+	    Client.getInstance().init();
 	    Client.getInstance().loadWatchedUsers();
     }
     

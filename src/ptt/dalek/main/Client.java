@@ -25,6 +25,10 @@ public class Client {
 	
 	private Client() {}
 	
+	public boolean init() {
+		return Settings.initializeFolders();
+	}
+	
 	public void loadWatchedUsers() {
 		watchedUsers = Settings.loadUserList();
 	}
