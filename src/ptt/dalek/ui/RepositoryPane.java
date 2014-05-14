@@ -1,4 +1,4 @@
-package ptt.dalek.gui;
+package ptt.dalek.ui;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

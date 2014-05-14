@@ -1,5 +1,6 @@
 package ptt.dalek.gui;
 
+import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -9,64 +10,97 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Messenger {
-	private Label boundTo;
-	private int durationOn;
-	private int durationFade;
-	private boolean isEmpty = true;
-	// queue not yet implemented!
-	Queue<String> messageQueue = new LinkedList<String>();
-	
-	public Messenger(Label boundTo, int durationOn, int durationFade) {
-		this.boundTo = boundTo;
-		this.durationOn = durationOn;
-		this.durationFade = durationFade;
+	public class QueuedMessage {
+		public String message;
+		public int duration;
+		public int fadeTime;
+		public QueuedMessage(String message, int duration, int fadeTime) {
+			this.message = message;
+			this.duration = duration;
+			this.fadeTime = fadeTime;
+		}
 	}
 	
-	public void emptyLabel() {
-		boundTo.setText("");
+	private Pane parent;
+	private Label label;
+	private int duration;
+	private int durationFade;
+	private boolean isDisplaying = false;
+
+	Queue<QueuedMessage> queue = new LinkedList<QueuedMessage>();
+	
+	public Messenger(Pane parent, Point offset, int duration, int durationFade) {
+		this.parent = parent;
+		this.duration = duration;
+		this.durationFade = durationFade;
+		
+		this.label = new Label();
+		this.label.setTranslateX(offset.x);
+		this.label.setTranslateY(offset.y);
+		this.label.setTranslateZ(10);
+		this.label.setId("addResponse");
+		this.parent.getChildren().add(this.label);
+	}
+	
+	public void clearMessage() {
+		this.label.setText("");
 	}
 	
 	public void displayMessage(String message) {
-		displayMessage(message, durationOn, durationFade);
+		displayMessage(message, duration, durationFade);
 	}
 	
-	public void displayMessage(String message, int durationShow, int durationFade) {
-		if(isEmpty) {
-			display(message, durationShow, durationFade);
+	public void displayMessage(String message, int duration, int fadeTime) {
+		if(!isDisplaying) {
+			display(message, duration, fadeTime);
+			return;
 		}
-		else {
-			messageQueue.offer(message);
-		}
+		
+		queue.offer(new QueuedMessage(message, duration, fadeTime));
+	}
+	
+	private void update() {
+		if(isDisplaying)
+			return;
+		
+		if(queue.isEmpty())
+			return;
+		
+		QueuedMessage nextMessage = queue.poll();
+		displayMessage(nextMessage.message, nextMessage.duration, nextMessage.fadeTime);
 	}
 	
 	private void display(String message, int durationShow, int durationFade) {
-		boundTo.setText("   " + message);
-		
-	    final Timeline t_messageFade = new Timeline(
+		this.label.setText(message);
+    	this.label.setOpacity(1);
+    	this.isDisplaying = true;
+    	
+	    final Timeline tMessageFade = new Timeline(
 			    new KeyFrame(
 				    Duration.millis(durationFade),
 				    new EventHandler<ActionEvent>() {
 				    @Override public void handle(ActionEvent actionEvent) {
-				    	boundTo.setText("");
-				    	boundTo.setOpacity(1);
-				    	
+				    	label.setText("");
+				    	label.setOpacity(1);
+				    	isDisplaying = false;
+				    	update();
 				    }
 			    }
-				, new KeyValue(boundTo.opacityProperty(), 0)));
+				, new KeyValue(label.opacityProperty(), 0)));
 	    
-	    final Timeline t_message = new Timeline(
+	    final Timeline tMessageShow = new Timeline(
 		    new KeyFrame(
 			    Duration.millis(durationShow),
 			    new EventHandler<ActionEvent>() {
 			    @Override public void handle(ActionEvent actionEvent) {
-			    	boundTo.setOpacity(1);
-			    	t_messageFade.play();
+			    	tMessageFade.play();
 			    }
 		    }
 	    ));
-	    t_message.play();
+	    tMessageShow.play();
 	}
 }

@@ -1,7 +1,11 @@
 package ptt.dalek.gui;
 
+import java.awt.Point;
+
 import ptt.dalek.github.User;
 import ptt.dalek.main.Client;
+import ptt.dalek.ui.RepositoryPane;
+import ptt.dalek.ui.UserPane;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -88,6 +92,7 @@ public class App extends Application {
 	    tf_addUser.setPromptText(ADD_PROMPT_TEXT);
 	    tf_addUser.setPrefWidth(UserPane.WIDTH * (0.75) + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);
 	    tf_addUser.setMinWidth(UserPane.WIDTH * (0.75) + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);  
+	    tf_addUser.setMaxWidth(UserPane.WIDTH * (0.75) + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);  
 	    tf_addUser.setPrefHeight(20);
 	    tf_addUser.setMinHeight(20); 
 	    tf_addUser.setId("tf_addUser");
@@ -120,14 +125,9 @@ public class App extends Application {
 	  
 	    topbar.getChildren().add(tf_addUser);
 	    topbar.getChildren().add(addUser);
-	    
-	    // Label, displays status message 
-	    addResponse = new Label();
-	    addResponse.setId("addResponse");
-	    topbar.getChildren().add(addResponse);
-	    
+	    	    
 	    // Messenger for addRespone Label
-	    message = new Messenger(addResponse, 2000, 500);
+	    message = new Messenger(topbar, new Point(10, 0), 2000, 500);
 	    
 	    // setup componentLayout BorderPane
         componentLayout.setCenter(repoScroll);
@@ -149,11 +149,12 @@ public class App extends Application {
 
         Scene scene = new Scene(componentLayout, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         stage.setScene(scene);
-        scene.getStylesheets().add(App.class.getResource("client.css").toExternalForm());
+        scene.getStylesheets().add(App.class.getResource("style.css").toExternalForm());
         stage.show();
-        
-        message.displayMessage("Welcom to GitObserve v1.0", 3000, 500);        
 
+        message.displayMessage("Welcome to GitObserve v1.0", 3000, 500);
+        message.displayMessage("The queue works", 1000, 100);   
+        message.displayMessage("Message");
     }
 	
 	@Override

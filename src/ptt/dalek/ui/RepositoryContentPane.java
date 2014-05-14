@@ -1,4 +1,4 @@
-package ptt.dalek.gui;
+package ptt.dalek.ui;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
