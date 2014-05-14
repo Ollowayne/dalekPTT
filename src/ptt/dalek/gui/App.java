@@ -1,7 +1,5 @@
 package ptt.dalek.gui;
 
-import javax.swing.event.DocumentEvent.EventType;
-
 import ptt.dalek.github.User;
 import ptt.dalek.main.Client;
 import javafx.animation.KeyFrame;
