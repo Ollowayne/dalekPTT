@@ -10,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -43,6 +44,7 @@ public class Messenger {
 		this.label.setTranslateY(offset.y);
 		this.label.setTranslateZ(10);
 		this.label.setId("addResponse");
+        GridPane.setConstraints(this.label, 2, 0);
 		this.parent.getChildren().add(this.label);
 	}
 	

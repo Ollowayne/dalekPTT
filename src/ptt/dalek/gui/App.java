@@ -6,29 +6,25 @@ import ptt.dalek.github.User;
 import ptt.dalek.main.Client;
 import ptt.dalek.ui.RepositoryPane;
 import ptt.dalek.ui.UserPane;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class App extends Application {
     
@@ -51,12 +47,15 @@ public class App extends Application {
     private VBox vbox_userlist;
     private TextField tf_addUser;
     private Button addUser;
-    private HBox topbar;
+    private GridPane topbar;
+    
+    private ImageView loadingAnimation;
+    private Image loadingImage;
     
     private VBox repos;
     private ScrollPane repoScroll;
     
-    private Label addResponse;
+    //private Label addResponse;
     
     public Messenger message;
    
@@ -65,6 +64,10 @@ public class App extends Application {
     @Override
     public void init() {
         componentLayout = new BorderPane();
+        
+        loadingAnimation = new ImageView();
+        loadingImage = new Image("file:res/loading.gif");
+        loadingAnimation.setImage(loadingImage);
         
         // VBox containing repositories
         repos = new VBox(USERSP_SPACING);
@@ -118,14 +121,19 @@ public class App extends Application {
 	    });
 	   
 	    // bar on top, contains add button, text field and status label
-	    topbar = new HBox();
+	    topbar = new GridPane();
 	    topbar.setAlignment(Pos.CENTER_LEFT);
-	    topbar.setPadding(new Insets(USERSP_PADDING_LEFT, 0, USERSP_PADDING_LEFT, USERSP_PADDING_LEFT));
+	    topbar.setPadding(new Insets(USERSP_PADDING_LEFT, USERSP_PADDING_LEFT, USERSP_PADDING_LEFT, USERSP_PADDING_LEFT));
 	    topbar.setId("topbar");
-	  
-	    topbar.getChildren().add(tf_addUser);
-	    topbar.getChildren().add(addUser);
-	    	    
+	    
+        GridPane.setConstraints(tf_addUser, 0, 0);
+        GridPane.setConstraints(addUser, 1, 0);
+        GridPane.setConstraints(loadingAnimation, 3, 0);
+        topbar.getChildren().addAll(tf_addUser, addUser, loadingAnimation); 
+
+        GridPane.setHgrow(loadingAnimation, Priority.ALWAYS);
+        GridPane.setHalignment(loadingAnimation, HPos.RIGHT);
+        
 	    // Messenger for addRespone Label
 	    message = new Messenger(topbar, new Point(10, 0), 2000, 500);
 	    
@@ -153,8 +161,9 @@ public class App extends Application {
         stage.show();
 
         message.displayMessage("Welcome to GitObserve v1.0", 3000, 500);
-        message.displayMessage("The queue works", 1000, 100);   
-        message.displayMessage("Message");
+        if(vbox_userlist.getChildren().isEmpty()) {
+            message.displayMessage("Get started by adding users!");
+        }
     }
 	
 	@Override
