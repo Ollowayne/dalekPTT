@@ -1,19 +1,19 @@
 .scroll-pane {
-	-fx-background-color: #999999;
+	-fx-background-color: #dedede;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
 
 .scroll-pane .increment-button {
-    -fx-background-color: #afafaf;
+    -fx-background-color: #dedede;
 }
 
 .scroll-pane .decrement-button {
-    -fx-background-color: #afafaf;
+    -fx-background-color: #dedede;
 }
 
 .scroll-pane .scroll-bar:horizontal .track ,.scroll-pane .scroll-bar:vertical .track{
-     -fx-background-color: #afafaf;
+     -fx-background-color: #dedede;
      -fx-background-radius: 0em;
 }
 
@@ -21,10 +21,6 @@
     -fx-background-color: #999999;
     -fx-background-insets: 0, 0, 0;
     -fx-background-radius: 0em;
-}
-
-.scroll-pane .increment-button ,.mylistview .decrement-button {
-    -fx-background-color:transparent;
 }
 
 .scroll-pane:focused {
@@ -75,16 +71,16 @@
 }
 
 #user_pane {
-	-fx-border-width: 2 0 2 0;
+	-fx-border-width: 0 0 4 0;
 	-fx-border-style: solid;
 	-fx-border-color: #9c339a;
-	-fx-background-color: #eeeeee;
+	-fx-background-color: #ffffff;
 }
 
 #user_pane:hover {
-	-fx-border-width: 2 0 2 0;
+	-fx-border-width: 0 0 4 0;
 	-fx-border-style: solid;
-	-fx-border-color: #d143cf;
+	-fx-border-color: #e880e7;
 	-fx-background-color: #ffffff;
 }
 
@@ -101,11 +97,11 @@
 }
 
 #remove_userpane_button:hover {
-    -fx-text-fill: #F71E2C;
+    -fx-text-fill: #9c339a;
 }
 
 #remove_userpane_button:pressed {
-    -fx-text-fill: #8F0B14;
+    -fx-text-fill: #e880e7;
 }
 
 #addResponse {

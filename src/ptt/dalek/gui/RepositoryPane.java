@@ -53,6 +53,8 @@ public class RepositoryPane extends Pane {
 			@Override
 			public void handle(MouseEvent arg0) {
 				if (!isOpen) {
+					header.toggleOpenStatus();
+					
 				    final Timeline open = new Timeline(new KeyFrame(Duration.millis(200), 
 				    	new KeyValue(me.minHeightProperty(), 5*HEIGHT))
 				    );
@@ -61,7 +63,6 @@ public class RepositoryPane extends Pane {
 				           @Override
 				           public void handle(ActionEvent event) {
 				        	   content.invertOpacity();
-				        	   header.toggleOpenStatus();
 				           }
 
 				        });
@@ -70,19 +71,11 @@ public class RepositoryPane extends Pane {
 				}
 				else {
 					content.invertOpacity();
-					
+		        	 header.toggleOpenStatus();
 				    final Timeline close = new Timeline(new KeyFrame(Duration.millis(150), 
 				    		new KeyValue(me.minHeightProperty(), HEIGHT))
 				    );
-				    close.setOnFinished(new EventHandler<ActionEvent>() {
-					    
-				           @Override
-				           public void handle(ActionEvent event) {
-				        	   header.toggleOpenStatus();
-				           }
 
-				        });
-				    
 				    close.play();
 				}
 				

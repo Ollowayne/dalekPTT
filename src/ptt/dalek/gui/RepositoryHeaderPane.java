@@ -30,8 +30,8 @@ public class RepositoryHeaderPane extends Pane {
 		repoName = new Label(name);
 		components.setAlignment(Pos.CENTER);
 
-		closed = new Image("file:res/closed.png");
-		open = new Image("file:res/open.png");
+		closed = new Image("file:res/closedLila.png");
+		open = new Image("file:res/openLila.png");
 		openStatus = new ImageView();
 		openStatus.setImage(closed);
 		
