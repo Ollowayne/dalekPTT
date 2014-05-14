@@ -1,7 +1,6 @@
 package ptt.dalek.gui;
 
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 
@@ -12,6 +11,7 @@ public class RepositoryContentPane extends Pane {
 	private boolean isVisible;
 
 	public RepositoryContentPane() {
+		// TEST VERSION
 		components = new VBox();
 		repoName = new Label("DEMO CONTENT");
 		components.getChildren().addAll(repoName);

@@ -57,28 +57,22 @@ public class App extends Application {
         
     @Override
     public void init() {
-        componentLayout = new BorderPane();	
+        componentLayout = new BorderPane();
         
-        // REPO PANE TEST BEGIN
-//      test = new Label();
-//      componentLayout.setCenter(test);
-        
-        repoScroll = new ScrollPane();
+        // VBox containing repositories
         repos = new VBox(USERSP_SPACING);
+        repos.setPadding(new Insets(USERSP_PADDING_TOP, USERSP_PADDING_RIGHT, USERSP_PADDING_BOTTOM, 0));
+        
+        // scroll pane, contains repository VBox
+        repoScroll = new ScrollPane();
         repoScroll.setContent(repos);
         repoScroll.setFitToWidth(true);
-        
-        repos.setPadding(new Insets(USERSP_PADDING_TOP, USERSP_PADDING_RIGHT, USERSP_PADDING_BOTTOM, 0));
-        componentLayout.setCenter(repoScroll);
-              
-        // REPO TEST END
         
     	// scroll pane which contains the VBox
 	    userListSP = new ScrollPane();
 	    userListSP.setMinWidth(UserPane.WIDTH + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);
 	    userListSP.setPrefWidth(UserPane.WIDTH + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);
 	    userListSP.setVbarPolicy(ScrollBarPolicy.NEVER);
-	    componentLayout.setLeft(userListSP);
 	    
 	    // VBox containing all observed users
 	    vbox_userlist = new VBox();
@@ -94,7 +88,6 @@ public class App extends Application {
 	    tf_addUser.setPrefHeight(20);
 	    tf_addUser.setMinHeight(20); 
 	    tf_addUser.setId("tf_addUser");
-	    
 	    tf_addUser.setOnAction(new EventHandler<ActionEvent>() {
 	        @Override
 	        public void handle(ActionEvent event) {
@@ -116,30 +109,36 @@ public class App extends Application {
 	       }
 	    });
 	   
+	    // bar on top, contains add button, text field and status label
 	    topbar = new HBox();
 	    topbar.setAlignment(Pos.CENTER_LEFT);
 	    topbar.setPadding(new Insets(USERSP_PADDING_LEFT, 0, USERSP_PADDING_LEFT, USERSP_PADDING_LEFT));
 	    topbar.setId("topbar");
-	    componentLayout.setTop(topbar);
 	  
 	    topbar.getChildren().add(tf_addUser);
 	    topbar.getChildren().add(addUser);
 	    
+	    // Label, displays status message 
 	    addResponse = new Label();
 	    addResponse.setId("addResponse");
 	    topbar.getChildren().add(addResponse);
 	    
-	    Client.getInstance().loadWatchedUsers();
-	    
+	    // Messenger for addRespone Label
 	    message = new Messenger(addResponse, 2000, 500);
+	    
+	    // setup componentLayout BorderPane
+        componentLayout.setCenter(repoScroll);
+	    componentLayout.setLeft(userListSP);
+	    componentLayout.setTop(topbar);
+	    
+	    // loads saved users from file
+	    Client.getInstance().loadWatchedUsers();
     }
     
 	@Override
     public void start(final Stage stage) {
 		stage.setTitle(NAME + " " + VERSION);
-		
-        unloadContent();
-        
+
         Scene scene = new Scene(componentLayout, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         stage.setScene(scene);
         scene.getStylesheets().add(App.class.getResource("client.css").toExternalForm());
@@ -149,15 +148,15 @@ public class App extends Application {
 
         updateUserList();
     }
-    
+	
+	// clears repository VBox
     public void unloadContent() {
-    	//test.setText("No User Selected");
     	repos.getChildren().clear();
     }
     
+    // loads repositories for user 
     public void loadContent(String user) {
     	unloadContent();
-    	//test.setText(user);
     	RepositoryPane rp1 = new RepositoryPane("Hans");
     	RepositoryPane rp2 = new RepositoryPane("Jürgen");
     	RepositoryPane rp3 = new RepositoryPane("Peter");
@@ -165,24 +164,19 @@ public class App extends Application {
     	repos.getChildren().addAll(rp1, rp2, rp3);
     }
     
-    // clears and (re)sets the content of vbox_userList, using *.getUsers()
+    // clears and (re)sets the content of vbox_userList, using Client.getWatchedUsers()
     private void updateUserList() {
     	vbox_userlist.getChildren().clear();
-    	
-    	
+
     	for(User user : Client.getInstance().getWatchedUsers()) {
     	    final UserPane newPane = new UserPane(user.getLogin(), this);
     		vbox_userlist.getChildren().add(newPane);
     	}
-    	
-    		// debug
-    	consolePrintUserList();
     }
     
     // reads tf_addUser and searches for user
     // if found, creates user pane and updates user list
     private void addUser() {
-	   	// set w. API Data
     	updateUserList();
     	
     	String userName = tf_addUser.getText();
@@ -192,31 +186,27 @@ public class App extends Application {
     	Client c = Client.getInstance();
     	int returnCode = c.addWatchedUser(userName);
 	    if(returnCode == Client.USER_ADDED) {
-	    	if(c.hasWatchedUsers())
+	    	if(c.hasWatchedUsers()) {
 	    		userName = c.getLatestUser().getLogin();
-
+	    	}
 	    	message.displayMessage("You are now observing " + userName + ".");
 		    
 		    final UserPane newPane = new UserPane(userName, this);
 		    newPane.setOpacity(0);
 		    
-		    final Timeline swipeIn = new Timeline();
-		    final KeyValue kv2 = new KeyValue(newPane.layoutXProperty(), USERSP_PADDING_LEFT);
-		    final KeyFrame kf2 = new KeyFrame(Duration.millis(200), kv2);
-		    swipeIn.getKeyFrames().add(kf2);
+		    final Timeline swipeIn = new Timeline(new KeyFrame(Duration.millis(200), 
+		    		new KeyValue(newPane.layoutXProperty(), USERSP_PADDING_LEFT))
+		    );
 		    
-		    final Timeline set = new Timeline();
-		    final KeyValue kv = new KeyValue(newPane.layoutXProperty(), -UserPane.WIDTH);
-		    final KeyFrame kf = new KeyFrame(Duration.millis(50), kv);
-		    set.getKeyFrames().add(kf);
+		    final Timeline set = new Timeline(new KeyFrame(Duration.millis(50), 
+		    		new KeyValue(newPane.layoutXProperty(), -UserPane.WIDTH))
+		    );
 		    set.setOnFinished(new EventHandler<ActionEvent>() {
-	
 		           @Override
 		           public void handle(ActionEvent event) {
 		       	        newPane.setOpacity(1);
 		        	    swipeIn.play();
 		           }
-	
 		        });
 		    
 		    set.play();
@@ -230,75 +220,4 @@ public class App extends Application {
 
 	    tf_addUser.clear();	    
     }  
-    
-    // DEBUG
-    private void consolePrintUserList() {
-    	System.out.println("<");
-    	for(User user : Client.getInstance().getWatchedUsers()) {
-    	    System.out.println(user.getLogin());
-    	}
-    	System.out.println("/>");
-    }
 }
-
-
-/// links http://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
-// JAVAFX CONTROL DIALOGS http://fxexperience.com/controlsfx/ 
-
-
-//primaryStage.setTitle("Hello World!");
-//Button btn = new Button();
-//Button btn2 = new Button("Stuff");
-//btn.setText("Say 'Hello World'");
-//btn.setOnAction(new EventHandler<ActionEvent>() {
-//
-//    @Override
-//    public void handle(ActionEvent event) {
-//        System.out.println("Hello World!");
-//    }
-//});
-//
-//final Timeline timeline = new Timeline();
-//final KeyValue kv = new KeyValue(btn.layoutXProperty(),150);
-//final KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
-//timeline.getKeyFrames().add(kf);
-//timeline.play();
-//StackPane root = new StackPane();
-//root.getChildren().add(btn);
-//root.getChildren().add(btn2);
-//
-//primaryStage.setScene(new Scene(root, 300, 250));
-//primaryStage.show();
-
-
-// IMAGE LOAD TEST CODE
-//BufferedImage bimage = null;
-//try {
-//    URL url = new URL("https://avatars.githubusercontent.com/u/2455012?");
-//    bimage = ImageIO.read(url);
-//} catch (IOException e) {
-//}
-//
-//Image image = SwingFXUtils.toFXImage(bimage, null);
-//ImageView iv1 = new ImageView();
-//iv1.setImage(image);
-
-//componentLayout.setCenter(iv1);
-
-
-
-//Controller mainContainer = new Controller();
-//
-//// initialize all views and the respective controller (IControlled ViewN)
-//mainContainer.loadView(Main.view1ID, Main.view1File);
-//mainContainer.loadView(Main.view2ID, Main.view2File);
-//
-//// sets starting view
-//mainContainer.setView(Main.view1ID);   
-//
-//// JAVAFX Application initialization
-//Group root = new Group();
-//root.getChildren().addAll(mainContainer);
-//Scene scene = new Scene(root);
-//primaryStage.setScene(scene);
-//primaryStage.show();

@@ -16,8 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class UserPane extends Pane {
-	
-		// width = 4*x
 	public static final double WIDTH = 200;
 	public static final double HEIGHT = 60;
 	public static final double CONTENTS_HGAB = 2;
@@ -27,14 +25,13 @@ public class UserPane extends Pane {
 	private App main;
 
 	UserPane me;
-	// note that max user name length is 39 characters
 	private Label l_name;
 	private Label l_data;
 	private Button b_remove;
 	//private ImageView i_user;
 	private GridPane contents;
 	
-	public UserPane(String userName, App main ) {
+	public UserPane(String userName, App main) {
 		this.userName = userName;
 		this.main = main;
 		me = this;
@@ -99,12 +96,10 @@ public class UserPane extends Pane {
 	   
 	    final VBox parentbox = (VBox) getParent();
 	   
-		final Timeline timeline = new Timeline();
-		final KeyValue kv = new KeyValue(me.layoutXProperty(), -UserPane.WIDTH);
-		final KeyValue kv2 = new KeyValue(me.opacityProperty(), 0);
-		
-		final KeyFrame kf = new KeyFrame(Duration.millis(300), kv, kv2);
-		timeline.getKeyFrames().add(kf);
+		final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300), 
+			new KeyValue(me.layoutXProperty(), -UserPane.WIDTH), 
+			new KeyValue(me.opacityProperty(), 0))
+		);
 	    timeline.setOnFinished(new EventHandler<ActionEvent>() {
 	    
 	           @Override

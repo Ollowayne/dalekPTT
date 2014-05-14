@@ -6,14 +6,12 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class RepositoryPane extends Pane {
-	
 	public static final double HEIGHT = UserPane.HEIGHT / 2;
 	
 	private String name;
@@ -33,7 +31,6 @@ public class RepositoryPane extends Pane {
 		
 		me = this;
 	}
-		
 		
 	public void setup() {		
 		
@@ -56,10 +53,9 @@ public class RepositoryPane extends Pane {
 			@Override
 			public void handle(MouseEvent arg0) {
 				if (!isOpen) {
-				    final Timeline open = new Timeline();
-				    final KeyValue kv = new KeyValue(me.minHeightProperty(), 5*HEIGHT);
-				    final KeyFrame kf = new KeyFrame(Duration.millis(200), kv);
-				    open.getKeyFrames().add(kf);
+				    final Timeline open = new Timeline(new KeyFrame(Duration.millis(200), 
+				    	new KeyValue(me.minHeightProperty(), 5*HEIGHT))
+				    );
 				    open.setOnFinished(new EventHandler<ActionEvent>() {
 					    
 				           @Override
@@ -75,10 +71,9 @@ public class RepositoryPane extends Pane {
 				else {
 					content.invertOpacity();
 					
-				    final Timeline close = new Timeline();
-				    final KeyValue kv = new KeyValue(me.minHeightProperty(), HEIGHT);
-				    final KeyFrame kf = new KeyFrame(Duration.millis(150), kv);
-				    close.getKeyFrames().add(kf);
+				    final Timeline close = new Timeline(new KeyFrame(Duration.millis(150), 
+				    		new KeyValue(me.minHeightProperty(), HEIGHT))
+				    );
 				    close.setOnFinished(new EventHandler<ActionEvent>() {
 					    
 				           @Override
@@ -87,15 +82,17 @@ public class RepositoryPane extends Pane {
 				           }
 
 				        });
+				    
 				    close.play();
 				}
+				
 				isOpen = !isOpen;
 			}
 	    });
 	}
 		
-		//set Data of repository panes
+	//set Data of repository panes
 	public void setData() {
-		
+		//TODO set content on content
 	}
 }
