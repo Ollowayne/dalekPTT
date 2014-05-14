@@ -5,24 +5,28 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class RepositoryPane extends Pane {
 	
 	public static final double HEIGHT = UserPane.HEIGHT / 2;
 	
-	private String repoName;
-	private Label l_repo;
-	private Label l_info;
+	private String name;
 	private boolean isOpen = false;
+	
+	private VBox components;
+	private RepositoryHeaderPane header;
+	private RepositoryContentPane content;
 	
 	private RepositoryPane me;
 	
 	public RepositoryPane(String repoName) {
-		this.repoName = repoName;
+		this.name = repoName;
 		this.setId("repositoryPane");
 		setup();
 		setData();
@@ -36,18 +40,19 @@ public class RepositoryPane extends Pane {
 		setPrefHeight(HEIGHT);
 		setMinHeight(HEIGHT);
 			
-		// initialize components
-			
-		l_repo = new Label();
-		l_info = new Label();
+		// initialize components	
 		
-		// needs reworking or redesign or re-alignment
-		this.getChildren().add(l_repo);
-		this.getChildren().add(l_info);
+		components = new VBox(4);
+		components.setPadding(new Insets(4, 4, 4, 4));
 		
+		header = new RepositoryHeaderPane(name);
+		content = new RepositoryContentPane();
+		
+		components.getChildren().addAll(header, content);
+		
+		this.getChildren().add(components);
 		
 		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
 			@Override
 			public void handle(MouseEvent arg0) {
 				if (!isOpen) {
@@ -59,8 +64,8 @@ public class RepositoryPane extends Pane {
 					    
 				           @Override
 				           public void handle(ActionEvent event) {
-				        	   
-				        	   l_repo.setText("open: " +repoName);
+				        	   content.invertOpacity();
+				        	   header.toggleOpenStatus();
 				           }
 
 				        });
@@ -68,6 +73,8 @@ public class RepositoryPane extends Pane {
 				    open.play();
 				}
 				else {
+					content.invertOpacity();
+					
 				    final Timeline close = new Timeline();
 				    final KeyValue kv = new KeyValue(me.minHeightProperty(), HEIGHT);
 				    final KeyFrame kf = new KeyFrame(Duration.millis(150), kv);
@@ -76,8 +83,7 @@ public class RepositoryPane extends Pane {
 					    
 				           @Override
 				           public void handle(ActionEvent event) {
-								
-								l_repo.setText("closed: " +repoName);
+				        	   header.toggleOpenStatus();
 				           }
 
 				        });
@@ -90,8 +96,6 @@ public class RepositoryPane extends Pane {
 		
 		//set Data of repository panes
 	public void setData() {
-		l_repo.setText("closed: " +repoName);
-		l_info.setText("");
-	
+		
 	}
 }

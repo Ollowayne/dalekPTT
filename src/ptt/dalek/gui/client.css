@@ -52,7 +52,7 @@
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
     -fx-text-fill: #ffffff;
-    -fx-font: bold 14pt "Arial Narrow";
+    -fx-font: 14pt "Arial Narrow";
 }
 
 #button_addUser:hover {
