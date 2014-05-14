@@ -1,12 +1,18 @@
 package ptt.dalek.gui;
 
+import javax.swing.event.DocumentEvent.EventType;
+
 import ptt.dalek.github.User;
 import ptt.dalek.main.Client;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,8 +32,7 @@ public class App extends Application {
     
 	private static final String NAME = "GitObserv";
 	private static final String VERSION = "v0.1";
-    private static final String ADD_PROMPT_TEXT = "observe new user...";
-	
+    private static final String ADD_PROMPT_TEXT = "Add a new user..";
     
     private static final int DEFAULT_WIDTH = 600;
     private static final int DEFAULT_HEIGHT = 400;
@@ -53,6 +58,7 @@ public class App extends Application {
     
     public Messenger message;
    
+    private Updater updater;
         
     @Override
     public void init() {
@@ -133,6 +139,10 @@ public class App extends Application {
 	    // loads saved users from file
 	    Client.getInstance().init();
 	    Client.getInstance().loadWatchedUsers();
+        updateUserList();
+	    
+	    updater = new Updater(this);
+	    (new Thread(updater)).start();
     }
     
 	@Override
@@ -146,9 +156,12 @@ public class App extends Application {
         
         message.displayMessage("Welcom to GitObserve v1.0", 3000, 500);        
 
-        updateUserList();
     }
 	
+	@Override
+	public void stop() {
+		updater.cancel();
+	}
 	// clears repository VBox
     public void unloadContent() {
     	repos.getChildren().clear();
@@ -165,7 +178,7 @@ public class App extends Application {
     }
     
     // clears and (re)sets the content of vbox_userList, using Client.getWatchedUsers()
-    private void updateUserList() {
+    public void updateUserList() {
     	vbox_userlist.getChildren().clear();
 
     	for(User user : Client.getInstance().getWatchedUsers()) {
@@ -176,13 +189,13 @@ public class App extends Application {
     
     // reads tf_addUser and searches for user
     // if found, creates user pane and updates user list
-    private void addUser() {
-    	updateUserList();
-    	
+    private void addUser() {    	
     	String userName = tf_addUser.getText();
     	if(userName.length() == 0)
     		return;
     	
+    	updater.addUser(userName);
+    	/*
     	Client c = Client.getInstance();
     	int returnCode = c.addWatchedUser(userName);
 	    if(returnCode == Client.USER_ADDED) {
@@ -217,7 +230,7 @@ public class App extends Application {
 	    } else if(returnCode == Client.USER_INVALID) {
 	    	message.displayMessage("User " + userName + " does not exist.");
 	    }
-
+*/
 	    tf_addUser.clear();	    
     }  
 }
