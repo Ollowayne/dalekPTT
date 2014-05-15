@@ -139,7 +139,7 @@ public class Parser {
 		repository.setSize(obj.getInt("size"));
 		repository.setStargazersCount(obj.getInt("stargazers_count"));
 		repository.setWatchersCount(obj.getInt("watchers_count"));
-		repository.setLanguage(obj.getString("language"));
+		repository.setLanguage(jsonValueToString(obj.get("language")));
 		repository.setHasIssues(obj.getBoolean("has_issues"));
 		repository.setHasDownloads(obj.getBoolean("has_downloads"));
 		repository.setHasWiki(obj.getBoolean("has_wiki"));

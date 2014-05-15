@@ -8,48 +8,49 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 public class RepositoryHeaderPane extends Pane {
-	private HBox components;
-		private Label repoName;
-		
-		private ImageView openStatus;
-		private Image open;
-		private Image closed;
-		
-		private boolean isOpen;
-		
-		String name;
+	
+	private static final String IMAGE_ARROW_OPENED = "file:res/openLila.png";
+	private static final String IMAGE_ARROW_CLOSED = "file:res/closedLila.png";
+	
+	private HBox hbComponents;
+	private Label repoName;
+	
+	private ImageView ivIcon;
+	private Image iArrowOpen;
+	private Image iArrowClosed;
+	
+	private boolean isOpened;
+	
+	private String name;
 		
 	public RepositoryHeaderPane(String name) {
-		//TEST VERSION
 		this.name = name;
 		
 		setPrefHeight(RepositoryPane.HEIGHT);
 		setMinHeight(RepositoryPane.HEIGHT);
 		
-		components = new HBox(4);
+		hbComponents = new HBox(4);
 		repoName = new Label(name);
-		components.setAlignment(Pos.CENTER);
+		hbComponents.setAlignment(Pos.CENTER);
 
-		closed = new Image("file:res/closedLila.png");
-		open = new Image("file:res/openLila.png");
-		openStatus = new ImageView();
-		openStatus.setImage(closed);
+		iArrowOpen = new Image(IMAGE_ARROW_OPENED);
+		iArrowClosed = new Image(IMAGE_ARROW_CLOSED);
+
+		ivIcon = new ImageView();
+		ivIcon.setImage(iArrowClosed);
 		
-		components.getChildren().addAll(openStatus, repoName);
+		hbComponents.getChildren().addAll(ivIcon, repoName);
 
-		this.getChildren().add(components);
+		this.getChildren().add(hbComponents);
 	}
 	
-	public void toggleOpenStatus() {
-		if(isOpen) {
-			openStatus.setImage(closed);
-		}
-		else {
-			openStatus.setImage(open);
-		}
-		
-		isOpen = !isOpen;
+	public void toggleIcon() {
+		ivIcon.setImage(isOpened ? iArrowClosed : iArrowOpen);
+		isOpened = !isOpened;
 	}
-	
+
+	public String getName() {
+		return name;
+	}	
 	
 }

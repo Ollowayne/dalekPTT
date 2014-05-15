@@ -72,8 +72,7 @@ public class App extends Application {
         loadingAnimation = new ImageView();
         loadingImage = new Image("file:res/loading.gif");
         loadingAnimation.setImage(loadingImage);
-        
-        stopLoadingAnimation();
+        loadingAnimation.setOpacity(0);
         
         // VBox containing repositories
         vbRepository = new VBox(USERSP_SPACING);
@@ -178,16 +177,16 @@ public class App extends Application {
 	}
 
 	// clears repository VBox
-    public void unloadContent() {
+    public void clearContent() {
     	vbRepository.getChildren().clear();
     }
     
     // loads repositories for user 
-    public void loadContent(String user) {
-    	unloadContent();
-    	RepositoryPane rp1 = new RepositoryPane("Hans");
-    	RepositoryPane rp2 = new RepositoryPane("Jürgen");
-    	RepositoryPane rp3 = new RepositoryPane("Peter");
+    private void loadContent(String user) {
+    	clearContent();
+    	RepositoryPane rp1 = new RepositoryPane(user + " I");
+    	RepositoryPane rp2 = new RepositoryPane(user + " II");
+    	RepositoryPane rp3 = new RepositoryPane(user + " III");
     	
     	vbRepository.getChildren().addAll(rp1, rp2, rp3);
     }
@@ -202,7 +201,26 @@ public class App extends Application {
     		vbUserlist.getChildren().add(newPane);
     	}
     }
-    
+    	
+	public void setLoading(boolean loading) {
+		loadingAnimation.setOpacity(loading ? 1 : 0);
+	}
+		
+    // reads tf_addUser and searches for user
+    // if found, creates user pane and updates user list
+    private void addUser() {    	
+    	String userName = tfAddUser.getText();
+    	if(userName.length() == 0)
+    		return;
+    	
+    	updater.addUser(userName);
+	    tfAddUser.clear();	    
+    }
+
+	public void onSelectUser(String userName) {
+		loadContent(userName);
+	}
+	
 	public void onAddUser(final String name, final int result) {
 		if(result == Client.USER_ALREADY_WATCHED) {
 			topbarHint.displayMessage(String.format(ALREADY_WATCHING_STRING, name));
@@ -238,24 +256,10 @@ public class App extends Application {
 		    	topbarHint.displayMessage(String.format(NOW_WATCHING_STRING, user.getLogin()));
     		}
     	}
+	}
+
+	public void onRemoveUser(String userName) {
+		Client.getInstance().removeWatchedUser(userName);
+ 	   	topbarHint.displayMessage(String.format(App.STOP_WATCHING_STRING, userName));
 	}  
-	
-	public void startLoadingAnimation() {
-		loadingAnimation.setOpacity(1);
-	}
-	
-	public void stopLoadingAnimation() {
-		loadingAnimation.setOpacity(0);
-	}
-	
-    // reads tf_addUser and searches for user
-    // if found, creates user pane and updates user list
-    private void addUser() {    	
-    	String userName = tfAddUser.getText();
-    	if(userName.length() == 0)
-    		return;
-    	
-    	updater.addUser(userName);
-	    tfAddUser.clear();	    
-    }
 }

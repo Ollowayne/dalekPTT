@@ -15,7 +15,6 @@ public class Client {
 	private static Client instance;
 	
 	private LinkedList<User> watchedUsers;
-	private LinkedList<Repository> repositories;
 	private Map<String, LinkedList<Repository>> repositoryMap;
 	
 	public static final int USER_ALREADY_WATCHED = 100;
@@ -31,7 +30,6 @@ public class Client {
 	
 	private Client() {
 		watchedUsers = new LinkedList<User>();
-		repositories = new LinkedList<Repository>();
 		repositoryMap = new HashMap<String, LinkedList<Repository>>();
 	}
 	
@@ -58,21 +56,9 @@ public class Client {
 		for(User user : updatedUsers) {
 			updatedRepositoryMap.put(user.getLogin(), RepositoryHelper.getRepositories(user.getLogin()));
 		}
-			
-		LinkedList<Repository> updatedRepositories = new LinkedList<Repository>();
-		for(String userName : repositoryMap.keySet()) {
-			for(Repository repository : repositoryMap.get(userName)) {
-				Repository repo = RepositoryHelper.getRepository(userName, repository.getName());
-				if(repo.getId() == -1)
-					success = false;
-				
-				updatedRepositories.add(repo);
-			}
-		}
-			
+						
 		if(success) {
 			watchedUsers = updatedUsers;
-			repositories = updatedRepositories;
 			repositoryMap = updatedRepositoryMap;
 		}
 	}

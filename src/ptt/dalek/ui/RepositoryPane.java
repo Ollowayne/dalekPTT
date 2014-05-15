@@ -17,19 +17,15 @@ public class RepositoryPane extends Pane {
 	private String name;
 	private boolean isOpen = false;
 	
-	private VBox components;
-	private RepositoryHeaderPane header;
-	private RepositoryContentPane content;
-	
-	private RepositoryPane me;
-	
+	private VBox vbComponents;
+	private RepositoryHeaderPane rpHeader;
+	private RepositoryContentPane rpContent;
+
 	public RepositoryPane(String repoName) {
 		this.name = repoName;
 		this.setId("repositoryPane");
 		setup();
 		setData();
-		
-		me = this;
 	}
 		
 	public void setup() {		
@@ -39,42 +35,38 @@ public class RepositoryPane extends Pane {
 			
 		// initialize components	
 		
-		components = new VBox(4);
-		components.setPadding(new Insets(4, 4, 4, 4));
+		vbComponents = new VBox(4);
+		vbComponents.setPadding(new Insets(4, 4, 4, 4));
 		
-		header = new RepositoryHeaderPane(name);
-		content = new RepositoryContentPane();
+		rpHeader = new RepositoryHeaderPane(name);
+		rpContent = new RepositoryContentPane();
 		
-		components.getChildren().addAll(header, content);
+		vbComponents.getChildren().addAll(rpHeader, rpContent);
 		
-		this.getChildren().add(components);
+		this.getChildren().add(vbComponents);
 		
 		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
 				if (!isOpen) {
-					header.toggleOpenStatus();
+					rpHeader.toggleIcon();
 					
-				    final Timeline open = new Timeline(new KeyFrame(Duration.millis(200), 
-				    	new KeyValue(me.minHeightProperty(), 5*HEIGHT))
-				    );
+				    final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
+				    									new KeyValue(minHeightProperty(), 5*HEIGHT)));
 				    open.setOnFinished(new EventHandler<ActionEvent>() {
-					    
 				           @Override
 				           public void handle(ActionEvent event) {
-				        	   content.invertOpacity();
+				        	   rpContent.toggleVisibility();
 				           }
-
-				        });
+				    });
 				    
 				    open.play();
 				}
 				else {
-					content.invertOpacity();
-		        	 header.toggleOpenStatus();
+					rpContent.toggleVisibility();
+		        	rpHeader.toggleIcon();
 				    final Timeline close = new Timeline(new KeyFrame(Duration.millis(150), 
-				    		new KeyValue(me.minHeightProperty(), HEIGHT))
-				    );
+				    									new KeyValue(minHeightProperty(), HEIGHT)));
 
 				    close.play();
 				}

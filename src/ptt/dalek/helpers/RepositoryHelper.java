@@ -4,11 +4,11 @@ import java.io.InputStream;
 import java.util.LinkedList;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 import ptt.dalek.github.Repository;
+import ptt.dalek.main.PagedRequest;
 import ptt.dalek.main.Parser;
 import ptt.dalek.main.Request;
 
@@ -19,16 +19,22 @@ public class RepositoryHelper extends APIHelper {
 	public static final String REPOSITORY_STRING = "%s/repos/%s/%s";
 		
 	public static LinkedList<Repository> getRepositories(String name) {
-		InputStream stream = new Request(String.format(REPOSITORIES_STRING, GITHUB_API_URL, name)).send();
-		if(stream != null) {
-			JsonReader reader = Json.createReader(stream);
-			JsonArray jsonRepositories = reader.readArray();
-			reader.close();
-			
-			return Parser.parseRepositories(jsonRepositories);
-		}
+		PagedRequest pagedRequest = new PagedRequest(String.format(REPOSITORIES_STRING, GITHUB_API_URL, name));
 
-		return new LinkedList<Repository>();
+		LinkedList<Repository> repositories =  new LinkedList<Repository>();
+		while(pagedRequest.hasNext()) {
+			System.out.println("test");
+			InputStream stream = pagedRequest.next();
+			if(stream != null) {
+				JsonReader reader = Json.createReader(stream);
+				for(Repository repo : Parser.parseRepositories(reader.readArray()))
+					repositories.add(repo);
+
+				reader.close();
+			}
+		}
+		
+		return repositories;
 	}
 	
 	public static Repository getRepository(String name, String repository) {

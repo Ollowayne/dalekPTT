@@ -1,7 +1,6 @@
 package ptt.dalek.ui;
 
 import ptt.dalek.gui.App;
-import ptt.dalek.main.Client;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -18,38 +17,39 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class UserPane extends Pane {
+	
 	public static final double WIDTH = 270;
 	public static final double HEIGHT = 90;
 	public static final double CONTENTS_HGAB = 2;
 	public static final double CONTENTS_VGAB = 2;
 	
+	private static final String DELETE_BUTTON_TEXT = "x";
+	
 	private String userName;
 	private App app;
 
-	UserPane me;
-	private Label l_name;
+	private Label lLogin;
 		// rename
-	private Label l_data1;
-	private Label l_data2;
-	private Label l_data3;
+	private Label lFullName;
+	private Label lEmail;
+	private Label lWebsite;
 	
-	private Button b_remove;
+	private Button bDelete;
 	//private ImageView i_user;
-	private GridPane contents;
+	private GridPane gpContents;
 	
 	private boolean isHighlighted;
 	
-	public UserPane(String userName, App main) {
+	public UserPane(String userName, App app) {
 		this.userName = userName;
-		this.app = main;
-		me = this;
+		this.app = app;
 		this.setId("user_pane");
+
 		setup();
 		setData();
 	}
 	
 	public void setup() {		
-		
 		// setup size
 		setPrefWidth(WIDTH);
 		setMinWidth(WIDTH);
@@ -57,68 +57,66 @@ public class UserPane extends Pane {
 		setMinHeight(HEIGHT);
 		
 		// initialize components
-		contents = new GridPane();	
-		l_name = new Label();
-		l_name.setMaxWidth(WIDTH);
-		l_name.setId("l_name");
-		l_name.setTextOverrun(OverrunStyle.ELLIPSIS);
+		gpContents = new GridPane();	
+		lLogin = new Label();
+		lLogin.setMaxWidth(WIDTH);
+		lLogin.setId("l_name");
+		lLogin.setTranslateX(6);
+		lLogin.setTextOverrun(OverrunStyle.ELLIPSIS);
 		
-		l_data1 = new Label();
-		l_data2 = new Label();
-		l_data3 = new Label();
-		l_data1.setId("l_data");
-		l_data2.setId("l_data");
-		l_data3.setId("l_data");
+		lFullName = new Label();
+		lEmail = new Label();
+		lWebsite = new Label();
+		lFullName.setId("l_data");
+		lEmail.setId("l_data");
+		lWebsite.setId("l_data");
 		
-		l_data1.setMaxWidth(WIDTH);
-		l_data2.setMaxWidth(WIDTH);
-		l_data3.setMaxWidth(WIDTH);
+		lFullName.setMaxWidth(WIDTH);
+		lEmail.setMaxWidth(WIDTH);
+		lWebsite.setMaxWidth(WIDTH);
 		
-		l_data1.setTextOverrun(OverrunStyle.ELLIPSIS);
-		l_data2.setTextOverrun(OverrunStyle.ELLIPSIS);
-		l_data3.setTextOverrun(OverrunStyle.ELLIPSIS);
+		lFullName.setTextOverrun(OverrunStyle.ELLIPSIS);
+		lEmail.setTextOverrun(OverrunStyle.ELLIPSIS);
+		lWebsite.setTextOverrun(OverrunStyle.ELLIPSIS);
 		
-		b_remove = new Button("x");
-		b_remove.setId("remove_userpane_button");
-        b_remove.setOnAction(new EventHandler<ActionEvent>() {
+		bDelete = new Button(DELETE_BUTTON_TEXT);
+		bDelete.setId("remove_userpane_button");
+        bDelete.setOnAction(new EventHandler<ActionEvent>() {
            @Override
            public void handle(ActionEvent event) {
         	   removeUser();
            }
         });
 
-        GridPane.setConstraints(l_name, 1, 2);
-        GridPane.setConstraints(b_remove, 1, 1);
-        GridPane.setConstraints(l_data1, 1, 3);
-        GridPane.setConstraints(l_data2, 1, 4);
-        GridPane.setConstraints(l_data3, 1, 5);
+        GridPane.setConstraints(lLogin, 1, 2);
+        GridPane.setConstraints(bDelete, 1, 1);
+        GridPane.setConstraints(lFullName, 1, 3);
+        GridPane.setConstraints(lEmail, 1, 4);
+        GridPane.setConstraints(lWebsite, 1, 5);
+        GridPane.setHalignment(bDelete, HPos.RIGHT);
         
-        contents.getChildren().addAll(l_name, b_remove, l_data1, l_data2, l_data3);
+        gpContents.getChildren().addAll(lLogin, bDelete, lFullName, lEmail, lWebsite);
         
-        GridPane.setHalignment(b_remove, HPos.RIGHT);
-        
-        this.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+        setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				app.loadContent(userName);
-				me.setHighlighted(true);
+				app.onSelectUser(userName);
+				setHighlighted(true);
 			}
         });
         
-        getChildren().add(contents);
+        getChildren().add(gpContents);
 	}
 	
 	private void setData() {
-		l_name.setText("  " + userName);
-		l_data1.setText("  Real Name");
-		l_data2.setText("  www.somesamplestuff.example");
-		l_data3.setText("  more sample data, shows how the overrunStyle labels work");
+		lLogin.setText(userName);
+		lFullName.setText("  Real Name");
+		lEmail.setText("  www.somesamplestuff.example");
+		lWebsite.setText("  more sample data, shows how the overrunStyle labels work");
 	}
 	
 	public void update(String userName) {
 		this.userName = userName;
-		
 		setData();
 	}
 	
@@ -127,25 +125,19 @@ public class UserPane extends Pane {
 	}
 	
 	private void removeUser() {
-	    Client.getInstance().removeWatchedUser(userName);
-	   
-	    final VBox parentbox = (VBox)getParent();
-	   
-		final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300), 
-			new KeyValue(me.layoutXProperty(), -UserPane.WIDTH), 
-			new KeyValue(me.opacityProperty(), 0))
-		);
+	    app.onRemoveUser(userName);
+
+		final UserPane self = this;
+		final Timeline timeline = new Timeline (new KeyFrame(Duration.millis(300), 
+												new KeyValue(layoutXProperty(), -WIDTH), 
+												new KeyValue(opacityProperty(), 0)));
+
 	    timeline.setOnFinished(new EventHandler<ActionEvent>() {
-	    
 	           @Override
 	           public void handle(ActionEvent event) {
-	        	   parentbox.getChildren().remove(me);
-	        	   app.unloadContent();
-	        	   app.topbarHint.displayMessage(String.format(App.STOP_WATCHING_STRING, userName));
+	        	   ((VBox)self.getParent()).getChildren().remove(self);
 	           }
-
-	        });
-	    
+	    });
 	    timeline.play();
 	}
 	
@@ -155,14 +147,15 @@ public class UserPane extends Pane {
 	
 	public void setHighlighted(boolean value) {
 		isHighlighted = value;
+		updateHighlight();
 	}
 	
-	public void highlight() {
+	public void updateHighlight() {
 		if(isHighlighted) {
 			setStyle("-fx-border-color: #e880e7");
+			return;
 		}
-		else {
-			setStyle("-fx-border-color: #9c339a");
-		}
+		
+		setStyle("-fx-border-color: #9c339a");
 	}
 }
