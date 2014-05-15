@@ -23,7 +23,6 @@ public class RepositoryHelper extends BasicHelper {
 
 		LinkedList<Repository> repositories =  new LinkedList<Repository>();
 		while(pagedRequest.hasNext()) {
-			System.out.println("test");
 			InputStream stream = pagedRequest.next();
 			if(stream != null) {
 				JsonReader reader = Json.createReader(stream);
