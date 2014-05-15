@@ -57,12 +57,10 @@ public class UserPane extends Pane {
 		b_remove = new Button("x");
 		b_remove.setId("remove_userpane_button");
         b_remove.setOnAction(new EventHandler<ActionEvent>() {
-        
            @Override
            public void handle(ActionEvent event) {
         	   removeUser();
            }
-
         });
 
         GridPane.setConstraints(l_name, 1, 2);
@@ -95,7 +93,7 @@ public class UserPane extends Pane {
 	private void removeUser() {
 	    Client.getInstance().removeWatchedUser(userName);
 	   
-	    final VBox parentbox = (VBox) getParent();
+	    final VBox parentbox = (VBox)getParent();
 	   
 		final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300), 
 			new KeyValue(me.layoutXProperty(), -UserPane.WIDTH), 
@@ -107,7 +105,7 @@ public class UserPane extends Pane {
 	           public void handle(ActionEvent event) {
 	        	   parentbox.getChildren().remove(me);
 	        	   main.unloadContent();
-	        	   main.message.displayMessage("You are not observing " + userName + " any longer.");
+	        	   main.topbarHint.displayMessage("You are not observing " + userName + " any longer.");
 	           }
 
 	        });

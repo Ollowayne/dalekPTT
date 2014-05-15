@@ -3,10 +3,11 @@ package ptt.dalek.gui;
 import java.util.LinkedList;
 
 import ptt.dalek.main.Client;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 public class Updater extends Task<Void> {
-
+	
 	private static final int UPDATE_TIME = 30000;
 	
 	private LinkedList<String> updateUsers = new LinkedList<String>();
@@ -37,16 +38,27 @@ public class Updater extends Task<Void> {
 	protected Void call() throws Exception {
 		while(!isCancelled()) {
 			if(updateUsers.size() > 0) {
-				for(String name : updateUsers) {
-					Client.getInstance().addWatchedUser(name);
-					app.updateUserList();
+				for(final String name : updateUsers) {
+					final int result = Client.getInstance().addWatchedUser(name);
+					Platform.runLater(new Runnable(){
+	                    @Override
+	                    public void run() {
+	        				app.onAddUser(name, result);
+	                    }
+	                });
 				}
 				updateUsers.clear();
 			}
 			
 			if(nextUpdate <= 0) {
 				Client.getInstance().updateWatchedUsers();
-				app.updateUserList();
+				
+				Platform.runLater(new Runnable(){
+                    @Override
+                    public void run() {
+        				app.updateUserList();
+                    }
+                });
 				nextUpdate = UPDATE_TIME;
 			}
 

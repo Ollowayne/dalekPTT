@@ -54,8 +54,9 @@ public class Client {
 			updatedUsers.add(newUser);
 		}
 		
+		Map<String, LinkedList<Repository>> updatedRepositoryMap = new HashMap<String, LinkedList<Repository>>();
 		for(User user : updatedUsers) {
-			repositoryMap.put(user.getLogin(), RepositoryHelper.getRepositories(user.getLogin()));
+			updatedRepositoryMap.put(user.getLogin(), RepositoryHelper.getRepositories(user.getLogin()));
 		}
 			
 		LinkedList<Repository> updatedRepositories = new LinkedList<Repository>();
@@ -72,6 +73,7 @@ public class Client {
 		if(success) {
 			watchedUsers = updatedUsers;
 			repositories = updatedRepositories;
+			repositoryMap = updatedRepositoryMap;
 		}
 	}
 	
@@ -80,9 +82,8 @@ public class Client {
 	}
 
 	public int getWatchedUserIndex(String name) {
-		String lowerName = name.toLowerCase();
 		for(int i = 0; i < watchedUsers.size(); ++i) {
-			if(watchedUsers.get(i).getLogin().toLowerCase().equals(lowerName))
+			if(watchedUsers.get(i).getLogin().equalsIgnoreCase(name))
 				return i;
 		}
 		
@@ -102,15 +103,14 @@ public class Client {
 	}
 	
 	public int addWatchedUser(String name) {
+		if(hasWatchedUser(name))
+			return USER_ALREADY_WATCHED;
+		
 		User user = UserHelper.getUser(name);
 		if(user.getId() != -1) {
-			if(!hasWatchedUser(user.getLogin())) {
-				watchedUsers.add(user);
-				onWatchedUsersChange();
-				return USER_ADDED;
-			} else {
-				return USER_ALREADY_WATCHED;
-			}
+			watchedUsers.add(user);
+			onWatchedUsersChange();
+			return USER_ADDED;
 		}
 		
 		return USER_INVALID;
