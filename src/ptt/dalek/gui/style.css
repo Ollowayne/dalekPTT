@@ -84,7 +84,6 @@
 	-fx-background-color: #ffffff;
 }
 
-
 #remove_userpane_button {
 	 -fx-background-color: transparent;
 
@@ -102,6 +101,16 @@
 
 #remove_userpane_button:pressed {
     -fx-text-fill: #ffb3fe;
+}
+
+#l_name {
+	-fx-text-fill: #9c339a;
+    -fx-font: bold 14pt "Arial Narrow";
+}
+
+#l_data {
+	-fx-text-fill: #ada0ad;
+    -fx-font: italic 11pt "Arial Narrow";
 }
 
 #addResponse {

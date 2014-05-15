@@ -35,9 +35,10 @@ public class App extends Application {
 	private static final String VERSION = "v0.1";
 
     private static final String PROMPT_STRING = "Add a new user..";
-    private static final String NOW_WATCHING_STRING = "You are now watching '%s'.";
-    private static final String INVALID_USER_STRING = "User '%s' could not be found.";
-    private static final String ALREADY_WATCHING_STRING = "You are already watching '%s'.";
+    public static final String NOW_WATCHING_STRING = "You are now watching '%s'.";
+    public static final String INVALID_USER_STRING = "User '%s' could not be found.";
+    public static final String ALREADY_WATCHING_STRING = "You are already watching '%s'.";
+    public static final String STOP_WATCHING_STRING = "You are no longer watching '%s'.";
     
     private static final int DEFAULT_WIDTH = 600;
     private static final int DEFAULT_HEIGHT = 400;
@@ -71,6 +72,8 @@ public class App extends Application {
         loadingAnimation = new ImageView();
         loadingImage = new Image("file:res/loading.gif");
         loadingAnimation.setImage(loadingImage);
+        
+        stopLoadingAnimation();
         
         // VBox containing repositories
         vbRepository = new VBox(USERSP_SPACING);
@@ -236,7 +239,15 @@ public class App extends Application {
     		}
     	}
 	}  
-    
+	
+	public void startLoadingAnimation() {
+		loadingAnimation.setOpacity(1);
+	}
+	
+	public void stopLoadingAnimation() {
+		loadingAnimation.setOpacity(0);
+	}
+	
     // reads tf_addUser and searches for user
     // if found, creates user pane and updates user list
     private void addUser() {    	

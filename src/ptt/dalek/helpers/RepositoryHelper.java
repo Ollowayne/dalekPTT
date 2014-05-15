@@ -11,7 +11,6 @@ import javax.json.JsonReader;
 import ptt.dalek.github.Repository;
 import ptt.dalek.main.Parser;
 import ptt.dalek.main.Request;
-import ptt.dalek.main.Util;
 
 
 public class RepositoryHelper extends APIHelper {

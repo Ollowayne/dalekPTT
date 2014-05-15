@@ -38,6 +38,8 @@ public class Updater extends Task<Void> {
 	protected Void call() throws Exception {
 		while(!isCancelled()) {
 			if(updateUsers.size() > 0) {
+				app.startLoadingAnimation();
+				
 				for(final String name : updateUsers) {
 					final int result = Client.getInstance().addWatchedUser(name);
 					Platform.runLater(new Runnable(){
@@ -48,17 +50,21 @@ public class Updater extends Task<Void> {
 	                });
 				}
 				updateUsers.clear();
+				app.stopLoadingAnimation();	
 			}
 			
-			if(nextUpdate <= 0) {
-				Client.getInstance().updateWatchedUsers();
+			if(nextUpdate <= 0) {			
+				app.startLoadingAnimation();
 				
+				Client.getInstance().updateWatchedUsers();
 				Platform.runLater(new Runnable(){
                     @Override
                     public void run() {
         				app.updateUserList();
                     }
                 });
+				
+				app.stopLoadingAnimation();		
 				nextUpdate = UPDATE_TIME;
 			}
 
