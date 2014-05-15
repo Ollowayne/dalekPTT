@@ -12,35 +12,36 @@ import ptt.dalek.helpers.RepositoryHelper;
 import ptt.dalek.helpers.UserHelper;
 
 public class Client {
-	private static Client instance;
 	
+	private static Client instance;
+
 	private LinkedList<User> watchedUsers;
 	private Map<String, LinkedList<Repository>> repositoryMap;
-	
+
 	public static final int USER_ALREADY_WATCHED = 100;
 	public static final int USER_INVALID = 101;
 	public static final int USER_ADDED = 102;
-	
+
 	public static Client getInstance() {
 		if(instance == null)
 			instance = new Client();
-		
+
 		return instance;
 	}
-	
+
 	private Client() {
 		watchedUsers = new LinkedList<User>();
 		repositoryMap = new HashMap<String, LinkedList<Repository>>();
 	}
-	
+
 	public boolean init() {
 		return Settings.initializeFolders();
 	}
-	
+
 	public void loadWatchedUsers() {
 		watchedUsers = Settings.loadUserList();
 	}
-	
+
 	public void updateWatchedUsers() {
 		boolean success = true;
 		LinkedList<User> updatedUsers = new LinkedList<User>();
@@ -48,21 +49,21 @@ public class Client {
 			User newUser = UserHelper.getUser(user.getLogin());
 			if(newUser.getId() == -1)
 				success = false;
-	
+
 			updatedUsers.add(newUser);
 		}
-		
+
 		Map<String, LinkedList<Repository>> updatedRepositoryMap = new HashMap<String, LinkedList<Repository>>();
 		for(User user : updatedUsers) {
 			updatedRepositoryMap.put(user.getLogin(), RepositoryHelper.getRepositories(user.getLogin()));
 		}
-						
+
 		if(success) {
 			watchedUsers = updatedUsers;
 			repositoryMap = updatedRepositoryMap;
 		}
 	}
-	
+
 	public List<User> getWatchedUsers() {
 		return Collections.unmodifiableList(watchedUsers);
 	}
@@ -72,33 +73,33 @@ public class Client {
 			if(watchedUsers.get(i).getLogin().equalsIgnoreCase(name))
 				return i;
 		}
-		
+
 		return -1;
 	}
-	
+
 	public boolean hasWatchedUser(String name) {
 		return getWatchedUserIndex(name) != -1;
 	}
-	
+
 	public boolean hasWatchedUsers() {
 		return watchedUsers.size() > 0;
 	}
-	
+
 	public User getLatestUser() {
 		return watchedUsers.get(watchedUsers.size() - 1);
 	}
-	
+
 	public int addWatchedUser(String name) {
 		if(hasWatchedUser(name))
 			return USER_ALREADY_WATCHED;
-		
+
 		User user = UserHelper.getUser(name);
 		if(user.getId() != -1) {
 			watchedUsers.add(user);
 			onWatchedUsersChange();
 			return USER_ADDED;
 		}
-		
+
 		return USER_INVALID;
 	}
 
@@ -106,7 +107,7 @@ public class Client {
 		int index = getWatchedUserIndex(name);
 		if(index == -1)
 			return false;
-		
+
 		watchedUsers.remove(index);
 		repositoryMap.remove(name);
 		onWatchedUsersChange();

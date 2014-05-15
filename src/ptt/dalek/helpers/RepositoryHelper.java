@@ -13,11 +13,11 @@ import ptt.dalek.main.Parser;
 import ptt.dalek.main.Request;
 
 
-public class RepositoryHelper extends APIHelper {
+public class RepositoryHelper extends BasicHelper {
 
 	public static final String REPOSITORIES_STRING = "%s/users/%s/repos";
 	public static final String REPOSITORY_STRING = "%s/repos/%s/%s";
-		
+
 	public static LinkedList<Repository> getRepositories(String name) {
 		PagedRequest pagedRequest = new PagedRequest(String.format(REPOSITORIES_STRING, GITHUB_API_URL, name));
 
@@ -33,10 +33,10 @@ public class RepositoryHelper extends APIHelper {
 				reader.close();
 			}
 		}
-		
+
 		return repositories;
 	}
-	
+
 	public static Repository getRepository(String name, String repository) {
 		InputStream stream = new Request(String.format(REPOSITORY_STRING, GITHUB_API_URL, name, repository)).send();
 		if(stream != null) {

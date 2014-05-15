@@ -7,25 +7,25 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 public class Updater extends Task<Void> {
-	
+
 	private static final int UPDATE_TIME = 30000;
-	
+
 	private LinkedList<String> updateUsers = new LinkedList<String>();
 	private App app;
-	
+
 	private int nextUpdate;
-	
+
 	public void addUser(String name) {
 		updateUsers.add(name);
 	}
-	
+
 	public Updater(App app) {
 		super();
 		this.app = app;
-		
+
 		nextUpdate = 0;
 	}
-	
+
 	public App getApp() {
 		return app;
 	}
@@ -39,30 +39,30 @@ public class Updater extends Task<Void> {
 		while(!isCancelled()) {
 			if(updateUsers.size() > 0) {
 				app.setLoading(true);
-				
+
 				for(final String name : updateUsers) {
 					final int result = Client.getInstance().addWatchedUser(name);
 					Platform.runLater(new Runnable(){
-	                    @Override
-	                    public void run() {
-	        				app.onAddUser(name, result);
-	                    }
-	                });
+						@Override
+						public void run() {
+							app.onAddUser(name, result);
+						}
+					});
 				}
 				updateUsers.clear();
-				app.setLoading(false);	
+				app.setLoading(false);
 			}
-			
-			if(nextUpdate <= 0) {			
+
+			if(nextUpdate <= 0) {
 				app.setLoading(true);
-				
+
 				Client.getInstance().updateWatchedUsers();
 				Platform.runLater(new Runnable(){
-                    @Override
-                    public void run() {
-        				app.updateUserList();
-                    }
-                });
+					@Override
+					public void run() {
+						app.updateUserList();
+					}
+				});
 
 				app.setLoading(false);	
 				nextUpdate = UPDATE_TIME;
@@ -75,5 +75,4 @@ public class Updater extends Task<Void> {
 		return null;
 	}
 
-	
 }

@@ -64,12 +64,11 @@ public class Request {
 		prepare();
 
 		try {
-			
 			HttpURLConnection con = prepareConnection(new URL(String.format(URL_FORMAT, this.url, this.parameters)));
 			
 			int responseCode = con.getResponseCode();
 			String responseMessage = con.getResponseMessage();
-		    System.out.println("RateLimit: " + con.getHeaderField("X-RateLimit-Remaining") + "/" + con.getHeaderField("X-RateLimit-Limit"));
+			System.out.println("RateLimit: " + con.getHeaderField("X-RateLimit-Remaining") + "/" + con.getHeaderField("X-RateLimit-Limit"));
 			//System.out.println("Reponse::send - Response Code: " + responseCode + ", Response Message: "
 			//		+ responseMessage);
 

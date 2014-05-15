@@ -11,14 +11,14 @@ public class ISO8601 {
 	private static int INDEX_MONTH_LAST = 7;
 	private static int INDEX_DAY_FIRST = 8;
 	private static int INDEX_DAY_LAST = 10;
-	
+
 	private static int INDEX_HOUR_FIRST = 11;
 	private static int INDEX_HOUR_LAST = 13;
 	private static int INDEX_MINUTE_FIRST = 14;
 	private static int INDEX_MINUTE_LAST = 16;
 	private static int INDEX_SECOND_FIRST = 17;
 	private static int INDEX_SECOND_LAST = 19;
-	
+
 	public static long toUnix(String isoDate) {
 		GregorianCalendar g = new GregorianCalendar(
 					Integer.parseInt(isoDate.substring(INDEX_YEAR_FIRST, INDEX_YEAR_LAST)), 
@@ -28,10 +28,10 @@ public class ISO8601 {
 					Integer.parseInt(isoDate.substring(INDEX_MINUTE_FIRST, INDEX_MINUTE_LAST)),
 					Integer.parseInt(isoDate.substring(INDEX_SECOND_FIRST, INDEX_SECOND_LAST))
 				);
-		
+
 		return g.getTimeInMillis() / 1000L;
 	}
-	
+
 	public static String fromUnix(long unix) {		
 		Date date = new Date(unix * 1000L);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

@@ -51,29 +51,29 @@ public class RepositoryPane extends Pane {
 				if (!isOpen) {
 					rpHeader.toggleIcon();
 					
-				    final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
-				    									new KeyValue(minHeightProperty(), 5*HEIGHT)));
-				    open.setOnFinished(new EventHandler<ActionEvent>() {
-				           @Override
-				           public void handle(ActionEvent event) {
-				        	   rpContent.toggleVisibility();
-				           }
-				    });
-				    
-				    open.play();
+					final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
+														new KeyValue(minHeightProperty(), 5*HEIGHT)));
+					open.setOnFinished(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								rpContent.toggleVisibility();
+							}
+					});
+					
+					open.play();
 				}
 				else {
 					rpContent.toggleVisibility();
-		        	rpHeader.toggleIcon();
-				    final Timeline close = new Timeline(new KeyFrame(Duration.millis(150), 
-				    									new KeyValue(minHeightProperty(), HEIGHT)));
+					rpHeader.toggleIcon();
+					final Timeline close = new Timeline(new KeyFrame(Duration.millis(150), 
+														new KeyValue(minHeightProperty(), HEIGHT)));
 
-				    close.play();
+					close.play();
 				}
 				
 				isOpen = !isOpen;
 			}
-	    });
+		});
 	}
 		
 	//set Data of repository panes

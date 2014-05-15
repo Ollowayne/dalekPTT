@@ -51,14 +51,14 @@ public class PagedRequest extends Request implements Iterator<InputStream> {
 
 		try {
 			HttpURLConnection con = prepareConnection(new URL(String.format(URL_FORMAT, this.url, this.parameters)));
-			
+
 			String linkHeader = con.getHeaderField(LINK_HEADER);
 			if(linkHeader != null) {
 				for(String link : linkHeader.split(DELIMITER)) {
 					if(link.contains("rel=\"next\"") || link.contains("rel=\"last\"")) {
 						Matcher matcher = Pattern.compile(PAGE_PATTERN).matcher(link);
 						matcher.matches();
-						
+
 						if(link.contains("rel=\"next\"")) {
 							currentPage = Integer.parseInt(matcher.group(1));
 						} else {
@@ -69,10 +69,10 @@ public class PagedRequest extends Request implements Iterator<InputStream> {
 			} else {
 				next = false;
 			}
-			
+
 			if(currentPage >= lastPage)
 				next = false;
-			
+
 			int responseCode = con.getResponseCode();
 			String responseMessage = con.getResponseMessage();
 			if (responseCode == HttpURLConnection.HTTP_OK
