@@ -115,18 +115,24 @@ public class UserPane extends Pane {
 		iCopyWebsite.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
-                        new StringSelection(user.getBlog()), null);
-				app.onCopyToClipbaord(user.getBlog());
+				String blog = user.getBlog();
+				if(blog != "") {
+					app.onCopyToClipbaord(blog);
+					Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                        new StringSelection(blog), null);
+				}
 			}
 		});
 		
 		iCopyMail.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
-                        new StringSelection(user.getBlog()), null);
-				app.onCopyToClipbaord(user.getEmail());
+				String mail = user.getEmail();
+				if(mail != "") {
+					app.onCopyToClipbaord(mail);
+					Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                        new StringSelection(mail), null);
+				}
 			}
 		});
 		
