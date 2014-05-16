@@ -27,6 +27,72 @@
     -fx-background-insets: 0;
 }
 
+.tooltip {
+	-fx-background-radius: 0 0 0 0;
+	-fx-background-color: white;
+	-fx-border-width: 1 1 1 1;
+	-fx-border-style: solid;
+	-fx-border-color: #9c339a; 
+}
+
+.page-corner {
+    -fx-shape: " ";
+}
+
+.context-menu {
+  	-fx-background-color: white;
+  	-fx-text-fill: #9c339a;
+	-fx-border-width: 1 1 1 1;
+	-fx-border-style: solid;
+	-fx-border-color: #9c339a; 
+}
+
+.menu-item .label {
+	-fx-text-fill: #9c339a;
+}
+
+.menu-item:focused {
+	-fx-background-color: #9c339a;
+}
+
+.menu-item:focused .label {
+ 	-fx-text-fill: white;
+}
+
+.userPane {
+	-fx-border-width: 0 0 4 0;
+	-fx-border-style: solid;
+	-fx-border-color: #9c339a;
+	-fx-background-color: #ffffff;
+}
+
+.userPane:hover {
+	-fx-border-width: 0 0 4 0;
+	-fx-border-style: solid;
+	-fx-border-color: #e880e7;
+	-fx-background-color: #ffffff;
+}
+
+.userPaneButton {
+	 -fx-background-color: transparent;
+
+    -fx-background-insets: 0,0,0,0;
+    -fx-text-fill: #333333;
+    -fx-background-radius: 0,0,0,0;
+    -fx-background-insets: 0,0,0,0;	
+    -fx-text-fill: #9c339a;
+    -fx-font: bold 10pt "Arial Narrow";
+}
+
+.userPaneButton:hover {
+    -fx-text-fill: #e880e7;
+}
+
+.userPaneButton:pressed {
+    -fx-text-fill: #ffb3fe;
+}
+
+
 .scroll-pane .corner {
     -fx-background-insets: 0;
 }
@@ -70,39 +136,6 @@
     -fx-text-fill: #ffffff;
 }
 
-.userPane {
-	-fx-border-width: 0 0 4 0;
-	-fx-border-style: solid;
-	-fx-border-color: #9c339a;
-	-fx-background-color: #ffffff;
-}
-
-.userPane:hover {
-	-fx-border-width: 0 0 4 0;
-	-fx-border-style: solid;
-	-fx-border-color: #e880e7;
-	-fx-background-color: #ffffff;
-}
-
-.userPaneButton {
-	 -fx-background-color: transparent;
-
-    -fx-background-insets: 0,0,0,0;
-    -fx-text-fill: #333333;
-    -fx-background-radius: 0,0,0,0;
-    -fx-background-insets: 0,0,0,0;	
-    -fx-text-fill: #9c339a;
-    -fx-font: bold 10pt "Arial Narrow";
-}
-
-.userPaneButton:hover {
-    -fx-text-fill: #e880e7;
-}
-
-.userPaneButton:pressed {
-    -fx-text-fill: #ffb3fe;
-}
-
 #l_name {
 	-fx-text-fill: #9c339a;
     -fx-font: bold 14pt "Arial Narrow";
@@ -138,4 +171,5 @@
 	-fx-background-radius: 0,0,0,0;
 	-fx-text-fill: #9c339a;
 	-fx-prompt-text-fill: #E6B1E5;
+	-fx-highlight-fill: #9c339a;
 }
