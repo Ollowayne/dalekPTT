@@ -79,6 +79,7 @@
 
 .userPaneButton:hover {
     -fx-text-fill: #e880e7;
+    -fx-cursor: hand;
 }
 
 .userPaneButton:pressed {
@@ -88,6 +89,10 @@
 
 .scroll-pane .corner {
     -fx-background-insets: 0;
+}
+
+#clickable_image:hover {
+	-fx-cursor: hand;
 }
 
 #topbar {
@@ -111,6 +116,7 @@
     -fx-background-radius: 0,0,0,0;
     -fx-text-fill: #ffffff;
     -fx-font: 14pt "Arial";
+    -fx-cursor: hand;
 }
 
 #button_addUser:hover {

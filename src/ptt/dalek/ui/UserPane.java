@@ -106,9 +106,11 @@ public class UserPane extends Pane {
 		
 		iCopyWebsite = new ImageView(IMAGE_CLIPBOARD);
 		iCopyWebsite.setTranslateX(10);
+		iCopyWebsite.setId("clickable_image");
 		
 		iCopyMail = new ImageView(IMAGE_CLIPBOARD);
 		iCopyMail.setTranslateX(10);
+		iCopyMail.setId("clickable_image");
 		
 		iCopyWebsite.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
