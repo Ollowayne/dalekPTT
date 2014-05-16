@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
+import ptt.dalek.github.Commit;
+import ptt.dalek.github.CommitAuthor;
+import ptt.dalek.github.CommitData;
 import ptt.dalek.github.Repository;
 import ptt.dalek.github.User;
 
@@ -113,6 +116,7 @@ public class Parser {
 		repository.setStargazersUrl(obj.getString("stargazers_url"));
 		repository.setContributorsUrl(obj.getString("contributors_url"));
 		repository.setSubscribersUrl(obj.getString("subscribers_url"));
+		repository.setSubscriptionUrl(obj.getString("subscription_url"));
 		repository.setCommitsUrl(obj.getString("commits_url"));
 		repository.setGitCommitsUrl(obj.getString("git_commits_url"));
 		repository.setCommentsUrl(obj.getString("comments_url"));
@@ -156,11 +160,6 @@ public class Parser {
 		return repository;
 	}
 
-	public static long parseISO8601(JsonObject obj, String key) {
-		String value = jsonValueToString(obj, key);
-		return ISO8601.toUnix(value);
-	}
-
 	public static LinkedList<Repository> parseRepositories(JsonArray array) {
 		LinkedList<Repository> repos = new LinkedList<Repository>();
 		for (int i = 0; i < array.size(); ++i)
@@ -168,6 +167,48 @@ public class Parser {
 
 		return repos;
 	}
+
+	public static CommitAuthor parseCommitAuthor(JsonObject obj) {
+		CommitAuthor commitAuthor = new CommitAuthor();
+		commitAuthor.setName(obj.getString("name"));
+		commitAuthor.setEmail(obj.getString("email"));
+		commitAuthor.setDate(parseISO8601(obj, "date"));
+		return commitAuthor;
+	}
+
+	public static CommitData parseCommitData(JsonObject obj) {
+		CommitData commitData = new CommitData();
+		commitData.setAuthor(parseCommitAuthor(obj.getJsonObject("author")));
+		commitData.setCommitter(parseCommitAuthor(obj.getJsonObject("committer")));
+		commitData.setMessage(obj.getString("message"));
+		commitData.setUrl(obj.getString("url"));
+		commitData.setCommentCount(obj.getInt("comment_count"));
+		return commitData;
+	}
+
+	public static Commit parseCommit(JsonObject obj) {
+		Commit commit = new Commit();
+		commit.setSha(obj.getString("sha"));
+		commit.setHtmlUrl("html_url");
+		//commit.setAuthor(parseUser(obj.getJsonObject("author")));
+		//commit.setCommitter(parseUser(obj.getJsonObject("committer")));
+		commit.setCommitData(parseCommitData(obj.getJsonObject("commit")));
+		return commit;
+	}
+
+	public static LinkedList<Commit> parseCommits(JsonArray array) {
+		LinkedList<Commit> commits = new LinkedList<Commit>();
+		for (int i = 0; i < array.size(); ++i)
+			commits.add(Parser.parseCommit(array.getJsonObject(i)));
+
+		return commits;
+	}
+
+	public static long parseISO8601(JsonObject obj, String key) {
+		String value = jsonValueToString(obj, key);
+		return ISO8601.toUnix(value);
+	}
+
 
 	public static LinkedList<String> parseStringArray(JsonArray array) {
 		LinkedList<String> list = new LinkedList<String>();

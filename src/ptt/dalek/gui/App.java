@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptt.dalek.github.Commit;
 import ptt.dalek.github.Repository;
 import ptt.dalek.github.User;
 import ptt.dalek.main.Client;
@@ -209,7 +210,7 @@ public class App extends Application {
 		clearContent();
 
 		for(Repository repository : repositories) {
-			RepositoryPane pane = new RepositoryPane(repository);
+			RepositoryPane pane = new RepositoryPane(repository, this);
 			vbRepository.getChildren().add(pane);
 		}
 	}
@@ -325,11 +326,17 @@ public class App extends Application {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						System.out.println("update");
 						loadContent(repositories);
 					}
 				});
 			}
+		}
+	}
+
+	public void onToggleRepository(String repositoryName) {
+		List<Commit> commits = client.getCommits(repositoryName);
+		for(Commit c : commits) {
+			System.out.println("Commit: " + c.getSha() + " : " + c.getCommitData().getMessage());
 		}
 	}
 

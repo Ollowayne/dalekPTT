@@ -12,18 +12,17 @@ import java.util.regex.Pattern;
 
 public class PagedRequest extends Request implements Iterator<InputStream> {
 
-	private static final String PAGE_PATTERN = ".*page=(\\d+).*";
+	private static final String PAGE_PATTERN = ".*&page=(\\d+).*";
 	private static final String DELIMITER = ",";
 	private static final String LINK_HEADER = "Link";
 	
 	private int currentPage;
-	private int lastPage;
 	private boolean next;
 
 	public PagedRequest(String url) {
 		super(url);
 		
-		this.currentPage = this.lastPage = 1;
+		this.currentPage = 1;
 		next = true;
 	}
 	
@@ -53,25 +52,18 @@ public class PagedRequest extends Request implements Iterator<InputStream> {
 			HttpURLConnection con = prepareConnection(new URL(String.format(URL_FORMAT, this.url, this.parameters)));
 
 			String linkHeader = con.getHeaderField(LINK_HEADER);
+			this.next = false;
 			if(linkHeader != null) {
 				for(String link : linkHeader.split(DELIMITER)) {
-					if(link.contains("rel=\"next\"") || link.contains("rel=\"last\"")) {
-						Matcher matcher = Pattern.compile(PAGE_PATTERN).matcher(link);
-						matcher.matches();
+					Matcher matcher = Pattern.compile(PAGE_PATTERN).matcher(link);
+					matcher.matches();
 
-						if(link.contains("rel=\"next\"")) {
-							currentPage = Integer.parseInt(matcher.group(1));
-						} else {
-							lastPage = Integer.parseInt(matcher.group(1));
-						}
+					if(link.contains("rel=\"next\"")) {
+						this.next = true;
+						currentPage = Integer.parseInt(matcher.group(1));
 					}
 				}
-			} else {
-				next = false;
 			}
-
-			if(currentPage >= lastPage)
-				next = false;
 
 			int responseCode = con.getResponseCode();
 			String responseMessage = con.getResponseMessage();

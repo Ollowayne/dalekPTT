@@ -31,7 +31,7 @@ public class SimpleUser implements JsonConvertable {
 		this.login = "_unknown";
 	}
 
-	protected JsonObjectBuilder createObjectBuilder() {
+	public JsonObjectBuilder createObjectBuilder() {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 
 		builder.add("login", login);

@@ -6,24 +6,26 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 
+import ptt.dalek.github.Commit;
 import ptt.dalek.github.Repository;
 import ptt.dalek.github.User;
 import ptt.dalek.gui.App;
+import ptt.dalek.helpers.CommitHelper;
 import ptt.dalek.helpers.RepositoryHelper;
 import ptt.dalek.helpers.UserHelper;
 
 public class Client {
-	
+
 	private static Client instance;
 
 	private LinkedList<User> watchedUsers;
 	private Map<String, LinkedList<Repository>> repositoryMap;
+	private Map<String, LinkedList<Commit>> commitMap;
+	private Map<String, String> commitStatusMap;
 
 	public static final int USER_ALREADY_WATCHED = 100;
 	public static final int USER_INVALID = 101;
 	public static final int USER_ADDED = 102;
-	
-	boolean repositoriesLoaded = false;
 
 	public static Client getInstance() {
 		if(instance == null)
@@ -32,16 +34,25 @@ public class Client {
 		return instance;
 	}
 
-	private Client() { 	
+	private Client() {
 		watchedUsers = new LinkedList<User>();
 		repositoryMap = new HashMap<String, LinkedList<Repository>>();
+		commitMap = new HashMap<String, LinkedList<Commit>>();
+		commitStatusMap = new HashMap<String, String>();
 	}
 
 	public void init() {
 		Settings.initializeFolders();
 		watchedUsers = Settings.loadUserList();
+		repositoryMap = Settings.loadRepositoryMap();
+		commitStatusMap = Settings.loadCommitStatus();
+		commitMap = Settings.loadCommits(commitStatusMap.keySet());
 	}
 
+	public String getCommitStatuc(String name) {
+		return commitStatusMap.get(name);
+	}
+	
 	public void updateWatchedUsers(App app) {
 		LinkedList<User> updatedUsers = new LinkedList<User>();
 		for(User user : watchedUsers) {
@@ -78,9 +89,37 @@ public class Client {
 
 		watchedUsers = updatedUsers;
 		repositoryMap = updatedRepositoryMap;
-		repositoriesLoaded = true;
+		Settings.saveRepositoryMap(repositoryMap);
+
+		for(String username : repositoryMap.keySet()) {
+			for(Repository repository : repositoryMap.get(username)) {
+				String status = getCommitStatuc(repository.getFullName());
+				LinkedList<Commit> commits;
+				if(status != null)
+					commits = CommitHelper.getCommits(username, repository.getName(), status);
+				else
+					commits = CommitHelper.getCommits(username, repository.getName());
+
+				for(int i = 0; i < commits.size(); ++i) {
+					Commit commit = commits.get(i);
+					if(i == 0) {
+						commitStatusMap.put(repository.getFullName(), ISO8601.fromUnix(commit.getCommitData().getCommitter().getDate() + 1));
+					}
+
+					LinkedList<Commit> commitList = commitMap.get(repository.getFullName());
+					if(commitList == null) {
+						commitMap.put(repository.getFullName(), new LinkedList<Commit>());
+						commitList = commitMap.get(repository.getFullName());
+					}
+					commitList.addFirst(commit);
+				}
+			}
+		}
+
+		Settings.saveCommitStatus(commitStatusMap);
+		Settings.saveCommits(commitMap);
 	}
-	
+
 	public boolean hasRepositories(String name) {
 		return repositoryMap.get(name) != null;
 	}
@@ -91,6 +130,14 @@ public class Client {
 	
 	public List<Repository> getRepositories(String name) {
 		return Collections.unmodifiableList(repositoryMap.get(name));
+	}
+	
+	public List<Commit> getCommits(String fullName) {
+		LinkedList<Commit> commits = commitMap.get(fullName);
+		if(commits == null)
+			return Collections.unmodifiableList(new LinkedList<Commit>());
+		
+		return Collections.unmodifiableList(commits);
 	}
 
 	public int getWatchedUserIndex(String name) {
@@ -135,6 +182,7 @@ public class Client {
 
 		watchedUsers.remove(index);
 		repositoryMap.remove(name);
+		Settings.saveRepositoryMap(repositoryMap);
 		onWatchedUsersChange();
 		return true;	
 	}

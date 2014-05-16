@@ -1,6 +1,7 @@
 package ptt.dalek.ui;
 
 import ptt.dalek.github.Repository;
+import ptt.dalek.gui.App;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -18,13 +19,16 @@ public class RepositoryPane extends Pane {
 	private Repository repository;
 	private boolean isOpen = false;
 	
+	private App app;
 	private VBox vbComponents;
 	private RepositoryHeaderPane rpHeader;
 	private RepositoryContentPane rpContent;
 
-	public RepositoryPane(Repository repository) {
+	public RepositoryPane(Repository repository, App app) {
+		this.app = app;
 		this.repository = repository;
-		this.setId("repositoryPane");
+		this.setId(repository.getFullName());
+		this.getStyleClass().add("repositoryPane");
 		setup();
 		setData();
 	}
@@ -77,6 +81,7 @@ public class RepositoryPane extends Pane {
 				}
 				
 				isOpen = !isOpen;
+				app.onToggleRepository(getId());
 			}
 		});
 	}

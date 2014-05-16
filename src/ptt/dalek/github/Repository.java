@@ -1,6 +1,10 @@
 package ptt.dalek.github;
 
+import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
+import ptt.dalek.main.ISO8601;
 
 public class Repository implements JsonConvertable {
 
@@ -82,9 +86,83 @@ public class Repository implements JsonConvertable {
 		owner = new User();
 	}
 
+	public JsonObjectBuilder createObjectBuilder() {
+		JsonObjectBuilder builder = Json.createObjectBuilder();
+
+		builder.add("id", id);
+		builder.add("name", name);
+		builder.add("full_name", fullName);
+		builder.add("owner", owner.toJsonObject());
+		builder.add("private", isPrivate);
+		builder.add("html_url", htmlUrl);
+		builder.add("description", description);
+		builder.add("fork", isFork);
+		builder.add("url", url);
+		builder.add("forks_url", forksUrl);
+		builder.add("keys_url", keysUrl);
+		builder.add("collaborators_url", collaboratorsUrls);
+		builder.add("teams_url", teamsUrl);
+		builder.add("hooks_url", hooksUrl);
+		builder.add("issue_events_url", issueEventsUrl);
+		builder.add("events_url", eventsUrl);
+		builder.add("assignees_url", assigneesUrl);
+		builder.add("branches_url", branchesUrl);
+		builder.add("tags_url", tagsUrl);
+		builder.add("blobs_url", blobsUrl);
+		builder.add("git_tags_url", gitTagsUrl);
+		builder.add("git_refs_url", gitRefsUrl);
+		builder.add("trees_url", treesUrl);
+		builder.add("statuses_url", statusesUrl);
+		builder.add("languages_url", languagesUrl);
+		builder.add("stargazers_url", stargazersUrl);
+		builder.add("contributors_url", contributorsUrl);
+		builder.add("subscribers_url", subscribersUrl);
+
+		builder.add("subscription_url", subscriptionUrl);
+		builder.add("commits_url", commitsUrl);
+		builder.add("git_commits_url", gitCommitsUrl);
+		builder.add("comments_url", commentsUrl);
+		builder.add("issue_comment_url", issueCommentUrl);
+		builder.add("contents_url", contentsUrl);
+		builder.add("compare_url", compareUrl);
+		builder.add("merges_url", mergesUrl);
+		builder.add("archive_url", archiveUrl);
+		builder.add("downloads_url", downloadsUrl);
+		builder.add("issues_url", issuesUrl);
+		builder.add("pulls_url", pullsUrl);
+		builder.add("milestones_url", milestonesUrl);
+		builder.add("notifications_url", notificationsUrl);
+		builder.add("labels_url", labelsUrl);
+		builder.add("releases_url", releasesUrl);
+		
+		builder.add("created_at", ISO8601.fromUnix(createdAt));
+		builder.add("updated_at", ISO8601.fromUnix(updatedAt));
+		builder.add("pushed_at", ISO8601.fromUnix(pushedAt));
+		builder.add("git_url", gitUrl);
+		builder.add("ssh_url", sshUrl);
+		builder.add("clone_url", cloneUrl);
+		builder.add("svn_url", svnUrl);
+		builder.add("homepage", homepage);
+		builder.add("size", size);
+		builder.add("stargazers_count", stargazersCount);
+		builder.add("watchers_count", watchersCount);
+		builder.add("language", language);
+		builder.add("has_issues", hasIssues);
+		builder.add("has_downloads", hasDownloads);
+		builder.add("has_wiki", hasWiki);
+		builder.add("forks_count", forksCount);
+		builder.add("open_issues_count", openIssues);
+		builder.add("forks", forks);
+		builder.add("open_issues", openIssues);
+		builder.add("watchers", watchers);
+		builder.add("default_branch", defaultBranch);
+
+		return builder;
+	}
+
 	@Override
 	public JsonObject toJsonObject() {
-		return null;
+		return createObjectBuilder().build();
 	}
 
 	public User getOwner() {

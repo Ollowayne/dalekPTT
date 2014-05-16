@@ -110,11 +110,11 @@
 	-fx-border-style: solid;
 }
 
-#repositoryPane {
+.repositoryPane {
 	-fx-background-color: #ffffff;
 }
 
-#repositoryPane:hover {
+.repositoryPane:hover {
 	-fx-background-color: #ffffff;
 }
 
