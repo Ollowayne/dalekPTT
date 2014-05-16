@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -30,6 +31,8 @@ public class UserPane extends Pane {
 	public static final double CONTENTS_HGAB = 2;
 	public static final double CONTENTS_VGAB = 2;
 
+	private static final String IMAGE_CLIPBOARD = "file:res/clipboard.png";
+	
 	private static final String DELETE_BUTTON_TEXT = "x";
 
 	private App app;
@@ -38,6 +41,8 @@ public class UserPane extends Pane {
 	private Label lFullName;
 	private Label lEmail;
 	private Label lWebsite;
+	private ImageView iCopyWebsite;
+	private ImageView iCopyMail;
 
 	private Button bDelete;
 	private GridPane gpContents;
@@ -83,8 +88,8 @@ public class UserPane extends Pane {
 		lWebsite.setMaxWidth(WIDTH);
 		
 		lFullName.setTranslateX(10);
-		lEmail.setTranslateX(10);
-		lWebsite.setTranslateX(10);
+		lEmail.setTranslateX(25);
+		lWebsite.setTranslateX(25);
 		
 		lFullName.setTextOverrun(OverrunStyle.ELLIPSIS);
 		lEmail.setTextOverrun(OverrunStyle.ELLIPSIS);
@@ -99,7 +104,13 @@ public class UserPane extends Pane {
 			}
 		});
 		
-		lWebsite.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		iCopyWebsite = new ImageView(IMAGE_CLIPBOARD);
+		iCopyWebsite.setTranslateX(10);
+		
+		iCopyMail = new ImageView(IMAGE_CLIPBOARD);
+		iCopyMail.setTranslateX(10);
+		
+		iCopyWebsite.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
@@ -107,11 +118,21 @@ public class UserPane extends Pane {
 				app.onCopyToClipbaord(user.getBlog());
 			}
 		});
-
+		
+		iCopyMail.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                        new StringSelection(user.getBlog()), null);
+				app.onCopyToClipbaord(user.getEmail());
+			}
+		});
+		
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				lWebsite.setTooltip(new Tooltip("Click to copy."));
+				Tooltip.install(iCopyWebsite, new Tooltip("Copy URL to clipboard."));
+				Tooltip.install(iCopyMail, new Tooltip("Copy address to clipboard."));
 			}
 		});
 
@@ -119,10 +140,12 @@ public class UserPane extends Pane {
 		GridPane.setConstraints(bDelete, 1, 1);
 		GridPane.setConstraints(lFullName, 1, 3);
 		GridPane.setConstraints(lEmail, 1, 4);
+		GridPane.setConstraints(iCopyMail, 1, 4);
 		GridPane.setConstraints(lWebsite, 1, 5);
+		GridPane.setConstraints(iCopyWebsite, 1, 5);
 		GridPane.setHalignment(bDelete, HPos.RIGHT);
 
-		gpContents.getChildren().addAll(lLogin, bDelete, lFullName, lEmail, lWebsite);
+		gpContents.getChildren().addAll(lLogin, bDelete, lFullName, lEmail, lWebsite, iCopyWebsite, iCopyMail);
 
 		final UserPane self = this;
 		setOnMousePressed(new EventHandler<MouseEvent>() {
