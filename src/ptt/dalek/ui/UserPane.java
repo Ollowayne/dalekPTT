@@ -61,6 +61,7 @@ public class UserPane extends Pane {
 		gpContents = new GridPane();	
 		lLogin = new Label();
 		lLogin.setMaxWidth(WIDTH);
+		lLogin.setMinWidth(WIDTH);
 		lLogin.setId("l_name");
 		lLogin.setTranslateX(6);
 		lLogin.setTextOverrun(OverrunStyle.ELLIPSIS);
