@@ -44,6 +44,7 @@ public class App extends Application {
 	public static final String INVALID_USER_STRING = "User '%s' could not be found.";
 	public static final String ALREADY_WATCHING_STRING = "You are already watching '%s'.";
 	public static final String STOP_WATCHING_STRING = "You are no longer watching '%s'.";
+	public static final String COPIED_BLOG_URL = "Copied to clipboard: '%s'.";
 
 	private static final int DEFAULT_WIDTH = 600;
 	private static final int DEFAULT_HEIGHT = 400;
@@ -267,6 +268,10 @@ public class App extends Application {
 	public void onRemoveUser(String userName) {
 		updater.removeUser(userName);
  		topbarHint.displayMessage(String.format(App.STOP_WATCHING_STRING, userName));
+	}
+	
+	public void onCopyToClipbaord(String value) {
+		topbarHint.displayMessage(String.format(App.COPIED_BLOG_URL, value));
 	}
 
 	public void onUpdateWatchedUser(User user, final User addUser) {

@@ -1,5 +1,8 @@
 package ptt.dalek.ui;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+
 import ptt.dalek.github.User;
 import ptt.dalek.gui.App;
 import javafx.animation.KeyFrame;
@@ -12,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -19,7 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class UserPane extends Pane {
-
+	
 	public static final double WIDTH = 270;
 	public static final double HEIGHT = 90;
 	public static final double CONTENTS_HGAB = 2;
@@ -35,17 +39,18 @@ public class UserPane extends Pane {
 	private Label lWebsite;
 
 	private Button bDelete;
-	//private ImageView ivAvatar;
 	private GridPane gpContents;
 
 	private boolean isHighlighted;
 	private User user;
+	
+	Tooltip tCopyToClipboard;
 
 	public UserPane(User user, App app) {
 		this.app = app;
 		this.user = user;
 		this.getStyleClass().add("userPane");
-
+		
 		setup();
 		update(user);
 	}
@@ -69,6 +74,7 @@ public class UserPane extends Pane {
 		lFullName = new Label();
 		lEmail = new Label();
 		lWebsite = new Label();
+		
 		lFullName.setId("l_data");
 		lEmail.setId("l_data");
 		lWebsite.setId("l_data");
@@ -76,11 +82,11 @@ public class UserPane extends Pane {
 		lFullName.setMaxWidth(WIDTH);
 		lEmail.setMaxWidth(WIDTH);
 		lWebsite.setMaxWidth(WIDTH);
-
+		
 		lFullName.setTranslateX(10);
 		lEmail.setTranslateX(10);
 		lWebsite.setTranslateX(10);
-
+		
 		lFullName.setTextOverrun(OverrunStyle.ELLIPSIS);
 		lEmail.setTextOverrun(OverrunStyle.ELLIPSIS);
 		lWebsite.setTextOverrun(OverrunStyle.ELLIPSIS);
@@ -93,7 +99,20 @@ public class UserPane extends Pane {
 				removeUser();
 			}
 		});
-
+		
+		lWebsite.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                        new StringSelection(user.getBlog()), null);
+				app.onCopyToClipbaord(user.getBlog());
+			}
+		});
+		
+//		java.lang.IllegalStateException
+//		tCopyToClipboard = new Tooltip("");
+//		lWebsite.setTooltip(tCopyToClipboard);
+		
 		GridPane.setConstraints(lLogin, 1, 2);
 		GridPane.setConstraints(bDelete, 1, 1);
 		GridPane.setConstraints(lFullName, 1, 3);
