@@ -20,6 +20,9 @@ public class ISO8601 {
 	private static int INDEX_SECOND_LAST = 19;
 
 	public static long toUnix(String isoDate) {
+		if(isoDate.length() < INDEX_SECOND_LAST)
+			return -1;
+		
 		GregorianCalendar g = new GregorianCalendar(
 					Integer.parseInt(isoDate.substring(INDEX_YEAR_FIRST, INDEX_YEAR_LAST)), 
 					Integer.parseInt(isoDate.substring(INDEX_MONTH_FIRST, INDEX_MONTH_LAST)) - 1,

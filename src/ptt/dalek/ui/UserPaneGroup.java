@@ -23,6 +23,10 @@ public class UserPaneGroup extends VBox {
 	public void addUser(User user, App app) {
 		this.getChildren().add(new UserPane(user, app));
 	}
+	
+	public UserPane getSelected() {
+		return selected;
+	}
 
 	public void clear() {
 		this.getChildren().clear();

@@ -2,6 +2,7 @@ package ptt.dalek.gui;
 
 import java.awt.Point;
 import java.util.LinkedList;
+import java.util.List;
 
 import ptt.dalek.github.Repository;
 import ptt.dalek.github.User;
@@ -45,6 +46,7 @@ public class App extends Application {
 	public static final String ALREADY_WATCHING_STRING = "You are already watching '%s'.";
 	public static final String STOP_WATCHING_STRING = "You are no longer watching '%s'.";
 	public static final String COPIED_BLOG_URL = "Copied to clipboard: '%s'.";
+	public static final String REPOSITORIES_NOT_LOADED_STRING = "Repositories not loaded yet. Please wait.";
 
 	private static final int DEFAULT_WIDTH = 600;
 	private static final int DEFAULT_HEIGHT = 400;
@@ -155,7 +157,6 @@ public class App extends Application {
 		// loads saved users from file
 		client = Client.getInstance();
 		client.init();
-		client.loadWatchedUsers();
 		setupUserList();
 
 		updater = new Updater(this);
@@ -193,14 +194,26 @@ public class App extends Application {
 
 	// loads repositories for user 
 	private void loadContent(String user) {
+		if(client.hasRepositories(user)) {
+			List<Repository> repositories = client.getRepositories(user);
+			if(repositories != null) {
+				loadContent(repositories);
+				return;
+			}
+		}
+
+		topbarHint.displayMessage(REPOSITORIES_NOT_LOADED_STRING);
+	}
+
+	private void loadContent(List<Repository> repositories) {
 		clearContent();
 
-		for(Repository repository : client.getRepositories(user)) {
+		for(Repository repository : repositories) {
 			RepositoryPane pane = new RepositoryPane(repository);
 			vbRepository.getChildren().add(pane);
 		}
 	}
-
+	
 	// clears and (re)sets the content of vbox_userList, using Client.getWatchedUsers()
 	public void setupUserList() {
 		upgUserlist.clear();
@@ -227,6 +240,10 @@ public class App extends Application {
 
 	public void onSelectUser(String userName) {
 		loadContent(userName);
+	}
+	
+	public UserPane getSelectedUser() {
+		return upgUserlist.getSelected();
 	}
 	
 	public void onAddUser(final String name, final int result) {
@@ -267,6 +284,13 @@ public class App extends Application {
 	}
 
 	public void onRemoveUser(String userName) {
+		UserPane selected = getSelectedUser();
+		if(selected != null) {
+			if(selected.getUser().getLogin().equalsIgnoreCase(userName)) {
+				clearContent();
+			}
+		}
+		
 		updater.removeUser(userName);
  		topbarHint.displayMessage(String.format(App.STOP_WATCHING_STRING, userName));
 	}
@@ -293,8 +317,20 @@ public class App extends Application {
 		// compare, alert
 	}
 
-	public void onUpdateUserRepositories(String userName,
-			LinkedList<Repository> oldRepositories, LinkedList<Repository> repositories) {
-		
+	public void onUpdateUserRepositories(User user,
+			LinkedList<Repository> oldRepositories, final LinkedList<Repository> repositories) {
+		UserPane selected = getSelectedUser();
+		if(selected != null) {
+			if(selected.getUser().getLogin().equalsIgnoreCase(user.getLogin())) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						System.out.println("update");
+						loadContent(repositories);
+					}
+				});
+			}
+		}
 	}
+
 }

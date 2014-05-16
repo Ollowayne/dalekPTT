@@ -155,18 +155,10 @@ public class UserPane extends Pane {
 
 		gpContents.getChildren().addAll(lLogin, bDelete, lFullName, lEmail, lWebsite, iCopyWebsite, iCopyMail);
 
-		final UserPane self = this;
 		setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
 				app.onSelectUser(user.getLogin());
-
-				//Update highlight for UserPaneGroup
-				Parent parent = self.getParent();
-				if(parent instanceof UserPaneGroup) {
-					UserPaneGroup group = (UserPaneGroup)parent;
-					group.onSelectedChange(self);
-				}
 				setHighlighted(true);
 			}
 		});
@@ -205,10 +197,23 @@ public class UserPane extends Pane {
 	}
 
 	public void setHighlighted(boolean value) {
+		if(value) {
+			//Update highlight for UserPaneGroup
+			Parent parent = getParent();
+			if(parent instanceof UserPaneGroup) {
+				UserPaneGroup group = (UserPaneGroup)parent;
+				group.onSelectedChange(this);
+			}
+		}
+
 		isHighlighted = value;
 		updateHighlight();
 	}
 
+	public User getUser() {
+		return user;
+	}
+	
 	public void updateHighlight() {
 		if(isHighlighted) {
 			setStyle("-fx-border-color: #e880e7");

@@ -10,11 +10,15 @@ public class RepositoryContentPane extends Pane {
 	
 	public RepositoryContentPane() {
 		vbComponents = new VBox();
-		lRepositoryName = new Label("DEMO CONTENT");
+		lRepositoryName = new Label();
 		vbComponents.getChildren().addAll(lRepositoryName);
 		this.getChildren().add(vbComponents);
 		
 		setVisible(false);
+	}
+	
+	public void setContent(String content) {
+		lRepositoryName.setText(content);
 	}
 	
 	public void toggleVisibility() {

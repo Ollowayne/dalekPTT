@@ -22,6 +22,8 @@ public class Client {
 	public static final int USER_ALREADY_WATCHED = 100;
 	public static final int USER_INVALID = 101;
 	public static final int USER_ADDED = 102;
+	
+	boolean repositoriesLoaded = false;
 
 	public static Client getInstance() {
 		if(instance == null)
@@ -35,11 +37,8 @@ public class Client {
 		repositoryMap = new HashMap<String, LinkedList<Repository>>();
 	}
 
-	public boolean init() {
-		return Settings.initializeFolders();
-	}
-
-	public void loadWatchedUsers() {
+	public void init() {
+		Settings.initializeFolders();
 		watchedUsers = Settings.loadUserList();
 	}
 
@@ -73,12 +72,17 @@ public class Client {
 				updatedRepositoryMap.put(user.getLogin(), repositories);
 
 				if(app != null)
-					app.onUpdateUserRepositories(userName, oldRepositories, repositories);
+					app.onUpdateUserRepositories(user, oldRepositories, repositories);
 			}
 		}
 
 		watchedUsers = updatedUsers;
 		repositoryMap = updatedRepositoryMap;
+		repositoriesLoaded = true;
+	}
+	
+	public boolean hasRepositories(String name) {
+		return repositoryMap.get(name) != null;
 	}
 
 	public List<User> getWatchedUsers() {

@@ -41,6 +41,10 @@ public class RepositoryPane extends Pane {
 		
 		rpHeader = new RepositoryHeaderPane(repository.getName());
 		rpContent = new RepositoryContentPane();
+		rpContent.setContent(String.format("Repository: %s (%s)\nOwner: %s\nGithub: %s\nWatchers: %s\nOpen Issues: %s\nForks: %s\nSize: %dkb",
+				repository.getName(), repository.getFullName(), repository.getOwner().getLogin(),
+				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize()
+				));
 		
 		vbComponents.getChildren().addAll(rpHeader, rpContent);
 		
