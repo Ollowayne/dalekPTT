@@ -1,20 +1,25 @@
 package ptt.dalek.gui;
 
 import java.awt.Point;
+import java.util.LinkedList;
 
+import ptt.dalek.github.Repository;
 import ptt.dalek.github.User;
 import ptt.dalek.main.Client;
 import ptt.dalek.ui.RepositoryPane;
 import ptt.dalek.ui.UserPane;
+import ptt.dalek.ui.UserPaneGroup;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -51,7 +56,7 @@ public class App extends Application {
 
 	private BorderPane bpLayout;
 	private ScrollPane spUserList;
-	private VBox vbUserlist;
+	private UserPaneGroup upgUserlist;
 	private TextField tfAddUser;
 	private Button bAddUser;
 	private GridPane topbar;
@@ -64,6 +69,7 @@ public class App extends Application {
 	public Messenger topbarHint;
 
 	private Updater updater;
+	private Client client;
 
 	@Override
 	public void init() {
@@ -89,11 +95,9 @@ public class App extends Application {
 		spUserList.setPrefWidth(UserPane.WIDTH + USERSP_PADDING_RIGHT + USERSP_PADDING_LEFT);
 		spUserList.setVbarPolicy(ScrollBarPolicy.NEVER);
 
-		// VBox containing all observed users
-		vbUserlist = new VBox();
-		vbUserlist.setSpacing(USERSP_SPACING);
-		vbUserlist.setPadding(new Insets(USERSP_PADDING_TOP, USERSP_PADDING_RIGHT, USERSP_PADDING_BOTTOM, USERSP_PADDING_LEFT));
-		spUserList.setContent(vbUserlist);
+		// UserPaneGroup containing all observed users
+		upgUserlist = new UserPaneGroup();
+		spUserList.setContent(upgUserlist);
 
 		// text field to add users
 		tfAddUser = new TextField();
@@ -148,9 +152,10 @@ public class App extends Application {
 		bpLayout.setTop(topbar);
 
 		// loads saved users from file
-		Client.getInstance().init();
-		Client.getInstance().loadWatchedUsers();
-		updateUserList();
+		client = Client.getInstance();
+		client.init();
+		client.loadWatchedUsers();
+		setupUserList();
 
 		updater = new Updater(this);
 		(new Thread(updater)).start();
@@ -166,7 +171,7 @@ public class App extends Application {
 		stage.show();
 
 		topbarHint.displayMessage("Welcome to GitObserve v1.0", 3000, 500);
-		if(vbUserlist.getChildren().isEmpty()) {
+		if(upgUserlist.getChildren().isEmpty()) {
 			topbarHint.displayMessage("Get started by adding users!");
 		}
 	}
@@ -174,6 +179,10 @@ public class App extends Application {
 	@Override
 	public void stop() {
 		updater.cancel();
+	}
+	
+	public Client getClient() {
+		return client;
 	}
 
 	// clears repository VBox
@@ -187,18 +196,15 @@ public class App extends Application {
 		RepositoryPane rp1 = new RepositoryPane(user + " I");
 		RepositoryPane rp2 = new RepositoryPane(user + " II");
 		RepositoryPane rp3 = new RepositoryPane(user + " III");
-
 		vbRepository.getChildren().addAll(rp1, rp2, rp3);
 	}
 
 	// clears and (re)sets the content of vbox_userList, using Client.getWatchedUsers()
-	public void updateUserList() {
-		try {
-		vbUserlist.getChildren().clear();
-		} catch(Exception e) {e.printStackTrace();}
+	public void setupUserList() {
+		upgUserlist.clear();
+		
 		for(User user : Client.getInstance().getWatchedUsers()) {
-			final UserPane newPane = new UserPane(user.getLogin(), this);
-			vbUserlist.getChildren().add(newPane);
+			upgUserlist.addUser(user, this);
 		}
 	}
 
@@ -232,7 +238,7 @@ public class App extends Application {
 
 		for(User user : Client.getInstance().getWatchedUsers()) {;
 			if(user.getLogin().equalsIgnoreCase(name)) {
-				final UserPane newPane = new UserPane(user.getLogin(), this);
+				final UserPane newPane = new UserPane(user, this);
 				newPane.setOpacity(0);
 
 				final Timeline swipeIn = new Timeline(new KeyFrame(Duration.millis(200), 
@@ -251,7 +257,7 @@ public class App extends Application {
 				});
 
 				set.play();
-				vbUserlist.getChildren().add(newPane);
+				upgUserlist.getChildren().add(newPane);
 
 				topbarHint.displayMessage(String.format(NOW_WATCHING_STRING, user.getLogin()));
 			}
@@ -259,7 +265,30 @@ public class App extends Application {
 	}
 
 	public void onRemoveUser(String userName) {
-		Client.getInstance().removeWatchedUser(userName);
+		updater.removeUser(userName);
  		topbarHint.displayMessage(String.format(App.STOP_WATCHING_STRING, userName));
+	}
+
+	public void onUpdateWatchedUser(User user, final User addUser) {
+		Node node = upgUserlist.lookup("#" + user.getLogin());
+		if(node != null) {
+			if(node instanceof UserPane) {
+				final UserPane userPane = (UserPane)node;
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						userPane.update(addUser);
+					}
+				});
+			}
+		}
+		
+		//TODO 
+		// compare, alert
+	}
+
+	public void onUpdateUserRepositories(String userName,
+			LinkedList<Repository> oldRepositories, LinkedList<Repository> repositories) {
+		
 	}
 }

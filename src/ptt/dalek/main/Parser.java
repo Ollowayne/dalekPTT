@@ -4,15 +4,14 @@ import java.util.LinkedList;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonValue;
 
 import ptt.dalek.github.Repository;
 import ptt.dalek.github.User;
 
 public class Parser {
 
-	public static String jsonValueToString(JsonValue value) {
-		return value.toString() == "null" ? "" : value.toString();
+	public static String jsonValueToString(JsonObject obj, String key) {
+		return obj.get(key).toString() == "null" ? "" : obj.getString(key);
 	}
 
 	public static User parseUser(JsonObject obj) {
@@ -22,7 +21,7 @@ public class Parser {
 		user.setId(obj.getInt("id"));
 
 		user.setAvatarUrl(obj.getString("avatar_url"));
-		user.setGravatarId(jsonValueToString(obj.get("gravatar_id")));
+		user.setGravatarId(jsonValueToString(obj, "gravatar_id"));
 		user.setUrl(obj.getString("url"));
 		user.setHtmlUrl(obj.getString("html_url"));
 		user.setFollowersUrl(obj.getString("followers_url"));
@@ -42,22 +41,22 @@ public class Parser {
 			user.setName(obj.getString("name"));
 		}
 		if (obj.containsKey("company")) {
-			user.setCompany(jsonValueToString(obj.get("company")));
+			user.setCompany(jsonValueToString(obj, "company"));
 		}
 		if (obj.containsKey("blog")) {
-			user.setBlog(jsonValueToString(obj.get("blog")));
+			user.setBlog(jsonValueToString(obj, "blog"));
 		}
 		if (obj.containsKey("location")) {
-			user.setLocation(jsonValueToString(obj.get("location")));
+			user.setLocation(jsonValueToString(obj, "location"));
 		}
 		if (obj.containsKey("email")) {
-			user.setEmail(jsonValueToString(obj.get("email")));
+			user.setEmail(jsonValueToString(obj, "email"));
 		}
 		if (obj.containsKey("hireable")) {
 			user.setHireable(obj.getBoolean("hireable"));
 		}
 		if (obj.containsKey("bio")) {
-			user.setBio(jsonValueToString(obj.get("bio")));
+			user.setBio(jsonValueToString(obj, "bio"));
 		}
 
 		if (obj.containsKey("public_repos")) {
@@ -134,12 +133,12 @@ public class Parser {
 		repository.setSshUrl(obj.getString("ssh_url"));
 		repository.setCloneUrl(obj.getString("clone_url"));
 		repository.setSvnUrl(obj.getString("svn_url"));
-		repository.setHomepage(jsonValueToString(obj.get("homepage")));
+		repository.setHomepage(jsonValueToString(obj, "homepage"));
 
 		repository.setSize(obj.getInt("size"));
 		repository.setStargazersCount(obj.getInt("stargazers_count"));
 		repository.setWatchersCount(obj.getInt("watchers_count"));
-		repository.setLanguage(jsonValueToString(obj.get("language")));
+		repository.setLanguage(jsonValueToString(obj, "language"));
 		repository.setHasIssues(obj.getBoolean("has_issues"));
 		repository.setHasDownloads(obj.getBoolean("has_downloads"));
 		repository.setHasWiki(obj.getBoolean("has_wiki"));
@@ -150,11 +149,16 @@ public class Parser {
 		repository.setWatchers(obj.getInt("watchers"));
 		repository.setDefaultBranch(obj.getString("default_branch"));
 
-		repository.setCreatedAt(ISO8601.toUnix(obj.getString("created_at")));
-		repository.setUpdatedAt(ISO8601.toUnix(obj.getString("updated_at")));
-		repository.setPushedAt(ISO8601.toUnix(obj.getString("pushed_at")));
+		repository.setCreatedAt(parseISO8601(obj, "created_at"));
+		repository.setUpdatedAt(parseISO8601(obj, "updated_at"));
+		repository.setPushedAt(parseISO8601(obj, "pushed_at"));
 
 		return repository;
+	}
+
+	public static long parseISO8601(JsonObject obj, String key) {
+		String value = jsonValueToString(obj, key);
+		return ISO8601.toUnix(value);
 	}
 
 	public static LinkedList<Repository> parseRepositories(JsonArray array) {

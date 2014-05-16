@@ -26,8 +26,9 @@ public class RepositoryHelper extends BasicHelper {
 			InputStream stream = pagedRequest.next();
 			if(stream != null) {
 				JsonReader reader = Json.createReader(stream);
-				for(Repository repo : Parser.parseRepositories(reader.readArray()))
+				for(Repository repo : Parser.parseRepositories(reader.readArray())) {
 					repositories.add(repo);
+				}
 
 				reader.close();
 			}

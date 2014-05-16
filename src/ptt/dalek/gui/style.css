@@ -70,21 +70,21 @@
     -fx-text-fill: #ffffff;
 }
 
-#user_pane {
+.userPane {
 	-fx-border-width: 0 0 4 0;
 	-fx-border-style: solid;
 	-fx-border-color: #9c339a;
 	-fx-background-color: #ffffff;
 }
 
-#user_pane:hover {
+.userPane:hover {
 	-fx-border-width: 0 0 4 0;
 	-fx-border-style: solid;
 	-fx-border-color: #e880e7;
 	-fx-background-color: #ffffff;
 }
 
-#remove_userpane_button {
+.userPaneButton {
 	 -fx-background-color: transparent;
 
     -fx-background-insets: 0,0,0,0;
@@ -95,11 +95,11 @@
     -fx-font: bold 10pt "Arial Narrow";
 }
 
-#remove_userpane_button:hover {
+.userPaneButton:hover {
     -fx-text-fill: #e880e7;
 }
 
-#remove_userpane_button:pressed {
+.userPaneButton:pressed {
     -fx-text-fill: #ffb3fe;
 }
 

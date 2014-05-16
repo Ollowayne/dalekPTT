@@ -1,5 +1,6 @@
 package ptt.dalek.ui;
 
+import ptt.dalek.github.User;
 import ptt.dalek.gui.App;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -7,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
@@ -25,7 +27,6 @@ public class UserPane extends Pane {
 
 	private static final String DELETE_BUTTON_TEXT = "x";
 
-	private String userName;
 	private App app;
 
 	private Label lLogin;
@@ -38,14 +39,15 @@ public class UserPane extends Pane {
 	private GridPane gpContents;
 
 	private boolean isHighlighted;
+	private User user;
 
-	public UserPane(String userName, App app) {
-		this.userName = userName;
+	public UserPane(User user, App app) {
 		this.app = app;
-		this.setId("user_pane");
+		this.user = user;
+		this.getStyleClass().add("userPane");
 
 		setup();
-		setData();
+		update(user);
 	}
 
 	public void setup() {
@@ -74,12 +76,16 @@ public class UserPane extends Pane {
 		lEmail.setMaxWidth(WIDTH);
 		lWebsite.setMaxWidth(WIDTH);
 
+		lFullName.setTranslateX(10);
+		lEmail.setTranslateX(10);
+		lWebsite.setTranslateX(10);
+
 		lFullName.setTextOverrun(OverrunStyle.ELLIPSIS);
 		lEmail.setTextOverrun(OverrunStyle.ELLIPSIS);
 		lWebsite.setTextOverrun(OverrunStyle.ELLIPSIS);
 
 		bDelete = new Button(DELETE_BUTTON_TEXT);
-		bDelete.setId("remove_userpane_button");
+		bDelete.getStyleClass().add("userPaneButton");
 		bDelete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -96,10 +102,18 @@ public class UserPane extends Pane {
 
 		gpContents.getChildren().addAll(lLogin, bDelete, lFullName, lEmail, lWebsite);
 
+		final UserPane self = this;
 		setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				app.onSelectUser(userName);
+				app.onSelectUser(user.getLogin());
+
+				//Update highlight for UserPaneGroup
+				Parent parent = self.getParent();
+				if(parent instanceof UserPaneGroup) {
+					UserPaneGroup group = (UserPaneGroup)parent;
+					group.onSelectedChange(self);
+				}
 				setHighlighted(true);
 			}
 		});
@@ -107,24 +121,17 @@ public class UserPane extends Pane {
 		getChildren().add(gpContents);
 	}
 
-	private void setData() {
-		lLogin.setText(userName);
-		lFullName.setText("  Real Name");
-		lEmail.setText("  www.somesamplestuff.example");
-		lWebsite.setText("  more sample data, shows how the overrunStyle labels work");
-	}
-
-	public void update(String userName) {
-		this.userName = userName;
-		setData();
-	}
-
-	public String getUserName() {
-		return userName;
+	public void update(User user) {
+		this.setId(user.getLogin());
+		this.user = user;
+		this.lLogin.setText(user.getLogin());
+		this.lFullName.setText("Name: " + user.getName());
+		this.lEmail.setText("Email: " + user.getEmail());
+		this.lWebsite.setText("Website: " + user.getBlog());
 	}
 
 	private void removeUser() {
-		app.onRemoveUser(userName);
+		app.onRemoveUser(user.getLogin());
 
 		final UserPane self = this;
 		final Timeline timeline = new Timeline (new KeyFrame(Duration.millis(300), 
@@ -132,10 +139,10 @@ public class UserPane extends Pane {
 												new KeyValue(opacityProperty(), 0)));
 
 		timeline.setOnFinished(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					((VBox)self.getParent()).getChildren().remove(self);
-				}
+			@Override
+			public void handle(ActionEvent event) {
+				((VBox)self.getParent()).getChildren().remove(self);
+			}
 		});
 		timeline.play();
 	}

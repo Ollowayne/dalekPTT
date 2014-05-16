@@ -13,10 +13,10 @@ import ptt.dalek.main.Request;
 
 public class UserHelper extends BasicHelper {
 
-	public static final String REPOSITORIES_STRING = "%s/users/%s";
+	public static final String USER_STRING = "%s/users/%s";
 
 	public static User getUser(String name) {
-		InputStream stream = new Request(String.format(REPOSITORIES_STRING, GITHUB_API_URL, name)).send();
+		InputStream stream = new Request(String.format(USER_STRING, GITHUB_API_URL, name)).send();
 		if(stream != null) {
 			JsonReader reader = Json.createReader(stream);
 			JsonObject jsonObj = reader.readObject();

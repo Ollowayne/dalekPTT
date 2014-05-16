@@ -10,13 +10,18 @@ public class Updater extends Task<Void> {
 
 	private static final int UPDATE_TIME = 30000;
 
-	private LinkedList<String> updateUsers = new LinkedList<String>();
+	private LinkedList<String> addUsers = new LinkedList<String>();
+	private LinkedList<String> removeUsers = new LinkedList<String>();
 	private App app;
 
 	private int nextUpdate;
 
 	public void addUser(String name) {
-		updateUsers.add(name);
+		addUsers.add(name);
+	}
+	
+	public void removeUser(String name) {
+		removeUsers.add(name);
 	}
 
 	public Updater(App app) {
@@ -37,10 +42,22 @@ public class Updater extends Task<Void> {
 	@Override
 	protected Void call() throws Exception {
 		while(!isCancelled()) {
-			if(updateUsers.size() > 0) {
+			try {
+			if(removeUsers.size() > 0) {
 				app.setLoading(true);
 
-				for(final String name : updateUsers) {
+				for(String name : removeUsers) {
+					app.getClient().removeWatchedUser(name);
+				}
+
+				removeUsers.clear();
+				app.setLoading(false);
+			}
+
+			if(addUsers.size() > 0) {
+				app.setLoading(true);
+
+				for(final String name : addUsers) {
 					final int result = Client.getInstance().addWatchedUser(name);
 					Platform.runLater(new Runnable(){
 						@Override
@@ -49,26 +66,22 @@ public class Updater extends Task<Void> {
 						}
 					});
 				}
-				updateUsers.clear();
+
+				addUsers.clear();
 				app.setLoading(false);
 			}
 
 			if(nextUpdate <= 0) {
 				app.setLoading(true);
 
-				Client.getInstance().updateWatchedUsers();
-				Platform.runLater(new Runnable(){
-					@Override
-					public void run() {
-						app.updateUserList();
-					}
-				});
+				app.getClient().updateWatchedUsers(app);
 
 				app.setLoading(false);	
 				nextUpdate = UPDATE_TIME;
 			}
 
 			nextUpdate -= 100;
+		} catch(Exception e) {e.printStackTrace();}
 			Thread.sleep(100);
 		}
 

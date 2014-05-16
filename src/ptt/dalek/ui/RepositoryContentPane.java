@@ -20,10 +20,4 @@ public class RepositoryContentPane extends Pane {
 	public void toggleVisibility() {
 		setVisible(!visibleProperty().get());
 	}
-
-	private void setAllOpacity(int value) {
-		this.setOpacity(value);
-		lRepositoryName.setOpacity(value);
-	}
-
 }

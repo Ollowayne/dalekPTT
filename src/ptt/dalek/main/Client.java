@@ -8,6 +8,7 @@ import java.util.Map;
 
 import ptt.dalek.github.Repository;
 import ptt.dalek.github.User;
+import ptt.dalek.gui.App;
 import ptt.dalek.helpers.RepositoryHelper;
 import ptt.dalek.helpers.UserHelper;
 
@@ -29,7 +30,7 @@ public class Client {
 		return instance;
 	}
 
-	private Client() {
+	private Client() { 	
 		watchedUsers = new LinkedList<User>();
 		repositoryMap = new HashMap<String, LinkedList<Repository>>();
 	}
@@ -42,26 +43,42 @@ public class Client {
 		watchedUsers = Settings.loadUserList();
 	}
 
-	public void updateWatchedUsers() {
-		boolean success = true;
+	public void updateWatchedUsers(App app) {
 		LinkedList<User> updatedUsers = new LinkedList<User>();
 		for(User user : watchedUsers) {
 			User newUser = UserHelper.getUser(user.getLogin());
-			if(newUser.getId() == -1)
-				success = false;
 
-			updatedUsers.add(newUser);
+			boolean isValid = (newUser.getId() != -1);
+			User addUser = (isValid ? newUser : user);
+			updatedUsers.add(addUser);
+
+			if(app != null && isValid)
+				app.onUpdateWatchedUser(user, addUser);
 		}
 
 		Map<String, LinkedList<Repository>> updatedRepositoryMap = new HashMap<String, LinkedList<Repository>>();
 		for(User user : updatedUsers) {
-			updatedRepositoryMap.put(user.getLogin(), RepositoryHelper.getRepositories(user.getLogin()));
+			String userName = user.getLogin();
+			LinkedList<Repository> repositories = RepositoryHelper.getRepositories(userName);
+			boolean success = true;
+			for(Repository repo : repositories) {
+				if(repo.getId() == -1) {
+					success = false;
+					break;
+				}
+			}
+
+			if(success) {
+				LinkedList<Repository> oldRepositories = updatedRepositoryMap.get(userName);
+				updatedRepositoryMap.put(user.getLogin(), repositories);
+
+				if(app != null)
+					app.onUpdateUserRepositories(userName, oldRepositories, repositories);
+			}
 		}
 
-		if(success) {
-			watchedUsers = updatedUsers;
-			repositoryMap = updatedRepositoryMap;
-		}
+		watchedUsers = updatedUsers;
+		repositoryMap = updatedRepositoryMap;
 	}
 
 	public List<User> getWatchedUsers() {
