@@ -1,5 +1,6 @@
 package ptt.dalek.ui;
 
+import ptt.dalek.github.Repository;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -14,15 +15,15 @@ import javafx.util.Duration;
 public class RepositoryPane extends Pane {
 	public static final double HEIGHT = UserPane.HEIGHT / 2;
 	
-	private String name;
+	private Repository repository;
 	private boolean isOpen = false;
 	
 	private VBox vbComponents;
 	private RepositoryHeaderPane rpHeader;
 	private RepositoryContentPane rpContent;
 
-	public RepositoryPane(String repoName) {
-		this.name = repoName;
+	public RepositoryPane(Repository repository) {
+		this.repository = repository;
 		this.setId("repositoryPane");
 		setup();
 		setData();
@@ -38,7 +39,7 @@ public class RepositoryPane extends Pane {
 		vbComponents = new VBox(4);
 		vbComponents.setPadding(new Insets(4, 4, 4, 4));
 		
-		rpHeader = new RepositoryHeaderPane(name);
+		rpHeader = new RepositoryHeaderPane(repository.getName());
 		rpContent = new RepositoryContentPane();
 		
 		vbComponents.getChildren().addAll(rpHeader, rpContent);

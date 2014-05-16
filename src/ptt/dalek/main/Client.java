@@ -84,6 +84,10 @@ public class Client {
 	public List<User> getWatchedUsers() {
 		return Collections.unmodifiableList(watchedUsers);
 	}
+	
+	public List<Repository> getRepositories(String name) {
+		return Collections.unmodifiableList(repositoryMap.get(name));
+	}
 
 	public int getWatchedUserIndex(String name) {
 		for(int i = 0; i < watchedUsers.size(); ++i) {

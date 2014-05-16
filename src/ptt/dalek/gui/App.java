@@ -194,16 +194,17 @@ public class App extends Application {
 	// loads repositories for user 
 	private void loadContent(String user) {
 		clearContent();
-		RepositoryPane rp1 = new RepositoryPane(user + " I");
-		RepositoryPane rp2 = new RepositoryPane(user + " II");
-		RepositoryPane rp3 = new RepositoryPane(user + " III");
-		vbRepository.getChildren().addAll(rp1, rp2, rp3);
+
+		for(Repository repository : client.getRepositories(user)) {
+			RepositoryPane pane = new RepositoryPane(repository);
+			vbRepository.getChildren().add(pane);
+		}
 	}
 
 	// clears and (re)sets the content of vbox_userList, using Client.getWatchedUsers()
 	public void setupUserList() {
 		upgUserlist.clear();
-		
+
 		for(User user : Client.getInstance().getWatchedUsers()) {
 			upgUserlist.addUser(user, this);
 		}
