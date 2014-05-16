@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class RepositoryPane extends Pane {
-	public static final double HEIGHT = UserPane.HEIGHT / 2;
+	public static final double HEIGHT = UserPane.HEIGHT / 3;
 	
 	private Repository repository;
 	private boolean isOpen = false;
@@ -57,7 +57,7 @@ public class RepositoryPane extends Pane {
 					rpHeader.toggleIcon();
 					
 					final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
-														new KeyValue(minHeightProperty(), 5*HEIGHT)));
+														new KeyValue(minHeightProperty(), 10*HEIGHT)));
 					open.setOnFinished(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {

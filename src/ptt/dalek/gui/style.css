@@ -12,15 +12,23 @@
     -fx-background-color: #f0f0f0;
 }
 
-.scroll-pane .scroll-bar:horizontal .track ,.scroll-pane .scroll-bar:vertical .track{
+.scroll-pane .scroll-bar:vertical .track{
      -fx-background-color: #f0f0f0;
      -fx-background-radius: 0em;
 }
 
-.scroll-pane .scroll-bar:horizontal .thumb, .scroll-pane .scroll-bar:vertical .thumb {
+.scroll-pane .scroll-bar:vertical .thumb {
     -fx-background-color: #d5d5d5;
     -fx-background-insets: 0, 0, 0;
     -fx-background-radius: 0em;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #c5c5c5;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:pressed {
+    -fx-background-color: #b5b5b5;
 }
 
 .scroll-pane:focused {
