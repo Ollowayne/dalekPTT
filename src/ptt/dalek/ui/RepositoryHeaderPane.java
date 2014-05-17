@@ -13,7 +13,8 @@ public class RepositoryHeaderPane extends Pane {
 	private static final String IMAGE_ARROW_CLOSED = "file:res/closedLila.png";
 	
 	private HBox hbComponents;
-	private Label repoName;
+	private Label lRepoName;
+	private Label lUpdate;
 	
 	private ImageView ivIcon;
 	private Image iArrowOpen;
@@ -30,7 +31,7 @@ public class RepositoryHeaderPane extends Pane {
 		setMinHeight(RepositoryPane.HEIGHT);
 		
 		hbComponents = new HBox(4);
-		repoName = new Label(name);
+		lRepoName = new Label(name);
 		hbComponents.setAlignment(Pos.CENTER);
 
 		iArrowOpen = new Image(IMAGE_ARROW_OPENED);
@@ -39,7 +40,7 @@ public class RepositoryHeaderPane extends Pane {
 		ivIcon = new ImageView();
 		ivIcon.setImage(iArrowClosed);
 		
-		hbComponents.getChildren().addAll(ivIcon, repoName);
+		hbComponents.getChildren().addAll(ivIcon, lRepoName);
 
 		this.getChildren().add(hbComponents);
 	}

@@ -121,7 +121,7 @@
 
 #commit_pale {
 	-fx-text-fill: #ada0ad;
-    -fx-font: bold 11pt "Arial Narrow";
+    -fx-font: italic 11pt "Arial Narrow";
 }
 
 #topbar {

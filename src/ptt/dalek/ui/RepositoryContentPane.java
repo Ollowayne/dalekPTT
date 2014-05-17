@@ -49,7 +49,7 @@ public class RepositoryContentPane extends Pane {
 		vbCommits.getChildren().clear();
 		int size = commits.size();
 		for(int i = 0; i < 10; i++) {
-			if(i > size)
+			if(i >= size)
 				return;
 			CommitPane temp = new CommitPane(commits.get(i));
 			vbCommits.getChildren().add(temp);
