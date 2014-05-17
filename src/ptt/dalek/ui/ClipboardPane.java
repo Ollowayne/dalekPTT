@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 public class ClipboardPane extends Pane {
-	private static final String IMAGE_CLIPBOARD = "file:res/clipboard.png";
+	public static final String IMAGE_CLIPBOARD = "file:res/clipboard.png";
 	
 	private Label lData;
 	private ImageView iIcon;

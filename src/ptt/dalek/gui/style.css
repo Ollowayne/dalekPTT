@@ -103,6 +103,26 @@
 	-fx-cursor: hand;
 }
 
+#commit_author {
+	-fx-text-fill: #9c339a;
+    -fx-font: bold 11pt "Arial Narrow";
+}
+
+#commit_highlight {
+	-fx-text-fill: #9c339a;
+    -fx-font: bold 11pt "Arial Narrow";
+}
+
+#commit {
+	-fx-text-fill: #545454;
+    -fx-font: bold 11pt "Arial Narrow";
+}
+
+#commit_pale {
+	-fx-text-fill: #ada0ad;
+    -fx-font: bold 11pt "Arial Narrow";
+}
+
 #topbar {
 	-fx-background-color: #ffffff;
 	-fx-border-width: 0 0 2 0;

@@ -1,9 +1,5 @@
 package ptt.dalek.ui;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import ptt.dalek.github.Commit;
@@ -13,7 +9,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 
 public class RepositoryContentPane extends Pane {
-	public static final String COMMIT_STRING = "\nAuthor: %s\nMessage: %s\nSha: %s \n\nCommited %s by %s.";
 	private VBox vbComponents;
 	private VBox vbCommits;
 	private Label lRepositoryName;
@@ -36,7 +31,7 @@ public class RepositoryContentPane extends Pane {
 	public void setCommits(List<Commit> commits) {
 		vbCommits.getChildren().clear();
 		int size = commits.size();
-		for(int i = size-1; i >= size-11; i--) {
+		for(int i = size-1; i >= size-10; i--) {
 			if(i<0)
 				return;
 			CommitPane temp = new CommitPane(commits.get(i));

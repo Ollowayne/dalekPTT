@@ -162,7 +162,6 @@ public class UserPane extends Pane {
 			setStyle("-fx-border-color: #e880e7");
 			return;
 		}
-
 		setStyle("-fx-border-color: #9c339a");
 	}
 	
