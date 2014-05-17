@@ -209,7 +209,7 @@ public class App extends Application {
 
 	private void loadContent(List<Repository> repositories) {
 		clearContent();
-
+		
 		for(Repository repository : repositories) {
 			RepositoryPane pane = new RepositoryPane(repository, this);
 			vbRepository.getChildren().add(pane);
@@ -221,7 +221,8 @@ public class App extends Application {
 		upgUserlist.clear();
 
 		for(User user : Client.getInstance().getWatchedUsers()) {
-			upgUserlist.addUser(user, this);
+			//upgUserlist.addUser(user, this);
+			onAddUser(user.getLogin(), Client.USER_ADD_SILENTLY);
 		}
 	}
 
@@ -279,8 +280,9 @@ public class App extends Application {
 
 				set.play();
 				upgUserlist.getChildren().add(newPane);
-
-				topbarHint.displayMessage(String.format(NOW_WATCHING_STRING, user.getLogin()));
+				if(result != Client.USER_ADD_SILENTLY) {
+					topbarHint.displayMessage(String.format(NOW_WATCHING_STRING, user.getLogin()));
+				}
 			}
 		}
 	}

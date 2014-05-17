@@ -60,12 +60,16 @@ public class RepositoryPane extends Pane {
 				rpHeader.toggleIcon();
 				
 				if (!isOpen) {			
+					final List<Commit> commits = app.getMyCommits(getId());
+					openedHeight = 5*HEIGHT + commits.size() * 30;
+					
 					final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
 														new KeyValue(minHeightProperty(), openedHeight)));
 					open.setOnFinished(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
 								rpContent.toggleVisibility();
+								rpContent.setCommits(commits);
 							}
 					});
 					
@@ -90,9 +94,5 @@ public class RepositoryPane extends Pane {
 				repository.getName(), repository.getFullName(), repository.getOwner().getLogin(),
 				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize()
 				));
-		List<Commit> commits = app.getMyCommits(getId());
-		rpContent.setCommits(commits);
-		openedHeight = 5*HEIGHT + commits.size() * 30;
-		
 	}
 }

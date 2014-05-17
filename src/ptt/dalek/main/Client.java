@@ -26,6 +26,7 @@ public class Client {
 	public static final int USER_ALREADY_WATCHED = 100;
 	public static final int USER_INVALID = 101;
 	public static final int USER_ADDED = 102;
+	public static final int USER_ADD_SILENTLY = 999;
 
 	public static Client getInstance() {
 		if(instance == null)
