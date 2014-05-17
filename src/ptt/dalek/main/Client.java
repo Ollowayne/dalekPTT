@@ -54,79 +54,101 @@ public class Client {
 		return commitStatusMap.get(name);
 	}
 	
-	public void updateWatchedUsers(App app) {
-		LinkedList<User> updatedUsers = new LinkedList<User>();
-		for(User user : watchedUsers) {
-			User newUser = UserHelper.getUser(user.getLogin());
+	public void updateCommitStatus(String repository, long time) {
+		commitStatusMap.put(repository, ISO8601.fromUnix(time));
+	}
+	
+	public void updateWatchedUser(String name, App app) {
+		int index = getWatchedUserIndex(name);
+		if(index == -1)
+			return;
 
-			boolean isValid = (newUser.getId() != -1);
-			User addUser = (isValid ? newUser : user);
-			updatedUsers.add(addUser);
+		User user = watchedUsers.get(index);
+		User newUser = UserHelper.getUser(user.getLogin());
+		if(newUser.getId() != -1) {
+			if(app != null)
+				app.onUpdateWatchedUser(user, newUser);
 
-			if(app != null && isValid)
-				app.onUpdateWatchedUser(user, addUser);
+			watchedUsers.set(index, newUser);
+			user = newUser;
+			Settings.saveUserList(watchedUsers);
 		}
 
-		Map<String, LinkedList<Repository>> updatedRepositoryMap = new HashMap<String, LinkedList<Repository>>();
-		for(User user : updatedUsers) {
-			String userName = user.getLogin();
-			LinkedList<Repository> repositories = RepositoryHelper.getRepositories(userName);
-			boolean success = true;
-			for(Repository repo : repositories) {
-				if(repo.getId() == -1) {
-					success = false;
-					break;
-				}
-			}
-
-			if(success) {
-				LinkedList<Repository> oldRepositories = updatedRepositoryMap.get(userName);
-				updatedRepositoryMap.put(user.getLogin(), repositories);
-
-				if(app != null)
-					app.onUpdateUserRepositories(user, oldRepositories, repositories);
+		String userName = user.getLogin();
+		LinkedList<Repository> repositories = RepositoryHelper.getRepositories(userName);
+		boolean success = true;
+		for(Repository repo : repositories) {
+			if(repo.getId() == -1) {
+				success = false;
+				break;
 			}
 		}
 
-		watchedUsers = updatedUsers;
-		repositoryMap = updatedRepositoryMap;
-		Settings.saveRepositoryMap(repositoryMap);
+		if(success) {
+			if(app != null)
+				app.onUpdateUserRepositories(user, repositoryMap.get(userName), repositories);
 
-		for(String username : repositoryMap.keySet()) {
-			for(Repository repository : repositoryMap.get(username)) {
-				String status = getCommitStatuc(repository.getFullName());
-				LinkedList<Commit> commits;
-				if(status != null)
-					commits = CommitHelper.getCommits(username, repository.getName(), status);
-				else
-					commits = CommitHelper.getCommits(username, repository.getName());
+			repositoryMap.put(userName, repositories);
+			Settings.saveRepositoryMap(repositoryMap);
+		}
+		
+		for(Repository repository : repositories) {
+			String status = getCommitStatuc(repository.getFullName());
+			LinkedList<Commit> commits;
+			if(status != null)
+				commits = CommitHelper.getCommits(userName, repository.getName(), status);
+			else
+				commits = CommitHelper.getCommits(userName, repository.getName());
 
-				for(int i = 0; i < commits.size(); ++i) {
-					Commit commit = commits.get(i);
-					if(i == 0) {
-						commitStatusMap.put(repository.getFullName(), ISO8601.fromUnix(commit.getCommitData().getCommitter().getDate() + 1));
-					}
-
-					LinkedList<Commit> commitList = commitMap.get(repository.getFullName());
-					if(commitList == null) {
-						commitMap.put(repository.getFullName(), new LinkedList<Commit>());
-						commitList = commitMap.get(repository.getFullName());
-					}
-					commitList.add(i, commit);
+			for(int i = 0; i < commits.size(); ++i) {
+				Commit commit = commits.get(i);
+				if(i == 0) {
+					updateCommitStatus(repository.getFullName(), commit.getCommitData().getCommitter().getDate() + 1);
 				}
+
+				LinkedList<Commit> commitList = commitMap.get(repository.getFullName());
+				if(commitList == null) {
+					commitMap.put(repository.getFullName(), new LinkedList<Commit>());
+					commitList = commitMap.get(repository.getFullName());
+				}
+				commitList.add(i, commit);
 			}
 		}
 
 		Settings.saveCommitStatus(commitStatusMap);
 		Settings.saveCommits(commitMap);
 	}
+	
+	public void updateWatchedUsers(App app) {
+		for(User user : watchedUsers) {
+			updateWatchedUser(user.getLogin(), app);
+		}
+	}
 
+	public int getWatchedUserIndex(String name) {
+		for(int i = 0; i < watchedUsers.size(); ++i) {
+			User user = watchedUsers.get(i);
+			if(user.getLogin().equalsIgnoreCase(name))
+				return i;
+		}
+
+		return -1;
+	}
+	
+	public User getWatchedUser(String name) {
+		int index = getWatchedUserIndex(name);
+		if(index == -1)
+			return null;
+		
+		return watchedUsers.get(index);
+	}
+	
 	public boolean hasRepositories(String name) {
 		return repositoryMap.get(name) != null;
 	}
 
 	public boolean hasWatchedUser(String name) {
-		return getWatchedUser(name) != null;
+		return getWatchedUserIndex(name) != -1;
 	}
 
 	public boolean hasWatchedUsers() {
@@ -147,20 +169,6 @@ public class Client {
 			return Collections.unmodifiableList(new LinkedList<Commit>());
 		
 		return Collections.unmodifiableList(commits);
-	}
-
-	public User getWatchedUser(String name) {
-		for(int i = 0; i < watchedUsers.size(); ++i) {
-			User user = watchedUsers.get(i);
-			if(user.getLogin().equalsIgnoreCase(name))
-				return user;
-		}
-
-		return null;
-	}
-
-	public User getLatestUser() {
-		return watchedUsers.get(watchedUsers.size() - 1);
 	}
 
 	public int addWatchedUser(String name) {
