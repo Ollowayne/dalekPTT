@@ -319,21 +319,6 @@ public class App extends Application {
 		// compare, alert
 	}
 
-	public void onUpdateUserRepositories(User user,
-			LinkedList<Repository> oldRepositories, final LinkedList<Repository> repositories) {
-		UserPane selected = getSelectedUser();
-		if(selected != null) {
-			if(selected.getUser().getLogin().equalsIgnoreCase(user.getLogin())) {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						loadContent(repositories);
-					}
-				});
-			}
-		}
-	}
-
 	public void onToggleRepository(String repositoryName) {
 //		List<Commit> commits = client.getCommits(repositoryName);
 //		
@@ -344,6 +329,41 @@ public class App extends Application {
 	
 	public List<Commit> getMyCommits(String repositoryName) {
 		return client.getCommits(repositoryName);
+	}
+
+	public void onAddUserRepository(User user, Repository repository) {
+		if(!getSelectedUser().getUser().getLogin().equalsIgnoreCase(user.getLogin()))
+			return;
+		
+		final RepositoryPane pane = new RepositoryPane(repository, this);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				vbRepository.getChildren().add(pane);
+			}
+		});
+	}
+
+	public void onRemoveUserRepository(User user, Repository repository) {
+		final Node node = vbRepository.lookup("#" + repository.getFullName());
+		if(node == null)
+			return;
+		
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				vbRepository.getChildren().remove(node);
+			}
+		});
+	}
+
+	public void onUpdateUserRepository(User user, Repository repository) {
+		final Node node = vbRepository.lookup("#" + repository.getFullName());
+		//TBD
+	}
+
+	public void onNewCommits(String userName, String repositoryName) {
+		final Node node = vbRepository.lookup("#" + repositoryName);
 	}
 
 }

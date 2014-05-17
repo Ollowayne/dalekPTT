@@ -1,10 +1,12 @@
 package ptt.dalek.main;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 import ptt.dalek.github.Commit;
 import ptt.dalek.github.Repository;
@@ -27,6 +29,10 @@ public class Client {
 	public static final int USER_INVALID = 101;
 	public static final int USER_ADDED = 102;
 	public static final int USER_ADD_SILENTLY = 999;
+	
+	public static final int REPOSITORY_UPDATED = 200;
+	public static final int REPOSITORY_ADDED = 201;
+	public static final int REPOSITORY_REMOVED = 202;
 
 	public static Client getInstance() {
 		if(instance == null)
@@ -85,8 +91,34 @@ public class Client {
 		}
 
 		if(success) {
-			if(app != null)
-				app.onUpdateUserRepositories(user, repositoryMap.get(userName), repositories);
+			if(app != null) {
+				Map<String, Integer> oldRepositories = new HashMap<String, Integer>();
+				Map<String, Integer> newRepositories = new HashMap<String, Integer>();
+				Set<String> repositoryNames = new HashSet<String>();
+
+				for(int i = 0; i < repositoryMap.get(userName).size(); ++i) {
+					Repository repo = repositoryMap.get(userName).get(i);
+					repositoryNames.add(repo.getFullName());
+					oldRepositories.put(repo.getFullName(), i);
+				}
+				for(int i = 0; i < repositories.size(); ++i) {
+					Repository repo = repositories.get(i);
+					repositoryNames.add(repo.getFullName());
+					newRepositories.put(repo.getFullName(), i);
+				}
+
+				for(String repositoryName : repositoryNames) {
+					boolean oldContains = oldRepositories.containsKey(repositoryName);
+					boolean newContains = newRepositories.containsKey(repositoryName);
+
+					if(oldContains && newContains)
+						app.onUpdateUserRepository(user, repositories.get(newRepositories.get(repositoryName)));
+					else if(oldContains)
+						app.onRemoveUserRepository(user, repositoryMap.get(userName).get(oldRepositories.get(repositoryName)));
+					else if(newContains)
+						app.onAddUserRepository(user, repositories.get(newRepositories.get(repositoryName)));
+				}
+			}
 
 			repositoryMap.put(userName, repositories);
 			Settings.saveRepositoryMap(repositoryMap);
@@ -113,6 +145,8 @@ public class Client {
 				}
 				commitList.add(i, commit);
 			}
+			if(app != null)
+				app.onNewCommits(userName, repository.getFullName());
 		}
 
 		Settings.saveCommitStatus(commitStatusMap);
