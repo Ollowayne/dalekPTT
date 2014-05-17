@@ -38,7 +38,7 @@ import javafx.util.Duration;
 
 public class App extends Application {
 
-	private static final String NAME = "GitObserv";
+	private static final String NAME = "GitObserve";
 	private static final String VERSION = "v0.1";
 
 	private static final String PROMPT_STRING = "Add a new user..";
@@ -49,8 +49,8 @@ public class App extends Application {
 	public static final String COPIED_BLOG_URL = "Copied to clipboard: '%s'.";
 	public static final String REPOSITORIES_NOT_LOADED_STRING = "Repositories not loaded yet. Please wait.";
 
-	private static final int DEFAULT_WIDTH = 600;
-	private static final int DEFAULT_HEIGHT = 400;
+	private static final int DEFAULT_WIDTH = 1024;
+	private static final int DEFAULT_HEIGHT = 756;
 
 	public static final int USERSP_PADDING_RIGHT = 6;
 	public static final int USERSP_PADDING_LEFT = 6;

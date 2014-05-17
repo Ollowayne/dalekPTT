@@ -96,9 +96,7 @@ public class RepositoryPane extends Pane {
 	}
 	
 	public void setData() {
-		rpContent.setContent(String.format("Repository: %s (%s)\nOwner: %s\nGithub: %s\nWatchers: %s\nOpen Issues: %s\nForks: %s\nSize: %dkb",
-				repository.getName(), repository.getFullName(), repository.getOwner().getLogin(),
-				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize()
-				));
+		rpContent.setInfo(repository.getName(), repository.getFullName(), repository.getOwner().getLogin(),
+				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize());
 	}
 }
