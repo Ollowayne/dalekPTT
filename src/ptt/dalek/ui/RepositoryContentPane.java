@@ -4,7 +4,6 @@ import java.util.List;
 
 import ptt.dalek.github.Commit;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 
@@ -49,8 +48,8 @@ public class RepositoryContentPane extends Pane {
 	public void setCommits(List<Commit> commits) {
 		vbCommits.getChildren().clear();
 		int size = commits.size();
-		for(int i = 0; i <= 10; i++) {
-			if(i>size)
+		for(int i = 0; i < 10; i++) {
+			if(i > size)
 				return;
 			CommitPane temp = new CommitPane(commits.get(i));
 			vbCommits.getChildren().add(temp);
