@@ -66,7 +66,7 @@ public class RepositoryPane extends Pane {
 						openedHeight = 5*HEIGHT + 10 * 65;
 					}
 					else {
-						openedHeight = 5*HEIGHT + commits.size() * 70;
+						openedHeight = 6*HEIGHT + commits.size() * 65;
 					}
 					
 					final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
