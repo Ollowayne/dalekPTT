@@ -28,7 +28,7 @@ public class Updater extends Task<Void> {
 		super();
 		this.app = app;
 
-		nextUpdate = 0;
+		nextUpdate = 2000;
 	}
 
 	public App getApp() {
@@ -58,7 +58,7 @@ public class Updater extends Task<Void> {
 				app.setLoading(true);
 
 				for(final String name : addUsers) {
-					final int result = Client.getInstance().addWatchedUser(name);
+					final int result = Client.getInstance().addWatchedUser(name, app);
 					Platform.runLater(new Runnable(){
 						@Override
 						public void run() {
@@ -73,9 +73,7 @@ public class Updater extends Task<Void> {
 
 			if(nextUpdate <= 0) {
 				app.setLoading(true);
-
 				app.getClient().updateWatchedUsers(app);
-
 				app.setLoading(false);	
 				nextUpdate = UPDATE_TIME;
 			}

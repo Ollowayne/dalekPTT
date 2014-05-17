@@ -220,7 +220,6 @@ public class App extends Application {
 		upgUserlist.clear();
 
 		for(User user : Client.getInstance().getWatchedUsers()) {
-			//upgUserlist.addUser(user, this);
 			onAddUser(user.getLogin(), Client.USER_ADD_SILENTLY);
 		}
 	}

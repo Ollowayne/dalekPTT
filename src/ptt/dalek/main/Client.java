@@ -171,7 +171,7 @@ public class Client {
 		return Collections.unmodifiableList(commits);
 	}
 
-	public int addWatchedUser(String name) {
+	public int addWatchedUser(String name, App app) {
 		if(hasWatchedUser(name))
 			return USER_ALREADY_WATCHED;
 
@@ -179,6 +179,7 @@ public class Client {
 		if(user.getId() != -1) {
 			watchedUsers.add(user);
 			onWatchedUsersChange();
+			updateWatchedUser(name, app);
 			return USER_ADDED;
 		}
 
