@@ -18,6 +18,7 @@ public class RepositoryContentPane extends Pane {
 		vbCommits = new VBox(20);
 		vbCommits.setPadding(new Insets(20, 10, 10, 0));
 		lRepositoryName = new Label();
+		lRepositoryName.setId("commit");
 		vbComponents.getChildren().addAll(lRepositoryName, vbCommits);
 		this.getChildren().add(vbComponents);
 		

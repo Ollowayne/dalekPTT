@@ -1,3 +1,9 @@
+
+.label {
+	-fx-text-fill: #545454;
+    -fx-font: 11pt "Arial Narrow";
+}
+
 .scroll-pane {
 	-fx-background-color: #f0f0f0;
     -fx-background-insets: 0;
@@ -110,11 +116,6 @@
 
 #commit_highlight {
 	-fx-text-fill: #9c339a;
-    -fx-font: bold 11pt "Arial Narrow";
-}
-
-#commit {
-	-fx-text-fill: #545454;
     -fx-font: bold 11pt "Arial Narrow";
 }
 
