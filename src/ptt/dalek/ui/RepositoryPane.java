@@ -61,7 +61,7 @@ public class RepositoryPane extends Pane {
 				
 				if (!isOpen) {			
 					final List<Commit> commits = app.getMyCommits(getId());
-					openedHeight = 5*HEIGHT + commits.size() * 30;
+					openedHeight = 5*HEIGHT + 10 * 65;
 					
 					final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
 														new KeyValue(minHeightProperty(), openedHeight)));

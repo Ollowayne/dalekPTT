@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import ptt.dalek.github.Commit;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
@@ -14,16 +15,15 @@ import javafx.scene.layout.Pane;
 public class RepositoryContentPane extends Pane {
 	public static final String COMMIT_STRING = "\nAuthor: %s\nMessage: %s\nSha: %s \n\nCommited %s by %s.";
 	private VBox vbComponents;
-	//private VBox vbCommits;
+	private VBox vbCommits;
 	private Label lRepositoryName;
-	private Label lCommits;
-	private String commitsString;
 	
 	public RepositoryContentPane() {
 		vbComponents = new VBox();
-		lCommits = new Label();
+		vbCommits = new VBox(20);
+		vbCommits.setPadding(new Insets(20, 10, 10, 0));
 		lRepositoryName = new Label();
-		vbComponents.getChildren().addAll(lRepositoryName, lCommits);
+		vbComponents.getChildren().addAll(lRepositoryName, vbCommits);
 		this.getChildren().add(vbComponents);
 		
 		setVisible(false);
@@ -34,24 +34,13 @@ public class RepositoryContentPane extends Pane {
 	}
 	
 	public void setCommits(List<Commit> commits) {
-		for(Commit c : commits) {
-			commitsString += newCommit(c);
+		int size = commits.size() - 1;
+		for(int i = size; i > size-10; i--) {
+			if(i<0)
+				return;
+			CommitPane temp = new CommitPane(commits.get(i));
+			vbCommits.getChildren().add(temp);
 		}
-		lCommits.setText(commitsString);
-	}
-	
-	private String newCommit(Commit commit) {
-		String result = "\n - - -";
-		Date date = new Date((long)commit.getCommitData().getCommitter().getDate()*1000);
-		DateFormat formatter = new SimpleDateFormat();
-		String dateString = formatter.format( date );
-		result += String.format(COMMIT_STRING, 
-				commit.getCommitData().getAuthor().getName(), 
-				commit.getCommitData().getMessage(), 
-				commit.getSha(),
-				dateString,
-				commit.getCommitData().getCommitter().getName());
-		return result;
 	}
 	
 	public void toggleVisibility() {
