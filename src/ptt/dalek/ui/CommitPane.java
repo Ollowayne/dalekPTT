@@ -73,7 +73,7 @@ public class CommitPane extends Pane {
 		lCommiter.setId("commit_highlight");
 		
 		lMessage.setMaxWidth(400);
-		lMessage.setMaxHeight(20);
+		lMessage.setMaxHeight(18);
 		lMessage.setTextOverrun(OverrunStyle.ELLIPSIS);
 		
 		row1 = new HBox(5);
