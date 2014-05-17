@@ -58,12 +58,11 @@ public class CommitPane extends Pane {
                     new StringSelection(sha), null);
 			}
 		});
-	
-		final CommitPane cp = this;
+		
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				Tooltip.install(cp, new Tooltip("Copy to clipboard."));
+				Tooltip.install(iCopySha, new Tooltip("Copy to clipboard."));
 			}
 		});
 		
