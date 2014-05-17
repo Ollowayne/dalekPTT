@@ -112,7 +112,7 @@ public class Client {
 						commitMap.put(repository.getFullName(), new LinkedList<Commit>());
 						commitList = commitMap.get(repository.getFullName());
 					}
-					commitList.addFirst(commit);
+					commitList.add(i, commit);
 				}
 			}
 		}
