@@ -125,10 +125,18 @@ public class Client {
 		return repositoryMap.get(name) != null;
 	}
 
+	public boolean hasWatchedUser(String name) {
+		return getWatchedUser(name) != null;
+	}
+
+	public boolean hasWatchedUsers() {
+		return watchedUsers.size() > 0;
+	}
+
 	public List<User> getWatchedUsers() {
 		return Collections.unmodifiableList(watchedUsers);
 	}
-	
+
 	public List<Repository> getRepositories(String name) {
 		return Collections.unmodifiableList(repositoryMap.get(name));
 	}
@@ -141,21 +149,14 @@ public class Client {
 		return Collections.unmodifiableList(commits);
 	}
 
-	public int getWatchedUserIndex(String name) {
+	public User getWatchedUser(String name) {
 		for(int i = 0; i < watchedUsers.size(); ++i) {
-			if(watchedUsers.get(i).getLogin().equalsIgnoreCase(name))
-				return i;
+			User user = watchedUsers.get(i);
+			if(user.getLogin().equalsIgnoreCase(name))
+				return user;
 		}
 
-		return -1;
-	}
-
-	public boolean hasWatchedUser(String name) {
-		return getWatchedUserIndex(name) != -1;
-	}
-
-	public boolean hasWatchedUsers() {
-		return watchedUsers.size() > 0;
+		return null;
 	}
 
 	public User getLatestUser() {
@@ -177,13 +178,23 @@ public class Client {
 	}
 
 	public boolean removeWatchedUser(String name) {
-		int index = getWatchedUserIndex(name);
-		if(index == -1)
+		User user = getWatchedUser(name);
+		if(user == null)
 			return false;
 
-		watchedUsers.remove(index);
+		watchedUsers.remove(user);
+		LinkedList<Repository> repositories = repositoryMap.get(user.getLogin());
+		if(repositories != null) {
+			for(Repository repo : repositories) {
+				commitStatusMap.remove(repo.getFullName());
+				commitMap.remove(repo.getFullName());
+			}
+		}
 		repositoryMap.remove(name);
+
 		Settings.saveRepositoryMap(repositoryMap);
+		Settings.saveCommitStatus(commitStatusMap);
+		Settings.saveCommits(commitMap);
 		onWatchedUsersChange();
 		return true;	
 	}
