@@ -1,5 +1,8 @@
 package ptt.dalek.ui;
 
+import java.util.List;
+
+import ptt.dalek.github.Commit;
 import ptt.dalek.github.Repository;
 import ptt.dalek.gui.App;
 import javafx.animation.KeyFrame;
@@ -15,6 +18,7 @@ import javafx.util.Duration;
 
 public class RepositoryPane extends Pane {
 	public static final double HEIGHT = UserPane.HEIGHT / 3;
+	private double openedHeight;
 	
 	private Repository repository;
 	private boolean isOpen = false;
@@ -45,10 +49,6 @@ public class RepositoryPane extends Pane {
 		
 		rpHeader = new RepositoryHeaderPane(repository.getName());
 		rpContent = new RepositoryContentPane();
-		rpContent.setContent(String.format("Repository: %s (%s)\nOwner: %s\nGithub: %s\nWatchers: %s\nOpen Issues: %s\nForks: %s\nSize: %dkb",
-				repository.getName(), repository.getFullName(), repository.getOwner().getLogin(),
-				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize()
-				));
 		
 		vbComponents.getChildren().addAll(rpHeader, rpContent);
 		
@@ -57,11 +57,11 @@ public class RepositoryPane extends Pane {
 		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				if (!isOpen) {
-					rpHeader.toggleIcon();
-					
+				rpHeader.toggleIcon();
+				
+				if (!isOpen) {			
 					final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
-														new KeyValue(minHeightProperty(), 10*HEIGHT)));
+														new KeyValue(minHeightProperty(), openedHeight)));
 					open.setOnFinished(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
@@ -73,7 +73,6 @@ public class RepositoryPane extends Pane {
 				}
 				else {
 					rpContent.toggleVisibility();
-					rpHeader.toggleIcon();
 					final Timeline close = new Timeline(new KeyFrame(Duration.millis(150), 
 														new KeyValue(minHeightProperty(), HEIGHT)));
 
@@ -85,9 +84,15 @@ public class RepositoryPane extends Pane {
 			}
 		});
 	}
-		
-	//set Data of repository panes
+	
 	public void setData() {
-		//TODO set content on content
+		rpContent.setContent(String.format("Repository: %s (%s)\nOwner: %s\nGithub: %s\nWatchers: %s\nOpen Issues: %s\nForks: %s\nSize: %dkb",
+				repository.getName(), repository.getFullName(), repository.getOwner().getLogin(),
+				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize()
+				));
+		List<Commit> commits = app.getMyCommits(getId());
+		rpContent.setCommits(commits);
+		openedHeight = 5*HEIGHT + commits.size() * 30;
+		
 	}
 }

@@ -1,6 +1,7 @@
 package ptt.dalek.gui;
 
 import java.awt.Point;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -334,10 +335,15 @@ public class App extends Application {
 	}
 
 	public void onToggleRepository(String repositoryName) {
-		List<Commit> commits = client.getCommits(repositoryName);
-		for(Commit c : commits) {
-			System.out.println("Commit: " + c.getSha() + " : " + c.getCommitData().getMessage());
-		}
+//		List<Commit> commits = client.getCommits(repositoryName);
+//		
+//		for(Commit c : commits) {
+//			System.out.println("Commit: " + c.getSha() + " : " + c.getCommitData().getMessage());
+//		}
+	}
+	
+	public List<Commit> getMyCommits(String repositoryName) {
+		return client.getCommits(repositoryName);
 	}
 
 }
