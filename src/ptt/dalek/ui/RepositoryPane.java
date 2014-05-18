@@ -60,7 +60,7 @@ public class RepositoryPane extends Pane {
 			@Override
 			public void handle(MouseEvent arg0) {
 				rpHeader.toggleIcon();
-				rpHeader.unmarkUpdated();
+				rpHeader.setUpdated(app.isUpdated(repository.getFullName()));
 				app.resetUpdate(repository.getFullName());
 				
 				if (!isOpen) {			
@@ -88,7 +88,7 @@ public class RepositoryPane extends Pane {
 			}
 		});
 		
-		setUpdated(app.isUpdated(repository.getFullName()));
+		rpHeader.setUpdated(app.isUpdated(repository.getFullName()));
 	}
 	
 	public void updateCommits() {
@@ -112,12 +112,6 @@ public class RepositoryPane extends Pane {
 	public void update(Repository repository) {
 		this.repository = repository;
 		setData();
-		setUpdated(app.isUpdated(repository.getFullName()));
-	}
-	
-	public void setUpdated(Boolean set) {
-		if(set) {
-			rpHeader.markUpdated();
-		}
+		rpHeader.setUpdated(app.isUpdated(repository.getFullName()));
 	}
 }

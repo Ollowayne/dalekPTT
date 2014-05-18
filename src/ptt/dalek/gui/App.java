@@ -431,6 +431,9 @@ public class App extends Application {
 	}
 	
 	public boolean isUpdated(String repoName) {
+		if(getNewUpdate(repoName) == -1 || getLastUpdate(repoName) == -1) {
+			return false;
+		}
 		return getNewUpdate(repoName) > getLastUpdate(repoName);
 	}
 	
@@ -438,4 +441,3 @@ public class App extends Application {
 		lastUpdates.put(repoName, newUpdates.get(repoName));
 	}
 }
-
