@@ -1,2 +1,5 @@
 /bin/
 *.launch
+data/watched_users.json
+*.json
+data/watched_users.json

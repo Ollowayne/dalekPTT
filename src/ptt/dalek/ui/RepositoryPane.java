@@ -103,7 +103,7 @@ public class RepositoryPane extends Pane {
 				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize());
 		
 		updateCommits();
-		this.setMinHeight(openedHeight);
+		//this.setMinHeight(openedHeight);
 	}
 	
 	public void update(Repository repository) {
