@@ -217,9 +217,7 @@ public class App extends Application {
 		topbarHint.displayMessage(REPOSITORIES_NOT_LOADED_STRING);
 	}
 
-
 	//loads content by creating new repository panes for each repository of clicked user
-
 	private void loadContent(List<Repository> repositories) {
 		clearContent();
 		
