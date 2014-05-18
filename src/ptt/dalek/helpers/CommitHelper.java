@@ -19,6 +19,7 @@ public class CommitHelper extends BasicHelper {
 		return getCommits(name, repository, "1970-00-01T00:00:00Z");
 	}
 	
+	//adds commits (all if there were none, else all new ones and not listed ones)
 	@SuppressWarnings("serial")
 	public static LinkedList<Commit> getCommits(String name, String repository, final String since) {
 		PagedRequest pagedRequest = new PagedRequest(String.format(COMMIT_STRING, GITHUB_API_URL, name, repository));

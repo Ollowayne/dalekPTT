@@ -15,9 +15,9 @@ public class RepositoryContentPane extends Pane {
 	
 	private TitledLabelPair tlpName;
 	private TitledLabelPair tlpFullName;
-	private TitledLabelPair tlpowner;
+	private TitledLabelPair tlpOwner;
 	private TitledLabelPair tlpUrl;
-	private TitledLabelPair tlpwatchers;
+	private TitledLabelPair tlpWatchers;
 	private TitledLabelPair tlpOpenIssues;
 	private TitledLabelPair tlpForks;
 	private TitledLabelPair tlpSize;
@@ -41,25 +41,27 @@ public class RepositoryContentPane extends Pane {
 		fullName = "";
 	}
 	
+	//initialize content pane and its children
 	public void init() {
 		tlpName = new TitledLabelPair(": ", "");
 		tlpFullName = new TitledLabelPair("", "");
-		tlpowner = new TitledLabelPair(": ", "");
+		tlpOwner = new TitledLabelPair(": ", "");
 		tlpUrl = new TitledLabelPair(": ", "");
-		tlpwatchers = new TitledLabelPair(": ", "");
+		tlpWatchers = new TitledLabelPair(": ", "");
 		tlpOpenIssues = new TitledLabelPair(" Issues: ", "");
 		tlpForks = new TitledLabelPair(": ", "");
 		tlpSize = new TitledLabelPair(": ", "");
 		
-		vbInfo.getChildren().addAll(tlpName, tlpFullName, tlpowner, tlpUrl, tlpwatchers, tlpOpenIssues, tlpForks, tlpSize);
+		vbInfo.getChildren().addAll(tlpName, tlpFullName, tlpOwner, tlpUrl, tlpWatchers, tlpOpenIssues, tlpForks, tlpSize);
 	}
 	
+	//setting up the content pane with all information
 	public void setInfo(String name, String fullName, String owner, String url, int watchers, int openIssues, int forks, int size) {
 		tlpName.setText("Repository: ", name);
 		tlpFullName.setText("", "(" + fullName + ")");
-		tlpowner.setText("Owner: ", owner);
+		tlpOwner.setText("Owner: ", owner);
 		tlpUrl.setText("GitHub: ", url);
-		tlpwatchers.setText("Watchers: ", String.valueOf(watchers));
+		tlpWatchers.setText("Watchers: ", String.valueOf(watchers));
 		tlpOpenIssues.setText("Open Issues: ", String.valueOf(openIssues));
 		tlpForks.setText("Forks: ", String.valueOf(forks));
 		tlpSize.setText("Size: ", String.valueOf(size) + "kb");

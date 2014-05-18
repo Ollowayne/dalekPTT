@@ -39,6 +39,7 @@ public class CommitPane extends Pane {
 		setData(commit);
 	}
 	
+	//initialize commit pane
 	private void init() {
 		this.setMaxHeight(40);
 		components = new VBox();

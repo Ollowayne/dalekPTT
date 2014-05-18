@@ -60,9 +60,9 @@ public class RepositoryPane extends Pane {
 			@Override
 			public void handle(MouseEvent arg0) {
 				rpHeader.toggleIcon();
-				rpHeader.unmarkUpdated();
+				rpHeader.setUpdated(app.isUpdated(repository.getFullName()));
 				app.resetUpdate(repository.getFullName());
-				
+				//animation for opening the pane
 				if (!isOpen) {			
 					final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
 														new KeyValue(minHeightProperty(), openedHeight)));
@@ -75,6 +75,7 @@ public class RepositoryPane extends Pane {
 					
 					open.play();
 				}
+				//makes the invisible content visible for the open pane
 				else {
 					rpContent.toggleVisibility();
 					final Timeline close = new Timeline(new KeyFrame(Duration.millis(150), 
@@ -88,11 +89,12 @@ public class RepositoryPane extends Pane {
 			}
 		});
 		
-		setUpdated(app.isUpdated(repository.getFullName()));
+		rpHeader.setUpdated(app.isUpdated(repository.getFullName()));
 	}
 	
 	public void updateCommits() {
 		final List<Commit> commits = app.getMyCommits(getId());
+		//adjusts size of opened pane according to existing commits
 		if(commits.size() > 9) {
 			openedHeight = 8*HEIGHT + 10 * 60;
 		}
@@ -100,6 +102,7 @@ public class RepositoryPane extends Pane {
 			openedHeight = 8*HEIGHT + commits.size() * 60;
 		}
 		rpContent.setCommits(commits);
+		rpHeader.setUpdated(app.isUpdated(repository.getFullName()));
 	}
 	
 	public void setData() {
@@ -112,12 +115,6 @@ public class RepositoryPane extends Pane {
 	public void update(Repository repository) {
 		this.repository = repository;
 		setData();
-		setUpdated(app.isUpdated(repository.getFullName()));
-	}
-	
-	public void setUpdated(Boolean set) {
-		if(set) {
-			rpHeader.markUpdated();
-		}
+		rpHeader.setUpdated(app.isUpdated(repository.getFullName()));
 	}
 }
