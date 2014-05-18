@@ -30,7 +30,7 @@ public class RepositoryHeaderPane extends Pane {
 		setMinHeight(RepositoryPane.HEIGHT);
 		
 		hbComponents = new HBox(4);
-		lRepoName = new TitledLabelPair("(missing info)", name);
+		lRepoName = new TitledLabelPair("", name);
 		hbComponents.setAlignment(Pos.CENTER);
 
 		iArrowOpen = new Image(IMAGE_ARROW_OPENED);
@@ -53,12 +53,11 @@ public class RepositoryHeaderPane extends Pane {
 		return name;
 	}	
 	
-	public void setUpdated(Boolean set) {
-		if(set) {
-			lRepoName.setText("NEW UPDATE!", name);
-		}
-		else {
-			lRepoName.setText("", name);
-		}
+	public void markUpdated() {
+		lRepoName.setText("NEW UPDATE!", name);
+	}
+	
+	public void unmarkUpdated() {
+		lRepoName.setText("", name);
 	}
 }

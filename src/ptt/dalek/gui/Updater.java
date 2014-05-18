@@ -39,7 +39,6 @@ public class Updater extends Task<Void> {
 		this.app = app;
 	}
 
-	//sets the loading animation if there are users to be removed/added. also removes and adds users.
 	@Override
 	protected Void call() throws Exception {
 		while(!isCancelled()) {
