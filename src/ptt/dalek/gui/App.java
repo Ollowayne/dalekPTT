@@ -1,7 +1,6 @@
 package ptt.dalek.gui;
 
 import java.awt.Point;
-import java.util.LinkedList;
 import java.util.List;
 
 import ptt.dalek.github.Commit;
@@ -42,12 +41,16 @@ public class App extends Application {
 	private static final String VERSION = "v0.1";
 
 	private static final String PROMPT_STRING = "Add a new user..";
+	public static final String WELCOME = "Welcome to " + NAME + " " + VERSION + "!";
+	public static final String GETTING_STARTED = "Get started by adding users!";
+
 	public static final String NOW_WATCHING_STRING = "You are now watching '%s'.";
 	public static final String INVALID_USER_STRING = "User '%s' could not be found.";
 	public static final String ALREADY_WATCHING_STRING = "You are already watching '%s'.";
 	public static final String STOP_WATCHING_STRING = "You are no longer watching '%s'.";
 	public static final String COPIED_BLOG_URL = "Copied to clipboard: '%s'.";
 	public static final String REPOSITORIES_NOT_LOADED_STRING = "Repositories not loaded yet. Please wait.";
+	public static final String ADDING_USER_IN_PROGRESS = "Adding user %s. Please wait...";
 
 	private static final int DEFAULT_WIDTH = 1024;
 	private static final int DEFAULT_HEIGHT = 756;
@@ -173,9 +176,9 @@ public class App extends Application {
 		scene.getStylesheets().add(App.class.getResource("style.css").toExternalForm());
 		stage.show();
 
-		topbarHint.displayMessage("Welcome to GitObserve v1.0", 3000, 500);
+		topbarHint.displayMessage(WELCOME, 3000, 500);
 		if(upgUserlist.getChildren().isEmpty()) {
-			topbarHint.displayMessage("Get started by adding users!");
+			topbarHint.displayMessage(GETTING_STARTED);
 		}
 	}
 
@@ -234,7 +237,7 @@ public class App extends Application {
 		String userName = tfAddUser.getText();
 		if(userName.length() == 0)
 			return;
-
+		topbarHint.displayMessage(String.format(ADDING_USER_IN_PROGRESS, userName));
 		updater.addUser(userName);
 		tfAddUser.clear();
 	}
