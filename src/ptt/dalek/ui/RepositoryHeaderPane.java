@@ -9,8 +9,8 @@ import javafx.scene.layout.Pane;
 
 public class RepositoryHeaderPane extends Pane {
 	
-	private static final String IMAGE_ARROW_OPENED = "file:res/openLila.png";
-	private static final String IMAGE_ARROW_CLOSED = "file:res/closedLila.png";
+	private static final String IMAGE_ARROW_OPENED = "file:res/open.png";
+	private static final String IMAGE_ARROW_CLOSED = "file:res/closed.png";
 	
 	private HBox hbComponents;
 	private Label lRepoName;

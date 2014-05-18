@@ -53,7 +53,7 @@ public class RepositoryContentPane extends Pane {
 		tlpwatchers.setText("Watchers: ", String.valueOf(watchers));
 		tlpOpenIssues.setText("Open Issues: ", String.valueOf(openIssues));
 		tlpForks.setText("Forks: ", String.valueOf(forks));
-		tlpSize.setText("Size: ", String.valueOf(size));
+		tlpSize.setText("Size: ", String.valueOf(size) + "kb");
 	}
 	
 	public void setCommits(List<Commit> commits) {
