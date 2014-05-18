@@ -332,6 +332,9 @@ public class App extends Application {
 	}
 
 	public void onAddUserRepository(User user, Repository repository) {
+		if(getSelectedUser() == null)
+			return;
+		
 		if(!getSelectedUser().getUser().getLogin().equalsIgnoreCase(user.getLogin()))
 			return;
 		
