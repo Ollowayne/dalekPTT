@@ -216,7 +216,7 @@ public class App extends Application {
 
 		topbarHint.displayMessage(REPOSITORIES_NOT_LOADED_STRING);
 	}
-
+	
 	private void loadContent(List<Repository> repositories) {
 		clearContent();
 		
@@ -432,8 +432,10 @@ public class App extends Application {
 	
 	public boolean isUpdated(String repoName) {
 		if(getNewUpdate(repoName) == -1 || getLastUpdate(repoName) == -1) {
+			// error case, or initialization
 			return false;
 		}
+		
 		return getNewUpdate(repoName) > getLastUpdate(repoName);
 	}
 	

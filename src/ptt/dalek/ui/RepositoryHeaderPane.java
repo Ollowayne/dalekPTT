@@ -30,7 +30,7 @@ public class RepositoryHeaderPane extends Pane {
 		setMinHeight(RepositoryPane.HEIGHT);
 		
 		hbComponents = new HBox(4);
-		lRepoName = new TitledLabelPair("", name);
+		lRepoName = new TitledLabelPair("(missing info)", name);
 		hbComponents.setAlignment(Pos.CENTER);
 
 		iArrowOpen = new Image(IMAGE_ARROW_OPENED);
