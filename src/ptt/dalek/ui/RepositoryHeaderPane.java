@@ -13,7 +13,7 @@ public class RepositoryHeaderPane extends Pane {
 	private static final String IMAGE_ARROW_CLOSED = "file:res/closed.png";
 	
 	private HBox hbComponents;
-	private Label lRepoName;
+	private TitledLabelPair lRepoName;
 	
 	private ImageView ivIcon;
 	private Image iArrowOpen;
@@ -30,7 +30,7 @@ public class RepositoryHeaderPane extends Pane {
 		setMinHeight(RepositoryPane.HEIGHT);
 		
 		hbComponents = new HBox(4);
-		lRepoName = new Label(name);
+		lRepoName = new TitledLabelPair("", name);
 		hbComponents.setAlignment(Pos.CENTER);
 
 		iArrowOpen = new Image(IMAGE_ARROW_OPENED);
@@ -54,10 +54,10 @@ public class RepositoryHeaderPane extends Pane {
 	}	
 	
 	public void markUpdated() {
-		lRepoName.setText("NEW UPDATE!" + name);
+		lRepoName.setText("NEW UPDATE!", name);
 	}
 	
 	public void unmarkUpdated() {
-		lRepoName.setText(name);
+		lRepoName.setText("", name);
 	}
 }
