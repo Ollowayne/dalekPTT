@@ -53,4 +53,11 @@ public class RepositoryHeaderPane extends Pane {
 		return name;
 	}	
 	
+	public void markUpdated() {
+		lRepoName.setText("NEW UPDATE!" + name);
+	}
+	
+	public void unmarkUpdated() {
+		lRepoName.setText(name);
+	}
 }
