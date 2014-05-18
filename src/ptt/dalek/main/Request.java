@@ -68,17 +68,14 @@ public class Request {
 			
 			int responseCode = con.getResponseCode();
 			String responseMessage = con.getResponseMessage();
-			System.out.println("RateLimit: " + con.getHeaderField("X-RateLimit-Remaining") + "/" + con.getHeaderField("X-RateLimit-Limit"));
-			//System.out.println("Reponse::send - Response Code: " + responseCode + ", Response Message: "
-			//		+ responseMessage);
 
 			if (responseCode == HttpURLConnection.HTTP_OK
 					&& responseMessage.equals("OK"))
 				return con.getInputStream();
 
 		} catch (UnknownHostException e) {
-			// TODO
-			System.out.println("Unable to connect to " + this.url);
+			//unable to connect
+			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

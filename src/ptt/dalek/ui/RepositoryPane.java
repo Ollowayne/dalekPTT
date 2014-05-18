@@ -82,7 +82,6 @@ public class RepositoryPane extends Pane {
 				}
 				
 				isOpen = !isOpen;
-				app.onToggleRepository(getId());
 			}
 		});
 	}

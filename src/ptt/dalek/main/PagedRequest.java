@@ -72,8 +72,8 @@ public class PagedRequest extends Request implements Iterator<InputStream> {
 				return con.getInputStream();
 
 		} catch (UnknownHostException e) {
-			// TODO
-			System.out.println("Unable to connect to " + this.url);
+			//unable to connect
+			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

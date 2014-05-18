@@ -1,7 +1,6 @@
 package ptt.dalek.gui;
 
 import java.awt.Point;
-import java.util.LinkedList;
 import java.util.List;
 
 import ptt.dalek.github.Commit;
@@ -318,17 +317,6 @@ public class App extends Application {
 				});
 			}
 		}
-		
-		//TODO 
-		// compare, alert
-	}
-
-	public void onToggleRepository(String repositoryName) {
-//		List<Commit> commits = client.getCommits(repositoryName);
-//		
-//		for(Commit c : commits) {
-//			System.out.println("Commit: " + c.getSha() + " : " + c.getCommitData().getMessage());
-//		}
 	}
 	
 	public List<Commit> getMyCommits(String repositoryName) {

@@ -14,7 +14,6 @@ public class RepositoryHeaderPane extends Pane {
 	
 	private HBox hbComponents;
 	private Label lRepoName;
-	private Label lUpdate;
 	
 	private ImageView ivIcon;
 	private Image iArrowOpen;
