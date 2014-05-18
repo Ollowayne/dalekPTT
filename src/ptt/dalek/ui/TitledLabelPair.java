@@ -13,4 +13,9 @@ public class TitledLabelPair extends HBox {
 		lTitle.setId("commit_highlight");
 		this.getChildren().addAll(lTitle, lContent);
 	}
+	
+	public void setText(String title, String content) {
+		lTitle.setText(title);
+		lContent.setText(content);
+	}
 }

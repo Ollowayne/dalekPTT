@@ -35,6 +35,8 @@ public class RepositoryPane extends Pane {
 		this.getStyleClass().add("repositoryPane");
 		setup();
 		setData();
+		
+		this.setMinHeight(HEIGHT);
 	}
 		
 	public void setup() {		
@@ -60,22 +62,12 @@ public class RepositoryPane extends Pane {
 				rpHeader.toggleIcon();
 				
 				if (!isOpen) {			
-					final List<Commit> commits = app.getMyCommits(getId());
-					
-					if(commits.size() > 9) {
-						openedHeight = 8*HEIGHT + 10 * 60;
-					}
-					else {
-						openedHeight = 8*HEIGHT + commits.size() * 60;
-					}
-					
 					final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
 														new KeyValue(minHeightProperty(), openedHeight)));
 					open.setOnFinished(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
 								rpContent.toggleVisibility();
-								rpContent.setCommits(commits);
 							}
 					});
 					
@@ -98,5 +90,20 @@ public class RepositoryPane extends Pane {
 	public void setData() {
 		rpContent.setInfo(repository.getName(), repository.getFullName(), repository.getOwner().getLogin(),
 				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize());
+		
+		final List<Commit> commits = app.getMyCommits(getId());
+		if(commits.size() > 9) {
+			openedHeight = 8*HEIGHT + 10 * 60;
+		}
+		else {
+			openedHeight = 8*HEIGHT + commits.size() * 60;
+		}
+		rpContent.setCommits(commits);
+		this.setMinHeight(openedHeight);
+	}
+	
+	public void update(Repository repository) {
+		this.repository = repository;
+		setData();
 	}
 }

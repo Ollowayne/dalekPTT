@@ -359,7 +359,16 @@ public class App extends Application {
 
 	public void onUpdateUserRepository(User user, Repository repository) {
 		final Node node = vbRepository.lookup("#" + repository.getFullName());
-		//TBD
+		if(node == null)
+			return;
+		
+		final Repository temp = repository;
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				((RepositoryPane) node).update(temp);
+			}
+		});
 	}
 
 	public void onNewCommits(String userName, String repositoryName) {
