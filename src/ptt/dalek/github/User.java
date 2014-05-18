@@ -47,6 +47,7 @@ public class User extends SimpleUser {
 		return builder.build();
 	}
 
+	//Getter & Setter
 	public String getName() {
 		return name;
 	}

@@ -56,6 +56,7 @@ public class Messenger {
 		displayMessage(message, duration, durationFade);
 	}
 
+	//tests if a message is already displaying, if not, displays message. Else it queues the message.
 	public void displayMessage(String message, int duration, int fadeTime) {
 		if(!isDisplaying) {
 			display(message, duration, fadeTime);
@@ -65,6 +66,7 @@ public class Messenger {
 		queue.offer(new QueuedMessage(message, duration, fadeTime));
 	}
 
+	//if there are messages in queue, the first one will be selected and displayed
 	private void update() {
 		if(isDisplaying)
 			return;

@@ -60,6 +60,7 @@ public class SimpleUser implements JsonConvertable {
 		return createObjectBuilder().build();
 	}
 
+	//Getter & Setter
 	public int getId() {
 		return this.id;
 	}

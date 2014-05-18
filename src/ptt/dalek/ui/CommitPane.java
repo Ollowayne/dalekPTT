@@ -92,7 +92,7 @@ public class CommitPane extends Pane {
 		lMessage.setText(commit.getCommitData().getMessage().replaceAll("/n", ""));
 		
 		lSha.setText("Sha: " + commit.getSha());
-		Date date = new Date((long)commit.getCommitData().getCommitter().getDate()*1000);
+		Date date = new Date((long)(commit.getCommitData().getCommitter().getDate()+7200)*1000);
 		DateFormat formatter = new SimpleDateFormat();
 		String dateString = "commited " + formatter.format( date );
 		

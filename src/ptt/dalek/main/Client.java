@@ -69,6 +69,7 @@ public class Client {
 		if(index == -1)
 			return;
 
+		//adds newUser to watchedUsers list
 		User user = watchedUsers.get(index);
 		User newUser = UserHelper.getUser(user.getLogin());
 		if(newUser.getId() != -1) {
@@ -79,7 +80,7 @@ public class Client {
 			user = newUser;
 			Settings.saveUserList(watchedUsers);
 		}
-
+		//loads repositories of the new user
 		String userName = user.getLogin();
 		LinkedList<Repository> repositories = RepositoryHelper.getRepositories(userName);
 		boolean success = true;
@@ -90,6 +91,7 @@ public class Client {
 			}
 		}
 
+		//checks for differences in old repository list and new loaded one
 		if(success) {
 			if(app != null) {
 				if(repositoryMap.get(userName) == null) {
@@ -130,7 +132,7 @@ public class Client {
 			repositoryMap.put(userName, repositories);
 			Settings.saveRepositoryMap(repositoryMap);
 		}
-		
+		//updates commit list
 		for(Repository repository : repositories) {
 			String status = getCommitStatuc(repository.getFullName());
 			LinkedList<Commit> commits;
@@ -212,6 +214,7 @@ public class Client {
 		return Collections.unmodifiableList(commits);
 	}
 
+	//adds user to watched users if he is not already in there
 	public int addWatchedUser(String name, App app) {
 		if(hasWatchedUser(name))
 			return USER_ALREADY_WATCHED;
@@ -227,6 +230,7 @@ public class Client {
 		return USER_INVALID;
 	}
 
+	//removes user from the watched user list and removes his repositories
 	public boolean removeWatchedUser(String name) {
 		User user = getWatchedUser(name);
 		if(user == null)

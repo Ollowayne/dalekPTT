@@ -160,6 +160,7 @@ public class Repository implements JsonConvertable {
 		return builder;
 	}
 
+	//Getter & Setter
 	@Override
 	public JsonObject toJsonObject() {
 		return createObjectBuilder().build();

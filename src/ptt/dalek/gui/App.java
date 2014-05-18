@@ -206,6 +206,7 @@ public class App extends Application {
 		topbarHint.displayMessage(REPOSITORIES_NOT_LOADED_STRING);
 	}
 
+	//loads content by creating new repository panes for each repository of clicked user
 	private void loadContent(List<Repository> repositories) {
 		clearContent();
 		
@@ -248,6 +249,7 @@ public class App extends Application {
 	}
 	
 	public void onAddUser(final String name, final int result) {
+		//tests if wanted user is already watched or exists in general
 		if(result == Client.USER_ALREADY_WATCHED) {
 			topbarHint.displayMessage(String.format(ALREADY_WATCHING_STRING, name));
 			return;
@@ -255,7 +257,7 @@ public class App extends Application {
 			topbarHint.displayMessage(String.format(INVALID_USER_STRING, name));
 			return;
 		}
-
+		//creates userpane(with animation) for new user if he exists and is not alreaddy watched
 		for(User user : Client.getInstance().getWatchedUsers()) {;
 			if(user.getLogin().equalsIgnoreCase(name)) {
 				final UserPane newPane = new UserPane(user, this);
@@ -278,6 +280,7 @@ public class App extends Application {
 
 				set.play();
 				upgUserlist.getChildren().add(newPane);
+				//displays message noting that added user is now being watched
 				if(result != Client.USER_ADD_SILENTLY) {
 					topbarHint.displayMessage(String.format(NOW_WATCHING_STRING, user.getLogin()));
 				}
@@ -285,6 +288,7 @@ public class App extends Application {
 		}
 	}
 
+	//first clears content of soon to be removed user, then removes him and displays the message stating that
 	public void onRemoveUser(String userName) {
 		UserPane selected = getSelectedUser();
 		if(selected != null) {
