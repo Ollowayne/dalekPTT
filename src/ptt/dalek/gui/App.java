@@ -373,6 +373,16 @@ public class App extends Application {
 
 	public void onNewCommits(String userName, String repositoryName) {
 		final Node node = vbRepository.lookup("#" + repositoryName);
+		if(node == null)
+			return;
+		
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				((RepositoryPane)node).updateCommits();
+			}
+		});
 	}
 
 }

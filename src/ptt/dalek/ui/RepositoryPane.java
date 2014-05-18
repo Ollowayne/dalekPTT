@@ -87,10 +87,7 @@ public class RepositoryPane extends Pane {
 		});
 	}
 	
-	public void setData() {
-		rpContent.setInfo(repository.getName(), repository.getFullName(), repository.getOwner().getLogin(),
-				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize());
-		
+	public void updateCommits() {
 		final List<Commit> commits = app.getMyCommits(getId());
 		if(commits.size() > 9) {
 			openedHeight = 8*HEIGHT + 10 * 60;
@@ -99,6 +96,13 @@ public class RepositoryPane extends Pane {
 			openedHeight = 8*HEIGHT + commits.size() * 60;
 		}
 		rpContent.setCommits(commits);
+	}
+	
+	public void setData() {
+		rpContent.setInfo(repository.getName(), repository.getFullName(), repository.getOwner().getLogin(),
+				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize());
+		
+		updateCommits();
 		this.setMinHeight(openedHeight);
 	}
 	
