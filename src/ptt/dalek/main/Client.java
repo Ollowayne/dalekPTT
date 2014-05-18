@@ -91,7 +91,7 @@ public class Client {
 		}
 
 		if(success) {
-			if(app != null) {
+			if(app != null && repositoryMap.get(userName) != null) {
 				Map<String, Integer> oldRepositories = new HashMap<String, Integer>();
 				Map<String, Integer> newRepositories = new HashMap<String, Integer>();
 				Set<String> repositoryNames = new HashSet<String>();
