@@ -345,44 +345,56 @@ public class App extends Application {
 	}
 
 	public void onRemoveUserRepository(User user, Repository repository) {
-		final Node node = vbRepository.lookup("#" + repository.getFullName());
-		if(node == null)
-			return;
-		
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				vbRepository.getChildren().remove(node);
+			try {
+				final Node node = vbRepository.lookup("#" + repository.getFullName());
+				if(node == null)
+					return;
+				
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						vbRepository.getChildren().remove(node);
+					}
+				});
+			} catch (IndexOutOfBoundsException e) {
+				return;
 			}
-		});
 	}
 
 	public void onUpdateUserRepository(User user, Repository repository) {
-		final Node node = vbRepository.lookup("#" + repository.getFullName());
-		if(node == null)
+		try {
+			final Node node = vbRepository.lookup("#" + repository.getFullName());
+			if(node == null)
+				return;
+			
+			final Repository temp = repository;
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					((RepositoryPane) node).update(temp);
+				}
+			});
+		} catch (IndexOutOfBoundsException e) {
 			return;
-		
-		final Repository temp = repository;
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				((RepositoryPane) node).update(temp);
-			}
-		});
+		}
 	}
 
 	public void onNewCommits(String userName, String repositoryName) {
-		final Node node = vbRepository.lookup("#" + repositoryName);
-		if(node == null)
+		try {
+			final Node node = vbRepository.lookup("#" + repositoryName);
+			if(node == null)
+				return;
+			
+	
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					((RepositoryPane)node).updateCommits();
+				}
+			});
+		} catch (IndexOutOfBoundsException e) {
 			return;
-		
-
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				((RepositoryPane)node).updateCommits();
-			}
-		});
+		}
 	}
 
 }
