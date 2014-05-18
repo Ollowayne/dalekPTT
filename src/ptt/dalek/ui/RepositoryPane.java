@@ -100,6 +100,7 @@ public class RepositoryPane extends Pane {
 			openedHeight = 8*HEIGHT + commits.size() * 60;
 		}
 		rpContent.setCommits(commits);
+		rpHeader.setUpdated(app.isUpdated(repository.getFullName()));
 	}
 	
 	public void setData() {
