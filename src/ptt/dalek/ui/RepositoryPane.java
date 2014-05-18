@@ -50,7 +50,7 @@ public class RepositoryPane extends Pane {
 		vbComponents.setPadding(new Insets(4, 4, 4, 4));
 		
 		rpHeader = new RepositoryHeaderPane(repository.getName());
-		rpContent = new RepositoryContentPane();
+		rpContent = new RepositoryContentPane(app);
 		
 		vbComponents.getChildren().addAll(rpHeader, rpContent);
 		
@@ -60,6 +60,8 @@ public class RepositoryPane extends Pane {
 			@Override
 			public void handle(MouseEvent arg0) {
 				rpHeader.toggleIcon();
+				rpHeader.unmarkUpdated();
+				app.resetUpdate(repository.getFullName());
 				
 				if (!isOpen) {			
 					final Timeline open = new Timeline( new KeyFrame(Duration.millis(200), 
@@ -85,6 +87,8 @@ public class RepositoryPane extends Pane {
 				app.onToggleRepository(getId());
 			}
 		});
+		
+		setUpdated(app.isUpdated(repository.getFullName()));
 	}
 	
 	public void updateCommits() {
@@ -103,11 +107,17 @@ public class RepositoryPane extends Pane {
 				repository.getUrl(), repository.getWatchers(), repository.getOpenIssues(), repository.getForksCount(), repository.getSize());
 		
 		updateCommits();
-		//this.setMinHeight(openedHeight);
 	}
 	
 	public void update(Repository repository) {
 		this.repository = repository;
 		setData();
+		setUpdated(app.isUpdated(repository.getFullName()));
+	}
+	
+	public void setUpdated(Boolean set) {
+		if(set) {
+			rpHeader.markUpdated();
+		}
 	}
 }

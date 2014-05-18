@@ -1,7 +1,9 @@
 package ptt.dalek.gui;
 
 import java.awt.Point;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ptt.dalek.github.Commit;
 import ptt.dalek.github.Repository;
@@ -60,7 +62,10 @@ public class App extends Application {
 	public static final int USERSP_PADDING_TOP = 6;
 	public static final int USERSP_PADDING_BOTTOM = 42;
 	public static final int USERSP_SPACING = 6;
-
+	
+	private Map<String, Long> newUpdates;
+	private Map<String, Long> lastUpdates;
+	
 	private BorderPane bpLayout;
 	private ScrollPane spUserList;
 	private UserPaneGroup upgUserlist;
@@ -80,6 +85,9 @@ public class App extends Application {
 
 	@Override
 	public void init() {
+		newUpdates = new HashMap<String, Long>();
+		lastUpdates = new HashMap<String, Long>();
+		
 		bpLayout = new BorderPane();
 
 		loadingAnimation = new ImageView();
@@ -399,5 +407,35 @@ public class App extends Application {
 			return;
 		}
 	}
-
+	
+	public void setNewUpdate(String repoName, long timestamp) {
+		resetUpdate(repoName);
+		Long ts = new Long(timestamp);
+		newUpdates.put(repoName, ts);
+	}
+	
+	public long getLastUpdate(String repoName) {
+		try {
+			return lastUpdates.get(repoName).longValue();
+		} catch (NullPointerException e) {
+			return -1;
+		}
+	}
+	
+	public long getNewUpdate(String repoName) {
+		try {
+			return newUpdates.get(repoName).longValue();
+		} catch (NullPointerException e) {
+			return -1;
+		}
+	}
+	
+	public boolean isUpdated(String repoName) {
+		return getNewUpdate(repoName) > getLastUpdate(repoName);
+	}
+	
+	public void resetUpdate(String repoName) {
+		lastUpdates.put(repoName, newUpdates.get(repoName));
+	}
 }
+

@@ -3,6 +3,7 @@ package ptt.dalek.ui;
 import java.util.List;
 
 import ptt.dalek.github.Commit;
+import ptt.dalek.gui.App;
 import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
@@ -21,7 +22,13 @@ public class RepositoryContentPane extends Pane {
 	private TitledLabelPair tlpForks;
 	private TitledLabelPair tlpSize;
 	
-	public RepositoryContentPane() {
+	private String fullName;
+	
+	private App app;
+	
+	public RepositoryContentPane(App app) {
+		this.app = app;
+		
 		vbComponents = new VBox();
 		vbCommits = new VBox(20);
 		vbInfo = new VBox();
@@ -30,6 +37,8 @@ public class RepositoryContentPane extends Pane {
 		vbComponents.getChildren().addAll(vbInfo, vbCommits);
 		this.getChildren().add(vbComponents);
 		setVisible(false);
+		
+		fullName = "";
 	}
 	
 	public void init() {
@@ -54,6 +63,8 @@ public class RepositoryContentPane extends Pane {
 		tlpOpenIssues.setText("Open Issues: ", String.valueOf(openIssues));
 		tlpForks.setText("Forks: ", String.valueOf(forks));
 		tlpSize.setText("Size: ", String.valueOf(size) + "kb");
+		
+		this.fullName = fullName;
 	}
 	
 	public void setCommits(List<Commit> commits) {
@@ -64,6 +75,9 @@ public class RepositoryContentPane extends Pane {
 				return;
 			CommitPane temp = new CommitPane(commits.get(i));
 			vbCommits.getChildren().add(temp);
+			if(i == 9) {
+				app.setNewUpdate(fullName, commits.get(i).getCommitData().getCommitter().getDate());
+			}
 		}
 	}
 	
