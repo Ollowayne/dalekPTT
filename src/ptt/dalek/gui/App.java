@@ -1,9 +1,8 @@
 package ptt.dalek.gui;
 
 import java.awt.Point;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import ptt.dalek.github.Commit;
 import ptt.dalek.github.Repository;
@@ -43,29 +42,22 @@ public class App extends Application {
 	private static final String VERSION = "v0.1";
 
 	private static final String PROMPT_STRING = "Add a new user..";
-	public static final String WELCOME = "Welcome to " + NAME + " " + VERSION + "!";
-	public static final String GETTING_STARTED = "Get started by adding users!";
-
 	public static final String NOW_WATCHING_STRING = "You are now watching '%s'.";
 	public static final String INVALID_USER_STRING = "User '%s' could not be found.";
 	public static final String ALREADY_WATCHING_STRING = "You are already watching '%s'.";
 	public static final String STOP_WATCHING_STRING = "You are no longer watching '%s'.";
 	public static final String COPIED_BLOG_URL = "Copied to clipboard: '%s'.";
 	public static final String REPOSITORIES_NOT_LOADED_STRING = "Repositories not loaded yet. Please wait.";
-	public static final String ADDING_USER_IN_PROGRESS = "Adding user %s. Please wait...";
 
-	private static final int DEFAULT_WIDTH = 800;
-	private static final int DEFAULT_HEIGHT = 600;
+	private static final int DEFAULT_WIDTH = 1024;
+	private static final int DEFAULT_HEIGHT = 756;
 
 	public static final int USERSP_PADDING_RIGHT = 6;
 	public static final int USERSP_PADDING_LEFT = 6;
 	public static final int USERSP_PADDING_TOP = 6;
 	public static final int USERSP_PADDING_BOTTOM = 42;
 	public static final int USERSP_SPACING = 6;
-	
-	private Map<String, Long> newUpdates;
-	private Map<String, Long> lastUpdates;
-	
+
 	private BorderPane bpLayout;
 	private ScrollPane spUserList;
 	private UserPaneGroup upgUserlist;
@@ -85,9 +77,6 @@ public class App extends Application {
 
 	@Override
 	public void init() {
-		newUpdates = new HashMap<String, Long>();
-		lastUpdates = new HashMap<String, Long>();
-		
 		bpLayout = new BorderPane();
 
 		loadingAnimation = new ImageView();
@@ -184,9 +173,9 @@ public class App extends Application {
 		scene.getStylesheets().add(App.class.getResource("style.css").toExternalForm());
 		stage.show();
 
-		topbarHint.displayMessage(WELCOME, 3000, 500);
+		topbarHint.displayMessage("Welcome to GitObserve v1.0", 3000, 500);
 		if(upgUserlist.getChildren().isEmpty()) {
-			topbarHint.displayMessage(GETTING_STARTED);
+			topbarHint.displayMessage("Get started by adding users!");
 		}
 	}
 
@@ -217,7 +206,6 @@ public class App extends Application {
 		topbarHint.displayMessage(REPOSITORIES_NOT_LOADED_STRING);
 	}
 
-	//loads content by creating new repository panes for each repository of clicked user
 	private void loadContent(List<Repository> repositories) {
 		clearContent();
 		
@@ -246,7 +234,7 @@ public class App extends Application {
 		String userName = tfAddUser.getText();
 		if(userName.length() == 0)
 			return;
-		topbarHint.displayMessage(String.format(ADDING_USER_IN_PROGRESS, userName));
+
 		updater.addUser(userName);
 		tfAddUser.clear();
 	}
@@ -260,7 +248,6 @@ public class App extends Application {
 	}
 	
 	public void onAddUser(final String name, final int result) {
-		//tests if wanted user is already watched or exists in general
 		if(result == Client.USER_ALREADY_WATCHED) {
 			topbarHint.displayMessage(String.format(ALREADY_WATCHING_STRING, name));
 			return;
@@ -269,7 +256,6 @@ public class App extends Application {
 			return;
 		}
 
-		//creates userpane(with animation) for new user if he exists and is not alreaddy watched
 		for(User user : Client.getInstance().getWatchedUsers()) {;
 			if(user.getLogin().equalsIgnoreCase(name)) {
 				final UserPane newPane = new UserPane(user, this);
@@ -292,7 +278,6 @@ public class App extends Application {
 
 				set.play();
 				upgUserlist.getChildren().add(newPane);
-				//displays message noting that added user is now being watched
 				if(result != Client.USER_ADD_SILENTLY) {
 					topbarHint.displayMessage(String.format(NOW_WATCHING_STRING, user.getLogin()));
 				}
@@ -300,7 +285,6 @@ public class App extends Application {
 		}
 	}
 
-	//first clears content of soon to be removed user, then removes him and displays the message stating that
 	public void onRemoveUser(String userName) {
 		UserPane selected = getSelectedUser();
 		if(selected != null) {
@@ -361,90 +345,44 @@ public class App extends Application {
 	}
 
 	public void onRemoveUserRepository(User user, Repository repository) {
-			try {
-				final Node node = vbRepository.lookup("#" + repository.getFullName());
-				if(node == null)
-					return;
-				
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						vbRepository.getChildren().remove(node);
-					}
-				});
-			} catch (IndexOutOfBoundsException e) {
-				return;
+		final Node node = vbRepository.lookup("#" + repository.getFullName());
+		if(node == null)
+			return;
+		
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				vbRepository.getChildren().remove(node);
 			}
+		});
 	}
 
 	public void onUpdateUserRepository(User user, Repository repository) {
-		try {
-			final Node node = vbRepository.lookup("#" + repository.getFullName());
-			if(node == null)
-				return;
-			
-			final Repository temp = repository;
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					((RepositoryPane) node).update(temp);
-				}
-			});
-		} catch (IndexOutOfBoundsException e) {
+		final Node node = vbRepository.lookup("#" + repository.getFullName());
+		if(node == null)
 			return;
-		}
+		
+		final Repository temp = repository;
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				((RepositoryPane) node).update(temp);
+			}
+		});
 	}
 
 	public void onNewCommits(String userName, String repositoryName) {
-		try {
-			final Node node = vbRepository.lookup("#" + repositoryName);
-			if(node == null)
-				return;
-			
-	
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					((RepositoryPane)node).updateCommits();
-				}
-			});
-		} catch (IndexOutOfBoundsException e) {
+		final Node node = vbRepository.lookup("#" + repositoryName);
+		if(node == null)
 			return;
-		}
-	}
-	
-	public void setNewUpdate(String repoName, long timestamp) {
-		resetUpdate(repoName);
-		Long ts = new Long(timestamp);
-		newUpdates.put(repoName, ts);
-	}
-	
-	public long getLastUpdate(String repoName) {
-		try {
-			return lastUpdates.get(repoName).longValue();
-		} catch (NullPointerException e) {
-			return -1;
-		}
-	}
-	
-	public long getNewUpdate(String repoName) {
-		try {
-			return newUpdates.get(repoName).longValue();
-		} catch (NullPointerException e) {
-			return -1;
-		}
-	}
-	
-	public boolean isUpdated(String repoName) {
-		if(getNewUpdate(repoName) == -1 || getLastUpdate(repoName) == -1) {
-			// error case, or initialization
-			return false;
-		}
 		
-		return getNewUpdate(repoName) > getLastUpdate(repoName);
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				((RepositoryPane)node).updateCommits();
+			}
+		});
 	}
-	
-	public void resetUpdate(String repoName) {
-		lastUpdates.put(repoName, newUpdates.get(repoName));
-	}
+
 }

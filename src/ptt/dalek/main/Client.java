@@ -56,7 +56,7 @@ public class Client {
 		commitMap = Settings.loadCommits(commitStatusMap.keySet());
 	}
 
-	public String getCommitStatus(String name) {
+	public String getCommitStatuc(String name) {
 		return commitStatusMap.get(name);
 	}
 	
@@ -91,7 +91,7 @@ public class Client {
 		}
 
 		if(success) {
-			if(app != null && repositoryMap.get(userName) != null) {
+			if(app != null) {
 				Map<String, Integer> oldRepositories = new HashMap<String, Integer>();
 				Map<String, Integer> newRepositories = new HashMap<String, Integer>();
 				Set<String> repositoryNames = new HashSet<String>();
@@ -125,7 +125,7 @@ public class Client {
 		}
 		
 		for(Repository repository : repositories) {
-			String status = getCommitStatus(repository.getFullName());
+			String status = getCommitStatuc(repository.getFullName());
 			LinkedList<Commit> commits;
 			if(status != null)
 				commits = CommitHelper.getCommits(userName, repository.getName(), status);

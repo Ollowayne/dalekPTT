@@ -9,11 +9,12 @@ import javafx.scene.layout.Pane;
 
 public class RepositoryHeaderPane extends Pane {
 	
-	private static final String IMAGE_ARROW_OPENED = "file:res/open.png";
-	private static final String IMAGE_ARROW_CLOSED = "file:res/closed.png";
+	private static final String IMAGE_ARROW_OPENED = "file:res/openLila.png";
+	private static final String IMAGE_ARROW_CLOSED = "file:res/closedLila.png";
 	
 	private HBox hbComponents;
-	private TitledLabelPair lRepoName;
+	private Label lRepoName;
+	private Label lUpdate;
 	
 	private ImageView ivIcon;
 	private Image iArrowOpen;
@@ -30,7 +31,7 @@ public class RepositoryHeaderPane extends Pane {
 		setMinHeight(RepositoryPane.HEIGHT);
 		
 		hbComponents = new HBox(4);
-		lRepoName = new TitledLabelPair("", name);
+		lRepoName = new Label(name);
 		hbComponents.setAlignment(Pos.CENTER);
 
 		iArrowOpen = new Image(IMAGE_ARROW_OPENED);
@@ -53,11 +54,4 @@ public class RepositoryHeaderPane extends Pane {
 		return name;
 	}	
 	
-	public void markUpdated() {
-		lRepoName.setText("NEW UPDATE!", name);
-	}
-	
-	public void unmarkUpdated() {
-		lRepoName.setText("", name);
-	}
 }
